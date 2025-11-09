@@ -3,6 +3,7 @@
 Dies hier ist unser School-Dashboard Projekt.
 Die app.py dient als Einstiegspunkt unserer Anwendung, von wo aus die Website gestartet und alle Blueprints initialisiert werden.
 
+
 """
 
 #Import Flask (Die Hauptfunktion)
@@ -21,7 +22,7 @@ def create_app(debug = True):
     app.register_blueprint(dashboard_blueprint, url_prefix="/dashboard")
     app.register_blueprint(page_not_found_blueprint, url_prefix="/page_not_found")
 
-    #Wenn keine Website gefunden wurde
+    #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)
     def page_not_found(error):
         return redirect(url_for("page_not_found.index"))
