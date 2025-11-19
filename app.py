@@ -3,7 +3,6 @@
 Dies hier ist unser School-Dashboard Projekt.
 Die app.py dient als Einstiegspunkt unserer Anwendung, von wo aus die Website gestartet und alle Blueprints initialisiert werden.
 
-
 """
 
 #Import Flask (Die Hauptfunktion)
