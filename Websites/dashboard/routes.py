@@ -1,5 +1,5 @@
 #Import Flask
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, redirect, url_for, jsonify, request
 from . import dashboard_blueprint
 
 #Erstellt die Verbindung zur HTML Datei her
