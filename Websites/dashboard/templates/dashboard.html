@@ -35,6 +35,17 @@
 
   </head>
   <body>
+
+    <!-- Pop up Bereich -->
+     <div id="underlay_popup"></div>
+    <!-- Abmelde Pop up -->
+     <div id="abmelde_popup">
+        <p>Möchten sie sich wirklich Abmelden?</p>
+        <button id="abbruch_button">Abbrechen</button>
+        <button id="abmelde_button">Abmelden</button>
+     </div>
+    <!-- ~~~ -->
+
     <!-- Header -->
     <nav class="navbar navbar-expand bg-body-tertiary shadow-sm">
       <div class="container-fluid">
@@ -55,7 +66,7 @@
 
               <div class="small">
                 {% if username != None %}
-                <a href="" id="abmelden" class="text-decoration-none link-primary"
+                <a id="abmelden" class="text-decoration-none link-primary"
                   >Abmelden</a
                 >
                 {% else %}
@@ -107,7 +118,7 @@
 
     <!-- Javascript einbinden -->
 
-    <script src="{{ url_for('dashboard.static', filename='script.js') }}"></script>
+    <script src="{{ url_for('dashboard.static', filename='funktionen.js') }}"></script>
 
     <!-- ~~~ -->
   </body>

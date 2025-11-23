@@ -50,6 +50,12 @@ def create_app(debug = debug_mode):
     def page_not_found(error):
         return redirect(url_for("page_not_found.index"))
     
+    #Abmelden Route - Löscht die Session und leitet auf die Mainpage weiter
+    @app.route("/logout/")
+    def logout():
+        session.clear()
+        return redirect(url_for("dashboard.index"))
+    
     #Läd unser Dashboard (Mainpage)
     @app.route("/")
     def root_redirect():

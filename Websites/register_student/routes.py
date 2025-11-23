@@ -43,7 +43,6 @@ def index():
         db.create_student(user_data)
         flash('Dein Konto wurde erfolgreich erstellt! Du kannst dich jetzt anmelden.', 'success')
         print("Neuer Student erfolgreich registriert.")
-        db.close_connection()
         return redirect(url_for('login.index'))
     
     return render_template('register_student.html', 

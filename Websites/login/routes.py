@@ -48,11 +48,9 @@ def index():
             session['username'] = find_student['username']
 
             flash('Erfolgreich eingeloggt!', 'success')
-            db.close_connection()
             return redirect(url_for('dashboard.index'))
         else:
             flash('Falsches Passwort. Bitte versuche es erneut.', 'danger')
-            db.close_connection()
             return redirect(url_for('login.index'))
 
     return render_template('login.html', 

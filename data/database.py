@@ -87,7 +87,7 @@ class Database:
         self.client.close()
         print("Datenbankverbindung geschlossen.")
 
-    # Erstellt ein Formular für die Studentendaten
+    # Erstellt ein Formular für die Schülerdaten
     def student_formular(
         self,
         uuid,
@@ -148,7 +148,7 @@ class Database:
             return
     
     def get_students_password(self, email):
-        # Ruft das Passwort eines Studenten anhand der E-Mail-Adresse ab
+        # Ruft das Passwort eines Schülers anhand der E-Mail-Adresse ab
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
         if email is None:
