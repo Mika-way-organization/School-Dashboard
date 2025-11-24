@@ -11,14 +11,20 @@ Bestandteile:
 """
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional
 
+schools = [
+    ('Keine Angabe', 'Keine Angabe'),
+    ('Staatliche Berufsschule 2 - Aschaffenburg', 'Staatliche Berufsschule 2 - Aschaffenburg')
+]
+
 class RegisterForm(FlaskForm):
+    selectfield = SelectField('Schule', choices=schools, validators=[DataRequired()])
     username = StringField('Benutzername', validators=[DataRequired(), Length(min=3, max=20)], render_kw={"placeholder": "Benutzername"})
     email = StringField('Email', validators=[DataRequired(), Email()], render_kw={"placeholder": "Email"})
-    first_name = StringField('Vorname', validators=[Optional(), Length(min=1, max=30)], render_kw={"placeholder": "Vorname"})
-    last_name = StringField('Nachname', validators=[Optional(), Length(min=1, max=30)], render_kw={"placeholder": "Nachname"})
+    first_name = StringField('Vorname', validators=[Optional(), Length(min=1, max=30)], render_kw={"placeholder": "Vorname (Optional)"})
+    last_name = StringField('Nachname', validators=[Optional(), Length(min=1, max=30)], render_kw={"placeholder": "Nachname (Optional)"})
     password = PasswordField('Passwort', validators=[DataRequired(), Length(min=8, max=50)], render_kw={"placeholder": "Passwort"})
     confirm_password = PasswordField('Passwort bestätigen', validators=[DataRequired(), EqualTo('password', message='Passwörter müssen übereinstimmen')], render_kw={"placeholder": "Passwort bestätigen"})
     submit = SubmitField('Registrieren')

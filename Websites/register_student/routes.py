@@ -37,7 +37,8 @@ def index():
             email=form.email.data,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
-            password=hashed_password
+            password=hashed_password,
+            school_name=form.selectfield.data
         )
 
         db.create_student(user_data)

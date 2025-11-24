@@ -96,11 +96,11 @@ class Database:
         password,
         first_name,
         last_name,
+        school_name,
         # Optionale Felder
         avatar=None,
         grade_level=None,
         section=None,
-        school_id=None,
         class_teacher_id=None,
         created_at=get_current_datetime(),
         last_login=None,
@@ -120,7 +120,7 @@ class Database:
             "classData": {
                 "gradeLevel": grade_level,
                 "section": section,
-                "schoolId": school_id,
+                "schoolName": school_name,
                 "classTeacherId": class_teacher_id,
             },
             "metadata": {
