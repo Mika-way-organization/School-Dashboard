@@ -1,54 +1,91 @@
-/* Grundlegende Layout-Eigenschaften, die das Original-CSS hatte */
+/* GRUNDLEGENDE LAYOUT-EIGENSCHAFTEN (Dark Mode) */
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     
-    /* Dark Mode Farben */
-    background: #282c34;
+    /* Hintergrund bleibt elegant dunkel */
+    background: radial-gradient(circle at center, #2e3440 0%, #1e222a 100%);
 }
 
-/* Container-Styling */
+/* CONTAINER-STYLING (Unverändert) */
 .flex-container {
-    padding: 40px;
-    border-radius: 10px;
+    padding: 50px 60px;
+    border-radius: 15px;
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     text-align: center;
-
-    /* Dark Mode Farben */
-    background: #2d3138;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
+    
+    background: #252b33;
+    box-shadow: 
+        10px 10px 20px rgba(0, 0, 0, 0.6),
+        -5px -5px 15px rgba(60, 66, 75, 0.2); 
+    
+    border: 1px solid rgba(100, 100, 100, 0.1); 
 }
 
-/* Überschrift-Styling */
+/* ÜBERSCHRIFTEN-STYLING MIT NEON-GLOW */
+
 h1 {
-    color: #e0e0e0;
-    margin-bottom: 25px;
-    font-size: 32px;
+    /* Leichte Akzentuierung für Kontrast */
+    color: #f0f0f0; 
+    margin-bottom: 5px;
+    font-size: 38px;
+    font-weight: 600;
 }
 
-/* Button-Styling (Dark Mode Grau) */
+h2 {
+    /* NEUE FARBE: Purpur-Akzent */
+    color: #7F00FF; /* Leuchtendes Purpur */
+    margin-bottom: 40px; 
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    
+    /* Echter Neon-Glow-Effekt mit Purpur-Tönung */
+    text-shadow: 
+        0 0 10px rgba(127, 0, 255, 0.8), /* Intensiver Kern */
+        0 0 15px rgba(127, 0, 255, 0.6); /* Breiterer Schimmer */
+}
+
+/* BUTTON-STYLING (Hervorgehobene Aktion) */
 .hover-button {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
+    font-size: 19px;
+    font-weight: 700;
     
-    background-color: #444a54; 
+    /* NEUE GRUNDFARBE: Purpur */
+    background-color: #7F00FF; 
     color: #ffffff;
     
     border: none;
-    border-radius: 5px;
-    font-size: 18px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    
+    /* Button-Schatten im Purpur-Ton */
+    box-shadow: 0 5px 10px rgba(127, 0, 255, 0.3);
 }
 
-/* Hover-Effekt */
+/* HOVER-EFFEKT: Dunkleres Purpur und stärkerer Glow */
 .hover-button:hover {
-    background-color: #5d6673;
-    color: #ffffff;
-    cursor: pointer;
+    /* Dunkleres Purpur bei Hover */
+    background-color: #6600CC; 
+    /* Schatten wird stärker */
+    box-shadow: 0 7px 20px rgba(127, 0, 255, 0.5); 
+    transform: translateY(-2px);
+}
+
+.neon-akzent {
+    /* Purpur-Akzentfarbe */
+    color: #7F00FF; 
+    
+    /* Neon-Glow-Effekt */
+    text-shadow: 
+        0 0 7px rgba(127, 0, 255, 0.7), 
+        0 0 12px rgba(127, 0, 255, 0.4);
 }

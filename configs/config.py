@@ -23,20 +23,25 @@ secret_key = os.getenv("SECRET_KEY")
 #Enthält die Verbindungszeichenkette für die MongoDB-Datenbank, geladen aus der Umgebungsvariable 'MONGO_URI'.
 mongo_uri = os.getenv("MONGO_URI")
 
+#Enthält den API-Schlüssel für den Wetterdienst, geladen aus der Umgebungsvariable 'WEATHER_API_KEY'.
+weather_api_key = os.getenv("WEATHER_API_KEY")
+
 #Lädt die Debug-Einstellung aus der settings.json Datei
 debug_mode = json.loads(open("configs/settings.json").read())["server"]["debug"]
 
+#Funktion die überprüft ob alle kritischen Konfigurationsvariablen geladen wurden.
 def isConfig_loaded():
-    """Überprüft, ob die kritischen Konfigurationsvariablen geladen wurden."""
     isKey_loaded()
     isJsonloaded()
 
-
-
 #Eine Warnung falls ein Umgebungsschlüssel nicht geladen werden konnte.
 def isKey_loaded():
-    if not secret_key or not mongo_uri:
-        print("WARNUNG: Mindestens ein kritischer Umgebungsschlüssel (SECRET_KEY oder MONGO_URI) konnte nicht geladen werden!")
+    if not secret_key:
+        print("WARNUNG: Der SECRET_KEY konnte nicht geladen werden!")
+    elif not mongo_uri:
+        print("WARNUNG: Der MONGO_URI konnte nicht geladen werden!")
+    elif not weather_api_key:
+        print("WARNUNG: Der WEATHER_API_KEY konnte nicht geladen werden!")
     else:
         print("Alle kritischen Umgebungsschlüssel wurden erfolgreich geladen.")
 
