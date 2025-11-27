@@ -19,6 +19,7 @@ from Websites.page_not_found import page_not_found_blueprint
 from Websites.register_student import register_student_blueprint
 from Websites.login import login_blueprint
 from Websites.profile import profile_blueprint
+from Websites.codeconfirm import codeconfirm_blueprint
 
 #import der Konfigurationsvariablen
 from configs.config import isConfig_loaded, secret_key, debug_mode, email_password
@@ -62,6 +63,7 @@ def create_app(debug = debug_mode):
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USERNAME'] = 'schul.dashboard@gmail.com'
     app.config['MAIL_PASSWORD'] = email_password
+    app.config['MAIL_DEFAULT_SENDER'] = 'schul.dashboard@gmail.com'
     
     #Initialisierung der Erweiterungen
     bcrypt.init_app(app)
@@ -77,6 +79,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(register_student_blueprint, url_prefix="/register_student")
     app.register_blueprint(login_blueprint, url_prefix="/login")
     app.register_blueprint(profile_blueprint, url_prefix="/profile")
+    app.register_blueprint(codeconfirm_blueprint, url_prefix="/codeconfirm")
 
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)

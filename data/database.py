@@ -105,7 +105,10 @@ class DatabaseStudent:
         class_teacher_id=None,
         created_at=get_current_datetime(),
         last_login=None,
-        logins=0
+        logins=0,
+        expiresAt=None,
+        verifiedAt=None,
+        code=None,
     ):
         student_data = {
             "uuid": uuid,
@@ -114,7 +117,6 @@ class DatabaseStudent:
             "password": password,
             "role": "student",
             "status": "inactive",
-            "is_verify": is_verify,
             "schoolName": school_name,
             "profile": {
                 "firstName": first_name,
@@ -131,6 +133,12 @@ class DatabaseStudent:
                 "lastLogin": last_login,
                 "logins": logins
             },
+            "verification": {
+                "code": code,
+                "expiresAt": expiresAt,
+                "verifiedAt": verifiedAt,
+                "is_verify": is_verify
+            }
         }
         return student_data
     
@@ -165,6 +173,29 @@ class DatabaseStudent:
         else:
             print("Student nicht gefunden.")
             return None
+    
+    def update_student_data(self, uuid, update_data):
+        # Aktualisiert die Daten eines Schülers in der Datenbank
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+        if uuid is None:
+            raise ValueError("UUID darf nicht None sein.")
+        if update_data is None:
+            raise ValueError("Aktualisierungsdaten dürfen nicht None sein.")
+        
+        try:
+            update_result = self.client[self.database][self.collection].update_one(
+                {"uuid": uuid},
+                {"$set": update_data}
+            )
+            if update_result.modified_count > 0:
+                print("Studentendaten erfolgreich aktualisiert.")
+            else:
+                print("Keine Änderungen an den Studentendaten vorgenommen.")
+            return
+        except Exception as e:
+            print(f"Fehler beim Aktualisieren der Studentendaten: {e}")
+            return
 
 class DatabaseTeacher(DatabaseStudent):
     def __init__(self, collection_name):
