@@ -18,6 +18,7 @@ from Websites.dashboard import dashboard_blueprint
 from Websites.page_not_found import page_not_found_blueprint
 from Websites.register_student import register_student_blueprint
 from Websites.login import login_blueprint
+from Websites.profile import profile_blueprint
 
 #import der Konfigurationsvariablen
 from configs.config import isConfig_loaded, secret_key, debug_mode, email_password
@@ -75,6 +76,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(page_not_found_blueprint, url_prefix="/page_not_found")
     app.register_blueprint(register_student_blueprint, url_prefix="/register_student")
     app.register_blueprint(login_blueprint, url_prefix="/login")
+    app.register_blueprint(profile_blueprint, url_prefix="/profile")
 
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)

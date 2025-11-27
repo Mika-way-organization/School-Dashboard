@@ -1,3 +1,103 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+    gap: 20px 15px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+input[type="submit"] {
+    background-color: #7F00FF;
+    padding: 12px;
+    width: 65%;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.35s ease;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(127, 0, 255, 0.3);
+}
+input[type="submit"]:hover {
+    background-color: #6600CC;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 7px 20px rgba(127, 0, 255, 0.5);
+    transform: translateY(-2px);
+}
+button {
+    background-color: #5d6673;
+    color: white;
+    width: 100%;
+    padding: 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+}
 h1 {
-    color: black;
+    color: #7f00ff;
+    text-shadow: 0 0 7px rgba(127, 0, 255, 0.4);
+    text-shadow: 0 0 12px rgba(127, 0, 255, 0.7);
+}
+input[type="email"] {
+    background-color: #5d6673;
+    color: white;
+    border: black solid 1px;
+    border-radius: 3px;
+}
+input[type="password"] {
+    background-color: #5d6673;
+    color: white;
+    border: black solid 1px;
+    border-radius: 3px;
+}
+input[type="text"] {
+    background-color: #5d6673;
+    color: white;
+    border: black solid 1px;
+    border-radius: 3px;
+}
+
+select {
+    /* Funktioniert gut */
+    background-color: #5d6673; /* Hintergrundfarbe des gesamten Feldes */
+    color: white;             /* Textfarbe */
+    padding: 6px 9px;      /* Innenabstand */
+    border: 1px solid black; /* Rahmenfarbe */
+    border-radius: 5px;      /* Abgerundete Ecken */
+    font-size: 16px;         /* Schriftgröße */
+    width: 100%;             /* Breite */
+}
+
+/* Wichtig: Option-Elemente stylen */
+select option {
+    background-color: #5d6673;
+    color: white;
+}
+select {
+    appearance: none;
+    -webkit-appearance: none; /* Für ältere Chrome/Safari */
+    -moz-appearance: none;    /* Für Firefox */
+    /* Setzen Sie hier alle Ihre Basis-Styles ein (siehe oben) */
+}
+select {
+    /* ... vorherige Styles ... */
+    /* Fügt ein weißes Pfeil-Icon als Hintergrundbild hinzu */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20fill%3D%22white%22%20d%3D%22M10%2014L5%209h10z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position des Icons */
+    padding-right: 30px; /* Mehr Platz, damit der Text das Icon nicht überlappt */
 }

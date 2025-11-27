@@ -1,0 +1,12 @@
+/* GRUNDLEGENDE LAYOUT-EIGENSCHAFTEN (Dark Mode) */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    
+    /* Hintergrund bleibt elegant dunkel */
+    background: radial-gradient(circle at center, #2e3440 0%, #1e222a 100%);
+}

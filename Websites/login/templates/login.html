@@ -31,31 +31,34 @@
     <!-- ~~~ -->
 
   </head>
-  <body>
+  <body class="bg-dark text-white">
     <!-- Header -->
+    <div class="flex-container bg-tertiary shadow-lg p-5">
      <h1>Login</h1>
 
     <!-- ~~~ -->
 
     <!-- Formuar -->
     <form method="POST" action="">
+      <div>
       {{ form.hidden_tag() }}
-      <div>
-        {{ form.email() }}
       </div>
       <div>
-        {{ form.password() }}
-      </div>
+      {{ form.email( type="email" ) }}
+    </div>
       <div>
-        Angemeldet bleiben: {{ form.remember_me() }}
-      </div>
+      {{ form.password( type="password" ) }}
+    </div>
       <div>
-        {{ form.submit() }}
-      </div>
+     Angemeldet bleiben: {{ form.remember_me( type="checkbox" ) }}
+    </div>
+      <div>
+      {{ form.submit() }}
+    </div>
     </form>
-    
-    <a href="{{ url_for('dashboard.index') }}">Schul-Dashboard</a>
-    <a href="{{ url_for('register_student.index') }}">Hast du noch kein Account?</a>
+      <a href="{{ url_for('dashboard.index') }}">Schul-Dashboard</a>
+      <a href="{{ url_for('register_student.index') }}">Hast du noch kein Account?</a>
+    </div>
     <!-- ~~~ -->
 
     <!-- Javascript einbinden -->
