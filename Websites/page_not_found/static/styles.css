@@ -6,9 +6,6 @@ body {
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    
-    /* Hintergrund bleibt elegant dunkel */
-    background: radial-gradient(circle at center, #2e3440 0%, #1e222a 100%);
 }
 
 /* CONTAINER-STYLING (Unverändert) */
@@ -19,7 +16,7 @@ body {
     max-width: 450px;
     text-align: center;
     
-    background: #252b33;
+    background: #2B3035;
     box-shadow: 
         10px 10px 20px rgba(0, 0, 0, 0.6),
         -5px -5px 15px rgba(60, 66, 75, 0.2); 

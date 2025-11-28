@@ -1,4 +1,4 @@
-#Import Flask
+# Import Flask
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user
 from . import codeconfirm_blueprint
@@ -6,62 +6,68 @@ from datetime import timezone
 
 from utils.get_datetime import get_current_datetime_aware_utc, get_current_datetime
 
-#Importiere das Formular
+# Importiere das Formular
 from forms.Verification_Form import VerificationForm
 
-#Importiere die Datenbankklasse
+# Importiere die Datenbankklasse
 from data.database import DatabaseStudent
 
 db = DatabaseStudent("student")
 
-#Erstellt die Verbindung zur HTML Datei her
-@codeconfirm_blueprint.route('/', methods=['GET', 'POST'])
+
+# Erstellt die Verbindung zur HTML Datei her
+@codeconfirm_blueprint.route("/", methods=["GET", "POST"])
 def index():
-    #Überprüft, ob der Benutzer bereits angemeldet ist
+    # Überprüft, ob der Benutzer bereits angemeldet ist
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard.index'))
-    
+        return redirect(url_for("dashboard.index"))
+
     form = VerificationForm()
+    # Verarbeitet das Formular wenn es abgeschickt wurde
+    if request.method == "POST" and form.validate_on_submit():
+        uuid = request.args.get("uuid")
+        
+        if not uuid:
+            flash("Ungültige Anfrage. Keine UUID angegeben.")
+            return redirect(url_for("codeconfirm.index"))
 
-    #Verarbeitet das Formular wenn es abgeschickt wurde
-    if request.method == 'POST' and form.validate_on_submit():
-        uuid = request.args.get('uuid')
-
-        #Sucht den Studenten in der Datenbank anhand der UUID
+        # Sucht den Studenten in der Datenbank anhand der UUID
         student = db.find_student_by_uuid(uuid)
         if not student:
-            return redirect(url_for('register_student.index'))
-        
-        #Überprüft ob das Konto bereits verifiziert ist
+            return redirect(url_for("register_student.index"))
+
+        # Überprüft ob das Konto bereits verifiziert ist
         if student["verification"]["is_verify"]:
             flash("Konto ist bereits verifiziert.")
-            return redirect(url_for('login.index'))
-        
-        #Überprüft ob ein Verifizierungscode in der Datenbank vorhanden ist
+            return redirect(url_for("login.index"))
+
+        # Überprüft ob ein Verifizierungscode in der Datenbank vorhanden ist
         if student["verification"]["code"] is None:
             flash("Kein Verifizierungscode gefunden.")
-            return redirect(url_for('codeconfirm.index'))
-        #Überprüft ob der Verifizierungscode abgelaufen ist
+            return redirect(url_for("codeconfirm.index"))
+
+        # Überprüft ob der Verifizierungscode abgelaufen ist
         expires_at_naive = student["verification"]["expiresAt"]
         cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
         if cexpires_at_aware < get_current_datetime_aware_utc():
             flash("Der Verifizierungscode ist abgelaufen.")
-            return redirect(url_for('codeconfirm.index'))
-        
-        #Überprüft ob der eingegebene Code mit dem in der Datenbank übereinstimmt
+            return redirect(url_for("codeconfirm.index"))
+
+        # Überprüft ob der eingegebene Code mit dem in der Datenbank übereinstimmt
         if student["verification"]["code"] == form.code.data:
-            db.update_student_data(uuid, {
-                "verification.is_verify": True,
-                "verification.code": None,
-                "verification.expiresAt": None,
-                "verification.verifiedAt": get_current_datetime()
-            })
+            db.update_student_data(
+                uuid,
+                {
+                    "verification.is_verify": True,
+                    "verification.code": None,
+                    "verification.expiresAt": None,
+                    "verification.verifiedAt": get_current_datetime(),
+                },
+            )
             flash("Konto erfolgreich verifiziert.")
-            return redirect(url_for('login.index'))
+            return redirect(url_for("login.index"))
         else:
             flash("Falscher Verifizierungscode.")
-            return redirect(url_for('codeconfirm.index'))
+            return redirect(url_for("codeconfirm.index"))
 
-
-    return render_template('codeconfirm.html',
-                           form=form)
+    return render_template("codeconfirm.html", form=form)
