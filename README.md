@@ -1,5 +1,5 @@
 # School-Dashboard
-as School-Dashboard ist ein Schulprojekt, entwickelt von der BS2AB Gruppe 1 in Kooperation mit der ASC Technologies AG.
+Das School-Dashboard ist ein Schulprojekt, entwickelt von der BS2AB Gruppe 1 in Kooperation mit der ASC Technologies AG.
 
 Das Ziel des Dashboards ist es, Schülern und Lehrern alle relevanten, zeitkritischen Informationen auf einen Blick bereitzustellen. Die Anwendung dient als zentraler Informationshub, der den aktuellen Stundenplan, Wetterinformationen und weitere wichtige Daten aggregiert darstellt.
 
