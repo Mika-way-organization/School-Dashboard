@@ -188,7 +188,7 @@ body {
     overflow: hidden;
 }
 
-#cssportal-grid > div {
+#cssportal-grid > div:not(#div1) {
     border-radius: 12px;
     background: #343a40;
     
@@ -204,7 +204,7 @@ body {
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
 }
 
-#cssportal-grid > div:hover {
+#cssportal-grid > div:not(#div1):hover {
     
     box-shadow: 
         0 4px 8px rgba(0, 0, 0, 0.5), 
@@ -232,4 +232,59 @@ body {
     font-size: 1.4rem;
     text-align: center;
     margin-top: 10px;
+}
+
+#MiniNav-bar
+
+{
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+#Dropdown 
+{
+    position: absolute;
+    top: 720px;
+
+}
+
+#Home:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#Stundenplan:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#Einstellungen:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#Gast:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#Einstellungen:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#offcanvasbutton:hover
+{
+    background-color: #7d838a;
+    border-radius: 10px;
+    
 }
