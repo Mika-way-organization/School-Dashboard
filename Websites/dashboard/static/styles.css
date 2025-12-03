@@ -9,6 +9,33 @@ body {
     min-height: 100vh;
 }
 
+#header {
+    border-bottom: 2px solid rgba(127, 0, 255, 0.4);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.6);
+
+    animation: pulsieren 2s infinite alternate; 
+
+    transition: box-shadow 0.2s ease-in-out; 
+}
+
+@keyframes pulsieren {
+    0% {
+        border-color: rgba(127, 0, 255, 0.4); 
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.4),
+            0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+    
+    100% {
+        border-color: rgba(127, 0, 255, 1.0);
+        box-shadow: 
+            0 2px 8px rgba(127, 0, 255, 0.8),
+            0 8px 20px rgba(0, 0, 0, 0.8);
+    }
+}
+
 /* Stil für das Abmelde-Pop up und den Underlay */
 #underlay_popup {
     position: fixed;
@@ -132,31 +159,77 @@ body {
 
 #div1 {
 	grid-area: 4 / 1 / 10 / 2;
+    overflow: hidden;
 }
 #div2 {
 	grid-area: 1 / 1 / 3 / 9;
+    overflow: hidden;
 }
 #div3 {
 	grid-area: 1 / 9 / 11 / 11;
+    overflow: hidden;
 }
 #div4 {
 	grid-area: 11 / 3 / 13 / 11;
+    overflow: hidden;
 }
 #div5 {
 	grid-area: 11 / 1 / 13 / 3;
+    overflow: hidden;
 }
 #div6 {
 	grid-area: 3 / 2 / 11 / 5;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 #div7 {
 	grid-area: 3 / 5 / 11 / 9;
+    overflow: hidden;
 }
 
 #cssportal-grid > div {
-    border-radius: 10px;
-    background: #1d1021;
-
+    border-radius: 12px;
+    background: #343a40;
+    
+    border: 1px solid rgba(127, 0, 255, 0.4);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.6); 
+    
     display: flex;
-    align-items: center;    /* Vertikale Zentrierung */
-    justify-content: center; /* Horizontale Zentrierung */
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+#cssportal-grid > div:hover {
+    
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.5), 
+        0 12px 24px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(127, 0, 255, 0.5);
+        
+    border: 2px solid #7F00FF; 
+    
+    transform: translateY(-2px) scale(1.02);
+    
+}
+
+/*DIV Container Inhalte*/
+
+#time-date {
+    font-size: 1.7rem;
+    text-align: center;
+}
+
+#wetter_h2 {
+    font-size: 4.7rem;
+    text-align: center;
+}
+#description_w, #wetter_temp {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-top: 10px;
 }

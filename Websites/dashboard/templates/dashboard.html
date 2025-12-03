@@ -27,7 +27,7 @@
     <button id="abmelde_button">Abmelden</button>
   </div>
 
-  <nav class="navbar navbar-expand bg-body-tertiary shadow-sm">
+  <nav class="navbar navbar-expand bg-body-tertiary shadow-sm" id="header">
     <div class="container-fluid">
       <a class="navbar-brand fs-3 fw-bold" href="{{ url_for('dashboard.index') }}">Schul-<span
           class="neon-akzent">Dashboard</span></a>
@@ -83,8 +83,25 @@
     <div id="div2">Akutelles Fach inkl. Aufgaben und Lehrer</div>
     <div id="div3">Hausufgaben/Proben/Ex's/ sonstige Termine</div>
     <div id="div4">Zitat des Tages/Nachrichten/Witze</div>
-    <div id="div5">Datum Uhrzeit</div>
-    <div id="div6">Wetter</div>
+
+    <div id="div5">
+      <div id="time-date"> {{ time }} <br> {{ date }}</div>
+    </div>
+
+    <div id="div6">
+      <h2 id="wetter_h2">Wetter</h2>
+      <img 
+            src="https://openweathermap.org/img/wn/{{ icon }}@2x.png" 
+            alt="Icon: {{ weather_description }}" 
+            title="Aktuell: {{ weather_description }}"
+        >
+      
+      <p id="description_w"> {{ weather_description }} </p>
+      <p id="temp"> Temperatur: {{ temp }}°C Gefühlt: {{ feels_like }}°C </p>
+      <p id="humidity"> Luftfeuchtigkeit: {{ humidity }}% </p>
+      <p id="city"> Stadt: {{ city }} </p>
+    </div>
+
     <div id="div7">Stundenplan / Tag</div>
   </div>
   

@@ -43,4 +43,3 @@ class WetterAPI:
         else:
             print(f"Es ist ein Fehler beim Abfrufen der Wetterdaten aufgetreten. {response.text}")
             return None
-
