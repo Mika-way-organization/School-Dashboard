@@ -39,7 +39,9 @@ def index():
 
     return render_template('dashboard.html', 
                            username = username, 
+                           #Time
                            date=date, time=time,
+                           #Weather
                            weather_description=weather_description, 
                             icon=icon,
                            temp=temperatur,

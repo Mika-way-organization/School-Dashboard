@@ -26,6 +26,7 @@ mongo_uri = os.getenv("MONGO_URI")
 #Enthält den API-Schlüssel für den Wetterdienst, geladen aus der Umgebungsvariable 'WEATHER_API_KEY'.
 weather_api_key = os.getenv("WEATHER_API_KEY")
 
+#Enthält das Email Passwort, geladen aus der Umgebungsvariable 'EMAIL_PASSWORD'
 email_password = os.getenv("EMAIL_PASSWORD")
 
 #Lädt die Debug-Einstellung aus der settings.json Datei

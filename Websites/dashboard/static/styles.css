@@ -196,8 +196,8 @@ body {
     background: #343a40;
     border: 1px solid rgba(127, 0, 255, 0.4);
     box-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.4),
-        0 8px 16px rgba(0, 0, 0, 0.6); 
+        0 1px 2px rgba(0, 0, 0, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.6); 
     
     display: flex; 
     align-items: center;
@@ -210,8 +210,8 @@ body {
 #MiniNav:hover {
     
     box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.5), 
-        0 12px 24px rgba(0, 0, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.5), 
+        0 6px 12px rgba(0, 0, 0, 0.8),
         0 0 40px rgba(127, 0, 255, 0.5);
         
     border: 2px solid #7F00FF; 
@@ -223,23 +223,23 @@ body {
 /*DIV Container Inhalte*/
 
 #time-date {
-    font-size: 1.6vw;
+    font-size: calc(1.2vw + 1vh);
     text-align: center;
 }
 
 #wetter_h2 {
-    font-size: 4.6vw;
+    font-size: calc(2.5vw + 2.5vh);
     text-align: center;
 }
 #description_w, #temp, #humidity, #city {
-    font-size: 1.3vw;
+    font-size: calc(1vw + 1vh);
     text-align: center;
     margin-top: 10px;
 }
 
 #MiniNav-bar{
     box-shadow: none !important;
-    scale: 2 !important;
+    scale: 1 !important;
     width: 50vw !important;
     background-color: #343a40 !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
