@@ -20,6 +20,9 @@ load_dotenv()
 #Enthält den zentralen kryptografischen Schlüssel der Anwendung, geladen aus der Umgebungsvariable 'SECRET_KEY'.
 secret_key = os.getenv("SECRET_KEY")
 
+#Enthält den zentralen kryptografischen Schlüssel der Anwendung, geladen aus der Umgebungsvariable 'JWT_SECRET_KEY'.
+jwt_secret_key = os.getenv("JWT_SECRET_KEY")
+
 #Enthält die Verbindungszeichenkette für die MongoDB-Datenbank, geladen aus der Umgebungsvariable 'MONGO_URI'.
 mongo_uri = os.getenv("MONGO_URI")
 
@@ -43,6 +46,8 @@ def isKey_loaded():
         print("WARNUNG: Der SECRET_KEY konnte nicht geladen werden!")
     elif not mongo_uri:
         print("WARNUNG: Der MONGO_URI konnte nicht geladen werden!")
+    elif not jwt_secret_key:
+        print("WARNUNG: Der JWT_SECRET_KEY konnte nicht geladen werden!")
     elif not weather_api_key:
         print("WARNUNG: Der WEATHER_API_KEY konnte nicht geladen werden!")
     elif not email_password:

@@ -11,7 +11,7 @@ def install_package(package_name):
         print(f"Failed to install {package_name}. Error: {e}")
         sys.exit(1)
 
-REQUIRED_PACKAGES = ["flask-login", "flask", "requests", "flask-bcrypt", "flask-wtf", "flask-mail", "pymongo", "dotenv", "email_validator"]
+REQUIRED_PACKAGES = ["flask-login", "flask", "requests", "flask-bcrypt", "flask-wtf", "flask-mail", "pymongo", "dotenv", "email_validator", "flask_cors", "flask_jwt_extended"]
 
 def main():
     for package in REQUIRED_PACKAGES:
