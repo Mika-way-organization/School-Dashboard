@@ -52,7 +52,7 @@
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    z-index: 1000;
+    z-index: 10000;
 
     /* Anfangs ist das Pop up nicht sichtbar */
     display: none;
@@ -211,7 +211,6 @@
 
 #MiniNav-bar{
     box-shadow: none !important;
-    scale: 2 !important;
     width: 350px !important;
     background-color: #343a40 !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
