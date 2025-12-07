@@ -2,12 +2,15 @@
 
 In dieser Datei werden Jokes von einer API geholt und random ausgegeben
 """
+#Import der notwendigen Module
 import requests
 
+#Definierung der Jokes Klasse
 class Jokes:
     def __init__(self):
         self.url = "https://v2.jokeapi.dev/joke/Any?lang=de&type=single"
     
+    #Hier werden die Witze abgerufen
     def get_joke(self):
         response = requests.get(self.url)
         try:
@@ -25,6 +28,7 @@ class Jokes:
                     return "Fehler: API lieferte keinen einzelnen Witz-Text."
             else:
                 return f"Fehler beim Abrufen des Witzes. Status Code: {response.status_code}"
-            
+        
+        # Fehlerbehandlung bei Netzwerkproblemen
         except requests.exceptions.RequestException as e:
             return f"Ein Netzwerkfehler ist aufgetreten: {e}"
