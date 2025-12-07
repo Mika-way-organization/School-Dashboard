@@ -1,7 +1,9 @@
+<!-- Dies hier ist der Dashboard HTML code -->
 <!DOCTYPE html>
 <html lang="de" data-bs-theme="dark">
 
 <head>
+  <!-- Meta Tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -10,6 +12,7 @@
   <link rel="stylesheet" href="{{ url_for('dashboard.static', filename='handy.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/preloader.css') }}" />
 
+  <!-- Hier wird geprüft ob der User angemeldet ist -->
   {% if username != None %}
   <title>Schul-Dashbaord - {{ username }}</title>
   {% else %}
@@ -18,6 +21,7 @@
 </head>
 
 <body>
+  <!-- popups -->
   <div id="underlay_popup"></div>
   <div id="abmelde_popup">
     <p id="abmelde-p-popup">
@@ -27,11 +31,13 @@
     <button id="abmelde_button">Abmelden</button>
   </div>
 
+  <!-- Navbar -->
   <nav class="navbar navbar-expand bg-body-tertiary shadow-sm" id="header">
     <div class="container-fluid">
       <a class="navbar-brand fs-3 fw-bold" href="{{ url_for('dashboard.index') }}">Schul-<span
           class="neon-akzent">Dashboard</span></a>
-
+      
+      <!-- Navbar Right Side -->
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 
@@ -43,9 +49,11 @@
               {% else %} Gast {% endif %}
             </div>
 
+            <!-- User Authentication Links Angemeldet -->
             <div class="small">
               {% if username != None %}
               <a id="abmelden" class="text-decoration-none link-light">Abmelden</a>
+              <!-- User Authentication Links Nicht angemeldet -->
               {% else %}
               <a href="{{ url_for('login.index') }}" class="text-decoration-none link-light">Login</a>
               <span class="text-body-tertiary">|</span>
@@ -53,7 +61,7 @@
               {% endif %}
             </div>
           </div>
-
+          <!-- Profil Icon Angemeldet -->
           {% if username != None %}
           <a href="{{ url_for('profile.index', user_id=current_user.id) }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
@@ -63,6 +71,7 @@
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
             </svg>
           </a>
+          <!-- Profil Icon Nicht angemeldet -->
           {% else %}
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
             class="bi bi-person-circle text-secondary fs-2" viewBox="0 0 16 16">
@@ -80,6 +89,7 @@
   <!--Div Containers-->
 
   <div id="cssportal-grid">
+    <!-- Mini Navbar -->
     <nav id="MiniNav">
       <ul class="nav flex-column justify-content-center rounded" id="MiniNav-bar">
 
@@ -93,6 +103,7 @@
           </a>
         </li>
 
+        <!-- Stundenplan Icon -->
         <li class="nav-item" id="Stundenplan-icon">
           <a class="nav-link" href="{{ url_for ('stundenplan.index', user_id=current_user.id) }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-table"
@@ -103,6 +114,7 @@
           </a>
         </li>
 
+        <!-- Profil/Gast Icon -->
         <li class="nav-item" id="Gast-icon">
           <a class="nav-link" href="{{ url_for('profile.index', user_id=current_user.id) }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-person-fill"
@@ -112,6 +124,7 @@
           </a>
         </li>
 
+        <!-- Einstellungen Icon -->
         <li class="nav-item" id="Einstellungen-icon">
           <a class="nav-link" href="{{ url_for('profile.index', user_id=current_user.id) }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-gear-fill"
@@ -122,6 +135,7 @@
           </a>
         </li>
 
+        <!-- Offcanvas Button -->
         <li class="nav-item">
           <a class="nav-link btn btn-dark" id="offcanvasbutton" data-bs-toggle="offcanvas" href="#offcanvasExample"
             role="button" aria-controls="offcanvasExample">
@@ -135,14 +149,21 @@
       </ul>
     </nav>
 
+    <!-- Div Containers Inhalt -->
     <div id="div2">Akutelles Fach inkl. Aufgaben und Lehrer</div>
     <div id="div3">Hausufgaben/Proben/Ex's/ sonstige Termine</div>
-    <div id="div4">Zitat des Tages/Nachrichten/Witze</div>
+    <!-- Witz des Tages -->
+    <div id="div4">
+      <h2 id="joke_h2">Aktueller Witz</h2>
+      <p id="joke_text"> {{ joke }} </p>
+    </div>
 
+    <!-- Zeit-->
     <div id="div5">
       <div id="time-date"> {{ time }} <br> {{ date }}</div>
     </div>
 
+    <!-- Wetter --> 
     <div id="div6">
       <h2 id="wetter_h2">Wetter</h2>
       <img src="https://openweathermap.org/img/wn/{{ icon }}@2x.png" alt="Icon: {{ weather_description }}"
@@ -154,18 +175,21 @@
       <p id="city"> Stadt: {{ city }} </p>
     </div>
 
+    <!-- Stundenplan / Tag -->
     <div id="div7">Stundenplan / Tag</div>
   </div>
 
-  <!--Offcanvs-->
+  <!--Offcanvas-->
   <div class="offcanvas offcanvas-start text-bg-dark rounded" tabindex="-1" id="offcanvasExample"
     aria-labelledby="offcanvasExampleLabel" style="width: 300px;">
 
+    <!-- Offcanvas Header -->
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Navigation</h5>
       <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
+    <!-- Offcanvas Body -->
     <div class="offcanvas-body">
       <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
 
@@ -179,6 +203,7 @@
           </a>
         </li>
 
+        <!-- Stundenplan Icon -->
         <li class="nav-item" id="Stundenplan">
           <a class="nav-link active" aria-current="page"
             href="{{ url_for ('stundenplan.index', user_id=current_user.id) }}">
@@ -190,6 +215,7 @@
           </a>
         </li>
 
+        <!-- Profil/Gast Icon -->
         <li class="nav-item" id="Gast">
           <a class="nav-link active" aria-current="page" href="{{ url_for('profile.index', user_id=current_user.id) }}">
             <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="25" height="14" fill="#FFFFFF"
@@ -199,6 +225,7 @@
           </a>
         </li>
 
+        <!-- Einstellungen Icon -->
         <li class="nav-item" id="Einstellungen">
           <a class="nav-link active" aria-current="page" href="{{ url_for('profile.index', user_id=current_user.id) }}">
             <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="25" height="14" fill="#FFFFFF"
@@ -209,6 +236,8 @@
           </a>
         </li>
       </ul>
+      
+      <!-- Dropdown Menu Angemeldet -->
       {% if username != None %}
       <div class="dropdown" id="Dropdown">
         <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -231,6 +260,8 @@
           <li> <a class="dropdown-item" id="abmelden_dropmenu">Abmelden</a> </li>
         </ul>
       </div>
+
+      <!-- Dropdown Menu Nicht angemeldet -->
       {% else %}
       <div class="dropdown" id="Dropdown">
         <a href="#" class="d-flex align-items-center text-secondary text-decoration-none dropdown-toggle"
@@ -255,6 +286,7 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="{{ url_for('dashboard.static', filename='funktionen.js') }}"></script>
   <script src="{{ url_for('dashboard.static', filename='automatic_reload.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

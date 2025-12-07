@@ -4,8 +4,10 @@ from . import dashboard_data_blueprint, login_data_require_blueprint
 #Import der Datums und Zeit Funktionen
 from utils.get_datetime import get_date, get_time
 from utils.wetterAPI import WetterAPI
+from utils.jokesAPI import Jokes
 
 wetter = WetterAPI()
+jokes = Jokes()
 
 #Die API gibt die Daten für das Dashboard zurück
 @dashboard_data_blueprint.route("/")
@@ -24,6 +26,8 @@ def dashboard_data():
     feels_like = data['main']['feels_like']
     humidity = data['main']['humidity']
     city = data['name']
+    #Witze API
+    joke = jokes.get_joke()
     
     data_dict = {
         "date": date,
@@ -33,6 +37,7 @@ def dashboard_data():
         "temperatur": temperatur,
         "feels_like": feels_like,
         "humidity": humidity,
-        "city": city
+        "city": city,
+        "joke": joke
         }
     return data_dict

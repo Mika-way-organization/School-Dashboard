@@ -9,8 +9,10 @@ from . import dashboard_blueprint
 #Import der Datums und Zeit Funktionen
 from utils.get_datetime import get_date, get_time
 from utils.wetterAPI import WetterAPI
+from utils.jokesAPI import Jokes
 
 wetter = WetterAPI()
+jokes = Jokes()
 
 #Erstellt die Verbindung zur HTML Datei her
 @dashboard_blueprint.route('/')
@@ -36,6 +38,9 @@ def index():
     humidity = data['main']['humidity']
     city = data['name']
     
+    #Witze API
+    joke = jokes.get_joke()
+    
 
     return render_template('dashboard.html', 
                            username = username, 
@@ -47,4 +52,6 @@ def index():
                            temp=temperatur,
                            feels_like=feels_like,
                            humidity=humidity,
-                           city=city)
+                           city=city,
+                           #Joke
+                           joke=joke)
