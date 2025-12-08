@@ -18,6 +18,8 @@ from . import login_blueprint
 from flask_bcrypt import Bcrypt
 from utils.UserMixin import User
 
+from utils.get_datetime import get_current_datetime
+
 #Importiere das Formular
 from forms.Login_Form import LoginForm
 
@@ -47,7 +49,7 @@ def index():
             flash('Dein Konto ist noch nicht verifiziert. Bitte überprüfe deine E-Mails.', 'warning')
             return redirect(url_for('codeconfirm.index'))
 
-        # Überprüft das Passwort
+        # Überprüft das Passwort und loggt den Benutzer ein
         if find_student and bcrypt.check_password_hash(students_password, form.password.data):
 
             user = User(find_student)
@@ -58,6 +60,23 @@ def index():
             session['user_uuid'] = find_student['uuid']
             session['user_email'] = find_student['email']
             session['username'] = find_student['username']
+            
+            # Aktualisiert die Anzahl der Logins des Benutzers
+            current_logins = find_student["metadata"]["logins"]
+            db.update_student_data(
+                find_student['uuid'],
+                {
+                    "metadata.logins": current_logins + 1
+                }
+            )
+            
+            # Aktualisiert das letzte Login-Datum und die Uhrzeit
+            db.update_student_data(
+                find_student['uuid'],
+                {
+                    "metadata.lastLogin": get_current_datetime()
+                }
+            )
 
             flash('Erfolgreich eingeloggt!', 'success')
             return redirect(url_for('dashboard.index'))

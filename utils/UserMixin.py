@@ -11,5 +11,6 @@ class User(UserMixin):
     def __init__(self, student):
         self.id = student['uuid']
         self.username = student['username']
+        self.role = student['role']
         self.email = student['email']
         self.password = student['password']
