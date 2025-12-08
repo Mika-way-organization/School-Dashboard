@@ -254,7 +254,7 @@ class DatabaseTeacher(DatabaseStudent):
             "teaching_data": {
                 "subjects": subject,
                 "assignedClasses": assignedClasses,
-                "mentoredClass": mentoredClass, 
+                "mentoredClass": mentoredClass,
             },
             "metadata": {
                 "createdAt": created_at,
@@ -407,3 +407,44 @@ class DatabaseAdmin(DatabaseStudent):
             }
         }
         return admin_formular
+
+class DatabaseSchool(DatabaseStudent):
+    def __init__(self, collection_name):
+        super().__init__(collection_name)
+    
+    def school_formular(
+        uuid,
+        school_name,
+        address,
+        phone_number,
+        email,
+        school_leader,
+        #Optionale Felder
+        created_at=get_current_datetime(),
+        updated_at=get_current_datetime(),
+        upgradeBy=None,
+        schoolManagers=[],
+        schoolAdmins=[],
+        schoolTeachers=[],
+        schoolStudents=[],
+    ):
+        school_data = {
+            "uuid": uuid,
+            "schoolName": school_name,
+            "address": address,
+            "phoneNumber": phone_number,
+            "email": email,
+            "schooMembers": {
+                "schoolLeader": school_leader,
+                "SchoolManagers": schoolManagers,
+                "schoolAdmins": schoolAdmins,
+                "schoolTeachers": schoolTeachers,
+                "schoolStudents": schoolStudents,
+            },
+            "metadata": {
+                "createdAt": created_at,
+                "updatedAt": updated_at,
+                "upgradeBy": upgradeBy
+            }
+        }
+        return school_data
