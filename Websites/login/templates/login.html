@@ -24,6 +24,12 @@
       rel="stylesheet"
       href="{{ url_for('login.static', filename='styles.css') }}"
     />
+    
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/alerts.css') }}"
+    />
+
     <!-- ~~~ -->
 
     <!-- Title -->
@@ -32,6 +38,12 @@
 
   </head>
   <body class="bg-dark text-white">
+
+    <div id="alert_function">
+      <h2 id="alert_h2"></h2>
+      <p id="alert_p"></p>
+      <button id="alert_button" class="btn btn-primary">OK</button>
+    </div>
     
     <div class="registration-card shadow-xl">
      <h1>Login</h1>
@@ -73,5 +85,6 @@
 
     <!-- ~~~ -->
     <script src="{{ url_for('static', filename='js/preloader.js') }}"></script>
+    <script src ="{{ url_for('static', filename='js/alerts.js') }}"></script>
   </body>
 </html>
