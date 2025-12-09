@@ -1,0 +1,21 @@
+.error-box {
+    color: white;
+    background-color: #f44336;
+    /* Rot */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: none;
+    /* Am Anfang versteckt */
+}
+
+.success-box {
+    color: white;
+    background-color: #2196F3;
+    /* Blau */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: none;
+    /* Am Anfang versteckt */
+}
