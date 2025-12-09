@@ -2,6 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/preloader.css') }}">
 
@@ -20,14 +21,19 @@
       rel="stylesheet"
       href="{{ url_for('register_student.static', filename='styles.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('register_student.static', filename='messagebox.css') }}"
+    />
     <title>Registrieren - Schüler</title>
     </head>
 <body class="bg-dark text-white">
+  <div id="message-container" class="error-box"></div>
     
     <div class="registration-card shadow-xl">
      <h1>Registrieren - Schüler</h1>
 
-    <form method="POST" action="" class="form-grid">
+    <form method="POST" action="" class="form-grid" id="registration-form">
       {{ form.hidden_tag() }}
       <div class="form-group full-width">
         {{ form.selectfield(class="input-field select-field") }}
@@ -61,7 +67,7 @@
     </div>
 
     <script src="{{ url_for('register_student.static', filename='script.js') }}"></script>
-
+    <script src="{{ url_for('register_student.static', filename='messagebox.js') }}"></script>
     <script src="{{ url_for('static', filename='js/preloader.js') }}"></script>
   </body>
 </html>

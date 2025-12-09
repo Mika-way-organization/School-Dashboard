@@ -1,4 +1,4 @@
-document.getElementById("login_form").addEventListener("submit", function(e){
+document.getElementById("registration-form").addEventListener("submit", function(e){
     e.preventDefault();
 
     const form = e.target;
@@ -6,8 +6,12 @@ document.getElementById("login_form").addEventListener("submit", function(e){
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     const formData = {
+        username: form.username.value,
         email: form.email.value,
-        password: form.password.value
+        first_name: form.first_name.value,
+        last_name: form.last_name.value,
+        password: form.password.value,
+        school_name: form.selectfield.value,
     }
 
     messageContainer.style.display = "flex";
@@ -20,7 +24,7 @@ document.getElementById("login_form").addEventListener("submit", function(e){
     messageContainer.classList.remove('success-box');
     messageContainer.classList.add('error-box');
 
-    fetch('/login_data/require', {
+    fetch('/register_data/require', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -30,6 +34,7 @@ document.getElementById("login_form").addEventListener("submit", function(e){
     })
     .then(async response => {
         const text = await response.text();
+        console.log("SERVER RESPONSE (TEXT):", text);
         // Versuche, den Text in JSON zu parsen
         let data;
         try {
@@ -47,7 +52,7 @@ document.getElementById("login_form").addEventListener("submit", function(e){
             messageContainer.classList.add('success-box');
             messageContainer.textContent = body.message;
             setTimeout(() => {
-                window.location.href = '/dashboard';
+                window.location.href = '/codeconfirm/';
             }, 1500);
         } else {
             messageContainer.textContent = body.message || 'Ein unbekannter Fehler ist aufgetreten.';

@@ -1,5 +1,5 @@
 # Import Flask
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, session
 from flask_login import current_user
 from . import codeconfirm_blueprint
 from datetime import timezone
@@ -25,10 +25,11 @@ def index():
     form = VerificationForm()
     # Verarbeitet das Formular wenn es abgeschickt wurde
     if request.method == "POST" and form.validate_on_submit():
-        uuid = request.args.get("uuid")
+        # Holt die UUID aus der Session
+        uuid = session.get("uuid")
         
         if not uuid:
-            flash("Ungültige Anfrage. Keine UUID angegeben.")
+            print("Ungültige Anfrage. Keine UUID angegeben.")
             return redirect(url_for("codeconfirm.index"))
 
         # Sucht den Studenten in der Datenbank anhand der UUID
@@ -38,12 +39,12 @@ def index():
 
         # Überprüft ob das Konto bereits verifiziert ist
         if student["verification"]["is_verify"]:
-            flash("Konto ist bereits verifiziert.")
+            print("Konto ist bereits verifiziert.")
             return redirect(url_for("login.index"))
 
         # Überprüft ob ein Verifizierungscode in der Datenbank vorhanden ist
         if student["verification"]["code"] is None:
-            flash("Kein Verifizierungscode gefunden.")
+            print("Kein Verifizierungscode gefunden.")
             return redirect(url_for("codeconfirm.index"))
 
         # Überprüft ob der Verifizierungscode abgelaufen ist
@@ -64,10 +65,11 @@ def index():
                     "verification.verifiedAt": get_current_datetime(),
                 },
             )
-            flash("Konto erfolgreich verifiziert.")
+            session.pop("uuid")
+            print("Konto erfolgreich verifiziert.")
             return redirect(url_for("login.index"))
         else:
-            flash("Falscher Verifizierungscode.")
+            print("Falscher Verifizierungscode eingegeben:", form.code.data)
             return redirect(url_for("codeconfirm.index"))
 
     return render_template("codeconfirm.html", form=form)

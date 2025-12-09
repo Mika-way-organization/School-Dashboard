@@ -1,5 +1,5 @@
 #Import des Blueprints
-from . import dashboard_data_blueprint, login_data_require_blueprint
+from . import dashboard_data_blueprint
 
 #Import der Datums und Zeit Funktionen
 from utils.get_datetime import get_date, get_time

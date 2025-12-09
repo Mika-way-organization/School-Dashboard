@@ -16,14 +16,14 @@ from extensions import *
 #Import der Bluprints
 from Websites.dashboard import dashboard_blueprint
 from Websites.page_not_found import page_not_found_blueprint
-from Websites.register_student import register_student_blueprint
-from Websites.login import login_blueprint
+from Websites.register_student import register_student_blueprint, register_data_require_blueprint
+from Websites.login import login_blueprint, login_data_require_blueprint
 from Websites.profile import profile_blueprint
 from Websites.codeconfirm import codeconfirm_blueprint
 from Websites.stundenplan import stundenplan_blueprint
 
 #Import der API Blueprints
-from Websites.apis.routes import dashboard_data_blueprint, login_data_require_blueprint
+from Websites.apis.routes import dashboard_data_blueprint
 
 #import der Konfigurationsvariablen
 from configs.config import isConfig_loaded, secret_key, debug_mode, email_password, jwt_secret_key
@@ -86,7 +86,8 @@ def create_app(debug = debug_mode):
     
     #Registrierung der Blueprints für API
     app.register_blueprint(dashboard_data_blueprint, url_prefix="/dashboard_data")
-    app.register_blueprint(login_data_require_blueprint, url_prefix="/login_data_require")
+    app.register_blueprint(login_data_require_blueprint, url_prefix="/login_data")
+    app.register_blueprint(register_data_require_blueprint, url_prefix="/register_data")
     
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)

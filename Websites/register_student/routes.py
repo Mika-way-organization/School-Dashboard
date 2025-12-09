@@ -1,8 +1,8 @@
 #importiere die nötigen Module
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, session
 from flask_bcrypt import Bcrypt
 from datetime import timedelta
-from . import register_student_blueprint
+from . import register_student_blueprint, register_data_require_blueprint
 
 #Importiere die Datenbankklasse
 from data.database import DatabaseStudent
@@ -25,38 +25,44 @@ db = DatabaseStudent("student")
 @register_student_blueprint.route('/', methods=['GET', 'POST'])
 def index():
     form = RegisterForm()
-    if request.method == 'POST' and form.validate_on_submit():
-
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-
-        # Überprüft, ob die E-Mail-Adresse bereits registriert ist
-        if db.find_student_by_email(form.email.data):
-            flash('E-Mail-Adresse ist bereits registriert.', 'danger')
-            print("E-Mail-Adresse ist bereits registriert.")
-            return redirect(url_for('register_student.index'))
-        
-        verify_code = CodeGenerator.generate_verification_code()
-        uuid = generate_uuid()
-        
-        # Erstellt die Benutzerdaten
-        user_data = db.student_formular(
-            uuid=uuid,
-            username=form.username.data,
-            email=form.email.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            password=hashed_password,
-            school_name=form.selectfield.data,
-            code=verify_code,
-            expiresAt=get_current_datetime_aware_utc() + timedelta(minutes=10)
-        )
-
-        EmailService.send_verify_email(form.email.data, verify_code)
-
-        db.create_student(user_data)
-        flash('Dein Konto wurde erfolgreich erstellt! Verifiziere dein Konto und Melde dich an!', 'success')
-        print("Neuer Student erfolgreich registriert.")
-        return redirect(url_for('codeconfirm.index', uuid=uuid))
-    
-    return render_template('register_student.html', 
+    return render_template('register_student.html',
                            form=form)
+
+@register_data_require_blueprint.route('/require', methods=['POST'])
+def register_require():
+    data = request.get_json()
+    if not data:
+        return {"status": "error", "message": "Ungültige Anfrage."}, 400
+    
+    username = data.get('username')
+    email = data.get('email')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    password = data.get('password')
+    school_name = data.get('school_name')
+    
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    
+    if db.find_student_by_email(email):
+        return {"status": "error", "message": "E-Mail-Adresse ist bereits registriert."}, 400
+    
+    verify_code = CodeGenerator.generate_verification_code()
+    uuid = generate_uuid()
+    session['uuid'] = uuid
+    
+    user_data = db.student_formular(
+        uuid=uuid,
+        username=username,
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        password=hashed_password,
+        school_name=school_name,
+        code=verify_code,
+        expiresAt=get_current_datetime_aware_utc() + timedelta(minutes=10)
+    )
+
+    EmailService.send_verify_email(email, verify_code)
+
+    db.create_student(user_data)
+    return {"status": "success", "message": "Dein Konto wurde erfolgreich erstellt! Verifiziere dein Konto und Melde dich an!"}, 200
