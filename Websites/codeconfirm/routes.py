@@ -1,7 +1,7 @@
 # Import Flask
-from flask import render_template, redirect, url_for, request, flash, session
+from flask import render_template, redirect, url_for, request, session, jsonify
 from flask_login import current_user
-from . import codeconfirm_blueprint
+from . import codeconfirm_blueprint, codeconfirm_data_require_blueprint
 from datetime import timezone
 
 from utils.get_datetime import get_current_datetime_aware_utc, get_current_datetime
@@ -23,53 +23,45 @@ def index():
         return redirect(url_for("dashboard.index"))
 
     form = VerificationForm()
-    # Verarbeitet das Formular wenn es abgeschickt wurde
-    if request.method == "POST" and form.validate_on_submit():
-        # Holt die UUID aus der Session
-        uuid = session.get("uuid")
-        
-        if not uuid:
-            print("Ungültige Anfrage. Keine UUID angegeben.")
-            return redirect(url_for("codeconfirm.index"))
-
-        # Sucht den Studenten in der Datenbank anhand der UUID
-        student = db.find_student_by_uuid(uuid)
-        if not student:
-            return redirect(url_for("register_student.index"))
-
-        # Überprüft ob das Konto bereits verifiziert ist
-        if student["verification"]["is_verify"]:
-            print("Konto ist bereits verifiziert.")
-            return redirect(url_for("login.index"))
-
-        # Überprüft ob ein Verifizierungscode in der Datenbank vorhanden ist
-        if student["verification"]["code"] is None:
-            print("Kein Verifizierungscode gefunden.")
-            return redirect(url_for("codeconfirm.index"))
-
-        # Überprüft ob der Verifizierungscode abgelaufen ist
-        expires_at_naive = student["verification"]["expiresAt"]
-        cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
-        if cexpires_at_aware < get_current_datetime_aware_utc():
-            flash("Der Verifizierungscode ist abgelaufen.")
-            return redirect(url_for("codeconfirm.index"))
-
-        # Überprüft ob der eingegebene Code mit dem in der Datenbank übereinstimmt
-        if student["verification"]["code"] == form.code.data:
-            db.update_student_data(
-                uuid,
-                {
-                    "verification.is_verify": True,
-                    "verification.code": None,
-                    "verification.expiresAt": None,
-                    "verification.verifiedAt": get_current_datetime(),
-                },
-            )
-            session.pop("uuid")
-            print("Konto erfolgreich verifiziert.")
-            return redirect(url_for("login.index"))
-        else:
-            print("Falscher Verifizierungscode eingegeben:", form.code.data)
-            return redirect(url_for("codeconfirm.index"))
 
     return render_template("codeconfirm.html", form=form)
+
+@codeconfirm_data_require_blueprint.route("/require", methods=["POST"])
+def codeconfirm_require():
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+    
+    uuid = session.get("uuid")
+    if not uuid:
+        return jsonify({"status": "error", "message": "Keine UUID in der Sitzung gefunden."}), 400
+    
+    student = db.find_student_by_uuid(uuid)
+    if not student:
+        return jsonify({"status": "error", "message": "Student nicht gefunden."}), 404
+    
+    if student["verification"]["is_verify"]:
+        return jsonify({"status": "error", "message": "Konto ist bereits verifiziert."}), 400
+    
+    if student["verification"]["code"] is None:
+        return jsonify({"status": "error", "message": "Kein Verifizierungscode gefunden."}), 400
+    
+    expires_at_naive = student["verification"]["expiresAt"]
+    cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
+    if cexpires_at_aware < get_current_datetime_aware_utc():
+        return jsonify({"status": "error", "message": "Der Verifizierungscode ist abgelaufen."}), 400
+    
+    if student["verification"]["code"] == data.get("code"):
+        db.update_student_data(
+            uuid,
+            {
+                "verification.is_verify": True,
+                "verification.code": None,
+                "verification.expiresAt": None,
+                "verification.verifiedAt": get_current_datetime(),
+            },
+        )
+        session.pop("uuid")
+        return jsonify({"status": "success", "message": "Konto erfolgreich verifiziert."}), 200
+    else:
+        return jsonify({"status": "error", "message": "Falscher Verifizierungscode eingegeben."}), 400

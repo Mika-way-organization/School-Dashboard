@@ -19,7 +19,7 @@ from Websites.page_not_found import page_not_found_blueprint
 from Websites.register_student import register_student_blueprint, register_data_require_blueprint
 from Websites.login import login_blueprint, login_data_require_blueprint
 from Websites.profile import profile_blueprint
-from Websites.codeconfirm import codeconfirm_blueprint
+from Websites.codeconfirm import codeconfirm_blueprint, codeconfirm_data_require_blueprint
 from Websites.stundenplan import stundenplan_blueprint
 
 #Import der API Blueprints
@@ -88,6 +88,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(dashboard_data_blueprint, url_prefix="/dashboard_data")
     app.register_blueprint(login_data_require_blueprint, url_prefix="/login_data")
     app.register_blueprint(register_data_require_blueprint, url_prefix="/register_data")
+    app.register_blueprint(codeconfirm_data_require_blueprint, url_prefix="/codeconfirm_data")
     
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)
