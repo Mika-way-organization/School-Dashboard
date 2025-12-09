@@ -1,4 +1,7 @@
 #alert_function {
     display: none;
+    position: fixed;
     opacity: 0;
+    z-index: 100000000000;
+    background-color: #1e1e1e;
 }

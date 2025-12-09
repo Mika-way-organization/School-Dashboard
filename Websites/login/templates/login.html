@@ -38,17 +38,17 @@
 
   </head>
   <body class="bg-dark text-white">
-
+    
     <div id="alert_function">
-      <h2 id="alert_h2"></h2>
-      <p id="alert_p"></p>
+      <h2 id="alert_h2">{{ alert_title if alert_title != None else 'Fehler' }}</h2>
+      <p id="alert_p">{{ alert_message if alert_message != None else 'Ein unbekannter Fehler ist aufgetreten.' }}</p>
       <button id="alert_button" class="btn btn-primary">OK</button>
     </div>
     
     <div class="registration-card shadow-xl">
      <h1>Login</h1>
 
-    <form method="POST" action="" class="form-grid">
+    <form method="POST" action="" class="form-grid" id="login_form">
       {{ form.hidden_tag() }}
       
       <div class="form-group full-width">
@@ -80,11 +80,10 @@
     <!-- ~~~ -->
 
     <!-- Javascript einbinden -->
-
+    <script src ="{{ url_for('static', filename='js/alerts.js') }}"></script>
     <script src="{{ url_for('login.static', filename='script.js') }}"></script>
 
     <!-- ~~~ -->
     <script src="{{ url_for('static', filename='js/preloader.js') }}"></script>
-    <script src ="{{ url_for('static', filename='js/alerts.js') }}"></script>
   </body>
 </html>

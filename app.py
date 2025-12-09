@@ -10,6 +10,7 @@ from flask import Flask, redirect, url_for, session
 from flask_login import LoginManager, login_required, logout_user
 from datetime import timedelta
 
+# Import der Erweiterungen
 from extensions import *
 
 #Import der Bluprints

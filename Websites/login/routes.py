@@ -10,7 +10,6 @@ Es gibt nur diese Sessions:
 
 """
 
-
 #Import Flask
 from flask import render_template, request, flash, redirect, url_for, session
 from flask_login import login_user, current_user
@@ -40,7 +39,7 @@ def index():
 
         # Überprüft, ob der Student existiert
         if not find_student:
-            flash('E-Mail-Adresse nicht gefunden.', 'danger')
+            print("Benutzer nicht gefunden:", form.email.data)
             return redirect(url_for('login.index'))
         
         students_password = db.get_students_password(form.email.data)
@@ -85,4 +84,4 @@ def index():
             return redirect(url_for('login.index'))
 
     return render_template('login.html', 
-                           form=form)
+                            form=form,)

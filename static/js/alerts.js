@@ -1,9 +1,5 @@
 /*Willkommen in der Javascript Datei.*/
 
-// Holt die Socket.IO-Instanz
-// Diese wird für die Alert-Funktion verwendet, um Benachrichtigungen anzuzeigen
-const socket = io();
-
 // Holt für die Alert-Funktion die benötigten Elemente
 const alertFunction = document.getElementById('alert_function');
 const alertH2 = document.getElementById('alert_h2');
