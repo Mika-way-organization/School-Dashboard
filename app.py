@@ -29,7 +29,7 @@ from Websites.apis.routes import dashboard_data_blueprint
 from configs.config import isConfig_loaded, secret_key, debug_mode, email_password, jwt_secret_key
 
 #Import der Datenbankklasse und gibt db eine Verbindung zur Datenbank
-from data.database import DatabaseStudent
+from data.student_database import DatabaseStudent
 
 #Import der User Klasse
 from utils.UserMixin import User

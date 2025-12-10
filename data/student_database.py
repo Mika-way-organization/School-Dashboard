@@ -5,7 +5,6 @@ In dieser Datei wird die Datenbank verknüpft und verschiedene Funktionen bereit
 """
 
 # Importiert die notwendigen Bibliotheken von PyMongo
-import uuid
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
@@ -200,112 +199,78 @@ class DatabaseStudent:
             print(f"Fehler beim Aktualisieren der Studentendaten: {e}")
             return
 
-# Erstellt ein Formular für die Lehrerdaten
-class DatabaseTeacher(DatabaseStudent):
+class DatabaseSchool(DatabaseStudent):
     def __init__(self, collection_name):
         super().__init__(collection_name)
-        
-    def teacher_formular(
+    
+    def school_formular(
         uuid,
-        username,
-        email,
-        password,
-        first_name,
-        last_name,
         school_name,
-        
+        street,
+        city,
+        state,
+        zip_code,
+        country,
+        phone_numbers,
+        emails,
+        school_leader,
         #Optionale Felder
-        is_verify=False,
-        avatar=None,
-        title=None,
-        date_of_birth=None,
-        phone_number=None,
-        subject=[],
-        assignedClasses=[],
-        mentoredClass=None,
-        permissions=[],
         created_at=get_current_datetime(),
         updated_at=get_current_datetime(),
-        last_login=None,
-        logins=0,
-        expiresAt=None,
-        verifiedAt=None,
-        code=None,
-        
+        upgradeBy=None,
+        schoolManagers=[],
+        schoolAdmins=[],
+        schoolTeachers=[],
+        schoolStudents=[],
     ):
-        
-        teacher_data = {
-            "uuid": uuid,
-            "username": username,
-            "email": email,
-            "password": password,
-            "role": "teacher",
-            "status": "inactive",
-            "is_verify": is_verify,
+        school_data = {
+            "uuid": uuid, #UUID der Schule
             "schoolName": school_name,
-            "profile": {
-                "firstName": first_name,
-                "lastName": last_name,
-                "avatar": avatar,
-                "title": title,
-                "dateOfBirth": date_of_birth,
-                "phoneNumber": phone_number,
+            "address": {
+                "street": street,
+                "city": city,
+                "state": state,
+                "zipCode": zip_code,
+                "country": country,
             },
-            "teaching_data": {
-                "subjects": subject,
-                "assignedClasses": assignedClasses,
-                "mentoredClass": mentoredClass,
+            "phoneNumbers": phone_numbers, #soll eine Liste sein
+            "emails": emails, #soll eine Liste sein
+            "schooMembers": {
+                "schoolLeader": school_leader,
+                "SchoolManagers": schoolManagers,
+                "schoolAdmins": schoolAdmins,
+                "schoolTeachers": schoolTeachers,
+                "schoolStudents": schoolStudents,
             },
             "metadata": {
                 "createdAt": created_at,
                 "updatedAt": updated_at,
-                "lastLogin": last_login,
-                "logins": logins
+                "upgradeBy": upgradeBy
             },
-            "permissions": permissions,
-            "verification": {
-                "code": code,
-                "expiresAt": expiresAt,
-                "verifiedAt": verifiedAt,
-                "is_verify": is_verify
-            }
+            "classes": [] #Hier kommen dann die Klassen ID's rein
+            
         }
-        return teacher_data
+        return school_data
     
-    def create_teacher(self, teacher_data):
-        # Fügt einen neuen Lehrer zur Datenbank hinzu
+    def create_school(self, school_data):
+        # Fügt eine neue Schule zur Datenbank hinzu
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
-        if teacher_data is None:
-            raise ValueError("Lehrerdaten dürfen nicht None sein.")
+        if school_data is None:
+            raise ValueError("Schuldaten dürfen nicht None sein.")
         try:
-            create_teacher = self.client[self.database][self.collection].insert_one(teacher_data)
-            if create_teacher:
-                print("Neuer Lehrer erfolgreich erstellt.")
+            create_school = self.client[self.database][self.collection].insert_one(school_data)
+            if create_school:
+                print("Neue Schule erfolgreich erstellt.")
             else:
-                print("Fehler beim Erstellen des neuen Lehrers.")
+                print("Fehler beim Erstellen der neuen Schule.")
             return
         except Exception as e:
-            print(f"Fehler beim Erstellen des neuen Lehrers: {e}")
+            print(f"Fehler beim Erstellen der neuen Schule: {e}")
             return
     
-    def get_teachers_password(self, email):
-        # Ruft das Passwort eines Lehrers anhand der E-Mail-Adresse ab
-        if self.collection is None:
-            raise ValueError("Datenbankverbindung nicht hergestellt.")
-        if email is None:
-            raise ValueError("E-Mail-Adresse darf nicht None sein.")
-
-        teacher = self.client[self.database][self.collection].find_one({"email": email}, {"password": 1})
-
-        if teacher:
-            return teacher['password']
-        else:
-            print("Lehrer nicht gefunden.")
-            return None
-    
-    def update_teacher_data(self, uuid, update_data):
-        # Aktualisiert die Daten eines Lehrers in der Datenbank
+    def update_school_data(self, uuid, update_data):
+        # Aktualisiert die Daten einer Schule in der Datenbank
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
         if uuid is None:
@@ -319,132 +284,27 @@ class DatabaseTeacher(DatabaseStudent):
                 {"$set": update_data}
             )
             if update_result.modified_count > 0:
-                print("Lehrerdaten erfolgreich aktualisiert.")
+                print("Schuldaten erfolgreich aktualisiert.")
             else:
-                print("Keine Änderungen an den Lehrerdaten vorgenommen.")
+                print("Keine Änderungen an den Schuldaten vorgenommen.")
             return
         except Exception as e:
-            print(f"Fehler beim Aktualisieren der Lehrerdaten: {e}")
+            print(f"Fehler beim Aktualisieren der Schuldaten: {e}")
             return
     
-    def find_teacher_by_uuid(self, uuid):
-        # Sucht einen Lehrer in der Datenbank anhand der UUID
+    def find_school_by_uuid(self, uuid):
+        # Sucht eine Schule in der Datenbank anhand der UUID
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
 
         if uuid is None:
             raise ValueError("UUID darf nicht None sein.")
 
-        teacher = self.client[self.database][self.collection].find_one({"uuid": uuid})
+        school = self.client[self.database][self.collection].find_one({"uuid": uuid})
 
-        if teacher:
-            print("Lehrer gefunden.")
-            return teacher
+        if school:
+            print("Schule gefunden.")
+            return school
         else:
-            print("Lehrer nicht gefunden.")
+            print("Schule nicht gefunden.")
             return False
-
-# Erstellt ein Formular für die Admin-Daten
-class DatabaseAdmin(DatabaseStudent):
-    def __init__(self, collection_name):
-        super().__init__(collection_name)
-        
-    def admin_formular(
-        uuid,
-        username,
-        email,
-        password,
-        secure_password,
-        first_name,
-        last_name,
-        
-        #Optionale Felder
-        expiresBy=None,
-        is_verify=False,
-        avatar=None,
-        date_of_birth=None,
-        phone_number=None,
-        permissions=[],
-        created_at=get_current_datetime(),
-        updated_at=get_current_datetime(),
-        last_login=None,
-        logins=0,
-        expiresAt=None,
-        verifiedAt=None,
-        code=None,
-        
-    ):
-        
-        admin_formular = {
-            "uuid": uuid,
-            "username": username,
-            "email": email,
-            "password": password,
-            "secure_password": secure_password,
-            "role": "admin",
-            "status": "inactive",
-            "is_verify": is_verify,
-            "profile": {
-                "firstName": first_name,
-                "lastName": last_name,
-                "avatar": avatar,
-                "dateOfBirth": date_of_birth,
-                "phoneNumber": phone_number,
-            },
-            "metadata": {
-                "createdAt": created_at,
-                "updatedAt": updated_at,
-                "lastLogin": last_login,
-                "logins": logins
-            },
-            "permissions_admin": permissions,
-            "verification": {
-                "code": code,
-                "expiresBy": expiresBy,
-                "expiresAt": expiresAt,
-                "verifiedAt": verifiedAt,
-                "is_verify": is_verify
-            }
-        }
-        return admin_formular
-
-class DatabaseSchool(DatabaseStudent):
-    def __init__(self, collection_name):
-        super().__init__(collection_name)
-    
-    def school_formular(
-        uuid,
-        school_name,
-        address,
-        phone_number,
-        email,
-        school_leader,
-        #Optionale Felder
-        created_at=get_current_datetime(),
-        updated_at=get_current_datetime(),
-        upgradeBy=None,
-        schoolManagers=[],
-        schoolAdmins=[],
-        schoolTeachers=[],
-        schoolStudents=[],
-    ):
-        school_data = {
-            "uuid": uuid,
-            "schoolName": school_name,
-            "address": address,
-            "phoneNumber": phone_number,
-            "email": email,
-            "schooMembers": {
-                "schoolLeader": school_leader,
-                "SchoolManagers": schoolManagers,
-                "schoolAdmins": schoolAdmins,
-                "schoolTeachers": schoolTeachers,
-                "schoolStudents": schoolStudents,
-            },
-            "metadata": {
-                "createdAt": created_at,
-                "updatedAt": updated_at,
-                "upgradeBy": upgradeBy
-            }
-        }
-        return school_data

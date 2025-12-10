@@ -5,7 +5,7 @@ from datetime import timedelta
 from . import register_student_blueprint, register_data_require_blueprint
 
 #Importiere die Datenbankklasse
-from data.database import DatabaseStudent
+from data.student_database import DatabaseStudent
 
 #Importiere Hilfsfunktionen
 from utils.uuid_generator import generate_uuid

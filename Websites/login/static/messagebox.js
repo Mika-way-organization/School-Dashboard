@@ -15,11 +15,6 @@ document.getElementById("login_form").addEventListener("submit", function(e){
     messageContainer.classList.remove('success-box');
     messageContainer.classList.add('error-box');
 
-    messageContainer.style.display = "flex";
-    messageContainer.textContent = '';
-    messageContainer.classList.remove('success-box');
-    messageContainer.classList.add('error-box');
-
     fetch('/login_data/require', {
         method: 'POST',
         headers: {

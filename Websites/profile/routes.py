@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for
 from . import profile_blueprint
 from flask_login import current_user
 
-from data.database import DatabaseStudent
+from data.student_database import DatabaseStudent
 
 db = DatabaseStudent("student")
 

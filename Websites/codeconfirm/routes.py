@@ -10,7 +10,7 @@ from utils.get_datetime import get_current_datetime_aware_utc, get_current_datet
 from forms.Verification_Form import VerificationForm
 
 # Importiere die Datenbankklasse
-from data.database import DatabaseStudent
+from data.student_database import DatabaseStudent
 
 db = DatabaseStudent("student")
 

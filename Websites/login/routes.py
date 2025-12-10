@@ -25,7 +25,7 @@ from utils.get_datetime import get_current_datetime
 from forms.Login_Form import LoginForm
 
 #Importiere die Datenbankklasse
-from data.database import DatabaseStudent
+from data.student_database import DatabaseStudent
 
 bcrypt = Bcrypt()
 db = DatabaseStudent("student")

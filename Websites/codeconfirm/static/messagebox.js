@@ -14,11 +14,6 @@ document.getElementById("verification-form").addEventListener("submit", function
     messageContainer.classList.remove('success-box');
     messageContainer.classList.add('error-box');
 
-    messageContainer.style.display = "flex";
-    messageContainer.textContent = '';
-    messageContainer.classList.remove('success-box');
-    messageContainer.classList.add('error-box');
-
     fetch('/codeconfirm_data/require', {
         method: 'POST',
         headers: {

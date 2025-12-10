@@ -4,6 +4,7 @@ In dieser Datei werden Jokes von einer API geholt und random ausgegeben
 """
 #Import der notwendigen Module
 import requests
+import random
 
 #Definierung der Jokes Klasse
 class Jokes:
@@ -32,3 +33,13 @@ class Jokes:
         # Fehlerbehandlung bei Netzwerkproblemen
         except requests.exceptions.RequestException as e:
             return f"Ein Netzwerkfehler ist aufgetreten: {e}"
+    
+    def generate_joke(self):
+        joke_list = [
+            "Alle Kinder lieben ihren Namen. Nur nicht Uschi ...",
+            "Wodurch vermehren sich Häftlinge?  Durch Zellteilung.",
+            "Was ist orange und läuft durch den Wald? Eine Wanderine.",
+            "Was macht ein Pirat am Computer? Er drückt die Enter-Taste.",
+            "Warum können Geister so schlecht lügen? Weil man durch sie hindurchsieht.",
+        ]
+        return random.choice(joke_list)
