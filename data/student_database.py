@@ -70,9 +70,6 @@ class DatabaseStudent:
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
 
-        if uuid is None:
-            raise ValueError("UUID darf nicht None sein.")
-
         student = self.client[self.database][self.collection].find_one({"uuid": uuid})
 
         if student:

@@ -7,7 +7,7 @@ In dieser Datei wird die Datenbank verknüpft und verschiedene Funktionen bereit
 # Importiert Hilfsfunktionen
 from utils.get_datetime import get_current_datetime
 
-from student_database import DatabaseStudent
+from .student_database import DatabaseStudent
 
 class DatabaseClasses(DatabaseStudent):
     def __init__(self, collection_name):

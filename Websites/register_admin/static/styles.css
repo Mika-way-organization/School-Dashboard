@@ -1,0 +1,135 @@
+body {
+    /* Globale Einstellungen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #1F2937;
+    color: #F3F4F6;
+}
+
+.registration-card {
+    /* Haupt-Container-Stil */
+    background-color: #2B3035;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+h1 {
+    /* Überschrift */
+    color: #aa0000; /* NEU: Violett wie gewünscht */
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(170, 0, 0, 0.5); /* NEU: Rot-Schatten */
+    font-weight: 700;
+}
+
+.form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 7.5px);
+    min-width: 150px;
+}
+
+.form-group.full-width {
+    flex: 1 1 100%;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #4B5563;
+    border-radius: 8px;
+    background-color: #4B5563;
+    color: #F3F4F6;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.input-field:focus {
+    /* Fokus-Effekt */
+    outline: none;
+    border-color: #aa0000; /* NEU: Violett-Rahmen beim Fokussieren */
+    box-shadow: 0 0 0 2px rgba(170, 0, 0, 0.3); /* NEU: Violett-Schatten */
+    background-color: #4B5563;
+}
+
+/* --- Submit-Button Styling --- */
+
+.submit-button {
+    background-color: #aa0000; /* NEU: Violett */
+    padding: 12px;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white; /* Weißer Text auf dunklem Violett */
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(170, 0, 0, 0.3); /* NEU: Violett-Schatten */
+    transition: background-color 0.35s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #db2a2a; /* NEU: Dunkleres Violett beim Hover */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(170, 0, 0, 0.5); /* NEU: Intensiverer Violett-Schatten */
+}
+
+/* --- Link-Bereich --- */
+
+.link-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #4B5563;
+}
+
+.secondary-link, .primary-link {
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.secondary-link {
+    color: #9CA3AF;
+}
+
+.secondary-link:hover {
+    color: #F3F4F6;
+}
+
+.primary-link {
+    color: #6EE7B7; /* Akzentfarbe (Mint) - bleibt als gute Kontrastfarbe */
+    font-weight: 600;
+}
+
+.primary-link:hover {
+    color: #34D399;
+}
+
+/* Anpassung für kleinere Bildschirme */
+@media (max-width: 500px) {
+    .registration-card {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+    .form-group {
+        flex: 1 1 100%;
+    }
+}

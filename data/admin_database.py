@@ -7,19 +7,18 @@ In dieser Datei wird die Datenbank verknüpft und verschiedene Funktionen bereit
 # Importiert Hilfsfunktionen
 from utils.get_datetime import get_current_datetime
 
-from student_database import DatabaseStudent
+from .student_database import DatabaseStudent
 
 # Erstellt ein Formular für die Admin-Daten
 class DatabaseAdmin(DatabaseStudent):
     def __init__(self, collection_name):
         super().__init__(collection_name)
         
-    def admin_formular(
+    def admin_formular(self,
         uuid,
         username,
         email,
         password,
-        secure_password,
         first_name,
         last_name,
         
@@ -45,7 +44,6 @@ class DatabaseAdmin(DatabaseStudent):
             "username": username,
             "email": email,
             "password": password,
-            "secure_password": secure_password,
             "role": "admin",
             "status": "inactive",
             "is_verify": is_verify,
@@ -137,6 +135,23 @@ class DatabaseAdmin(DatabaseStudent):
             raise ValueError("UUID darf nicht None sein.")
 
         admin = self.client[self.database][self.collection].find_one({"uuid": uuid})
+
+        if admin:
+            print("Admin gefunden.")
+            return admin
+        else:
+            print("Admin nicht gefunden.")
+            return False
+        
+    def find_admin_by_email(self, email):
+        # Sucht einen Admin in der Datenbank anhand der E-Mail-Adresse
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        if email is None:
+            raise ValueError("E-Mail-Adresse darf nicht None sein.")
+
+        admin = self.client[self.database][self.collection].find_one({"email": email})
 
         if admin:
             print("Admin gefunden.")

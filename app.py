@@ -21,6 +21,7 @@ from Websites.login import login_blueprint, login_data_require_blueprint
 from Websites.profile import profile_blueprint
 from Websites.codeconfirm import codeconfirm_blueprint, codeconfirm_data_require_blueprint
 from Websites.stundenplan import stundenplan_blueprint
+from Websites.register_admin import register_admin_blueprint, admin_register_data_require_blueprint
 
 #Import der API Blueprints
 from Websites.apis.routes import dashboard_data_blueprint
@@ -30,23 +31,27 @@ from configs.config import isConfig_loaded, secret_key, debug_mode, email_passwo
 
 #Import der Datenbankklasse und gibt db eine Verbindung zur Datenbank
 from data.student_database import DatabaseStudent
+from data.admin_database import DatabaseAdmin
 
 #Import der User Klasse
 from utils.UserMixin import User
 
 #Initialisierung der Datenbankverbindung
 db = DatabaseStudent("student")
+admin_db = DatabaseAdmin("admin")
 
 #Initialisierung des Login Managers
 login_manager = LoginManager()
-
 
 #Lädt den Benutzer basierend auf der Benutzer-ID
 @login_manager.user_loader
 def load_user(user_id):
     find_student = db.find_student_by_uuid(user_id)
+    find_admin = admin_db.find_admin_by_uuid(user_id)
     if find_student:
         return User(find_student)
+    if find_admin:
+        return User(find_admin)
     return None
 
 #Hauptfunktion
@@ -79,6 +84,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(dashboard_blueprint, url_prefix="/dashboard")
     app.register_blueprint(page_not_found_blueprint, url_prefix="/page_not_found")
     app.register_blueprint(register_student_blueprint, url_prefix="/register_student")
+    app.register_blueprint(register_admin_blueprint, url_prefix="/register_admin")
     app.register_blueprint(login_blueprint, url_prefix="/login")
     app.register_blueprint(profile_blueprint, url_prefix="/profile")
     app.register_blueprint(codeconfirm_blueprint, url_prefix="/codeconfirm")
@@ -88,6 +94,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(dashboard_data_blueprint, url_prefix="/dashboard_data")
     app.register_blueprint(login_data_require_blueprint, url_prefix="/login_data")
     app.register_blueprint(register_data_require_blueprint, url_prefix="/register_data")
+    app.register_blueprint(admin_register_data_require_blueprint, url_prefix="/admin_register_data")
     app.register_blueprint(codeconfirm_data_require_blueprint, url_prefix="/codeconfirm_data")
     
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.

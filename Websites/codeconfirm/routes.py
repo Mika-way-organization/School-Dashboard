@@ -11,8 +11,10 @@ from forms.Verification_Form import VerificationForm
 
 # Importiere die Datenbankklasse
 from data.student_database import DatabaseStudent
+from data.admin_database import DatabaseAdmin
 
 db = DatabaseStudent("student")
+db_admin = DatabaseAdmin("admin")
 
 
 # Erstellt die Verbindung zur HTML Datei her
@@ -33,35 +35,70 @@ def codeconfirm_require():
         return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
     
     uuid = session.get("uuid")
-    if not uuid:
+    admin_uuid = session.get("admin_uuid")
+    if not uuid and not admin_uuid:
         return jsonify({"status": "error", "message": "Keine UUID in der Sitzung gefunden."}), 400
     
-    student = db.find_student_by_uuid(uuid)
-    if not student:
-        return jsonify({"status": "error", "message": "Student nicht gefunden."}), 404
     
-    if student["verification"]["is_verify"]:
-        return jsonify({"status": "error", "message": "Konto ist bereits verifiziert."}), 400
+    user = db.find_student_by_uuid(uuid)
+    admin_user = db_admin.find_admin_by_uuid(admin_uuid)
     
-    if student["verification"]["code"] is None:
-        return jsonify({"status": "error", "message": "Kein Verifizierungscode gefunden."}), 400
+    # Überprüft, ob der Benutzer existiert
+    # Für den Normalen User (student)
+    if user:    
+        if user["verification"]["is_verify"]:
+            return jsonify({"status": "error", "message": "Konto ist bereits verifiziert."}), 400
+        
+        if user["verification"]["code"] is None:
+            return jsonify({"status": "error", "message": "Kein Verifizierungscode gefunden."}), 400
+        
+        expires_at_naive = user["verification"]["expiresAt"]
+        cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
+        if cexpires_at_aware < get_current_datetime_aware_utc():
+            return jsonify({"status": "error", "message": "Der Verifizierungscode ist abgelaufen."}), 400
+        
+        if user["verification"]["code"] == data.get("code"):
+            db.update_user_data(
+                uuid,
+                {
+                    "verification.is_verify": True,
+                    "verification.code": None,
+                    "verification.expiresAt": None,
+                    "verification.verifiedAt": get_current_datetime(),
+                },
+            )
+            session.pop("uuid")
+            return jsonify({"status": "success", "message": "Konto erfolgreich verifiziert."}), 200
+        else:
+            return jsonify({"status": "error", "message": "Falscher Verifizierungscode eingegeben."}), 400
     
-    expires_at_naive = student["verification"]["expiresAt"]
-    cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
-    if cexpires_at_aware < get_current_datetime_aware_utc():
-        return jsonify({"status": "error", "message": "Der Verifizierungscode ist abgelaufen."}), 400
-    
-    if student["verification"]["code"] == data.get("code"):
-        db.update_student_data(
-            uuid,
-            {
-                "verification.is_verify": True,
-                "verification.code": None,
-                "verification.expiresAt": None,
-                "verification.verifiedAt": get_current_datetime(),
-            },
-        )
-        session.pop("uuid")
-        return jsonify({"status": "success", "message": "Konto erfolgreich verifiziert."}), 200
+    # Für den Admin User
+    elif admin_user:
+        if admin_user["verification"]["is_verify"]:
+            return jsonify({"status": "error", "message": "Konto ist bereits verifiziert."}), 400
+        
+        if admin_user["verification"]["code"] is None:
+            return jsonify({"status": "error", "message": "Kein Verifizierungscode gefunden."}), 400
+        
+        expires_at_naive = admin_user["verification"]["expiresAt"]
+        cexpires_at_aware = expires_at_naive.replace(tzinfo=timezone.utc)
+        if cexpires_at_aware < get_current_datetime_aware_utc():
+            return jsonify({"status": "error", "message": "Der Verifizierungscode ist abgelaufen."}), 400
+        
+        if admin_user["verification"]["code"] == data.get("code"):
+            db_admin.update_admin_data(
+                admin_uuid,
+                {
+                    "verification.is_verify": True,
+                    "verification.code": None,
+                    "verification.expiresAt": None,
+                    "verification.verifiedAt": get_current_datetime(),
+                },
+            )
+            session.pop("admin_uuid")
+            return jsonify({"status": "success", "message": "Konto erfolgreich verifiziert."}), 200
+        else:
+            return jsonify({"status": "error", "message": "Falscher Verifizierungscode eingegeben."}), 400
+    # Wenn es keinen Benutzer gibt
     else:
-        return jsonify({"status": "error", "message": "Falscher Verifizierungscode eingegeben."}), 400
+        return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 400

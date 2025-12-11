@@ -7,13 +7,14 @@ In dieser Datei wird die Datenbank verknüpft und verschiedene Funktionen bereit
 # Importiert Hilfsfunktionen
 from utils.get_datetime import get_current_datetime
 
-from student_database import DatabaseStudent
+from .student_database import DatabaseStudent
 
 # Erstellt ein Formular für die Stundenplan-Daten
 class DatabaseTimetable(DatabaseStudent):
     def __init__(self, collection_name):
         super().__init__(collection_name)
     
+    # Erstellt ein Formular für den Stundenplan
     def timetable_formular(
         uuid,
         class_id,
@@ -33,6 +34,7 @@ class DatabaseTimetable(DatabaseStudent):
         }
         return timetable_data
     
+    # Erstellt ein Formular für eine einzelne Unterrichtsstunde
     def timetable_period_formular(subject,
                                   teacher,
                                     note,
@@ -50,6 +52,7 @@ class DatabaseTimetable(DatabaseStudent):
         }
         return period_data
     
+    # Erstellt ein Formular für einen Wochentag im Stundenplan
     def timetable_week_formular(day,periods):
         
         week_day_data = {
@@ -57,3 +60,5 @@ class DatabaseTimetable(DatabaseStudent):
             "periods": periods, #Dict mit den Stunden des Tages
         }
         return week_day_data
+    
+    

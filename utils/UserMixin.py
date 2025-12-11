@@ -8,9 +8,9 @@ from flask_login import UserMixin
 
 #Definiere die User Klasse, die von UserMixin erbt
 class User(UserMixin):
-    def __init__(self, student):
-        self.id = student['uuid']
-        self.username = student['username']
-        self.role = student['role']
-        self.email = student['email']
-        self.password = student['password']
+    def __init__(self, user):
+        self.id = user['uuid']
+        self.username = user['username']
+        self.role = user['role']
+        self.email = user['email']
+        self.password = user['password']

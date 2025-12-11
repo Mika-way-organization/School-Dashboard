@@ -6,7 +6,7 @@ In dieser Datei werden Funktionen zum Senden von E-Mails bereitgestellt.
 
 from flask_mail import Message
 
-from app import mail
+from extensions import mail
 
 
 # EMailService Klasse zum Senden von Verifizierungs-E-Mails
