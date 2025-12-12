@@ -27,10 +27,12 @@ from forms.Login_Form import LoginForm
 #Importiere die Datenbankklasse
 from data.student_database import DatabaseStudent
 from data.admin_database import DatabaseAdmin
+from data.teacher_database import DatabaseTeacher
 
 bcrypt = Bcrypt()
 db = DatabaseStudent("student")
 admin_db = DatabaseAdmin("admin")
+teacher_db = DatabaseTeacher("teacher")
 
 #Erstellt die Verbindung zur HTML Datei her
 @login_blueprint.route('/', methods=['GET', 'POST'])
@@ -60,6 +62,7 @@ def login_require():
 
     find_student = db.find_student_by_email(email)
     find_admin = admin_db.find_admin_by_email(email)
+    find_teacher = teacher_db.find_teacher_by_email(email)
     
     if find_student:
         # Überprüft, ob das Konto verifiziert ist
@@ -93,8 +96,8 @@ def login_require():
         else:
             # Falsches Passwort
             return jsonify({"status": "error", "message": "Falsches Passwort."}), 401
-    elif find_admin:
         
+    elif find_admin:
         if find_admin["verification"]["is_verify"] == False:
             return jsonify({"status": "error", "message": "Konto nicht verifiziert."}), 403
         
@@ -120,6 +123,38 @@ def login_require():
             current_logins = find_admin["metadata"]["logins"]
             admin_db.update_admin_data(find_admin['uuid'], {"metadata.logins": current_logins + 1})
             admin_db.update_admin_data(find_admin['uuid'], {"metadata.lastLogin": get_current_datetime()})
+
+            return jsonify({"status": "success", "message": "Login erfolgreich."}), 200
+        else:
+            # Falsches Passwort
+            return jsonify({"status": "error", "message": "Falsches Passwort."}), 401
+        
+    elif find_teacher:
+        if find_teacher["verification"]["is_verify"] == False:
+            return jsonify({"status": "error", "message": "Konto nicht verifiziert."}), 403
+        
+        teachers_password = teacher_db.get_teachers_password(email)
+
+        # Überprüft das Passwort
+        if find_teacher and bcrypt.check_password_hash(teachers_password, password):
+            # Benutzer einloggen
+            try:  
+                user_teacher = User(find_teacher)
+                login_user(user_teacher)
+                print(f"Lehrer eingeloggt. {user_teacher.username}")
+            except Exception as e:
+                print(f"Fehler beim Einloggen des Benutzers: {e}")
+
+            # Session-Daten setzen
+            session['logged_in'] = True
+            session['user_uuid'] = find_teacher['uuid']
+            session['user_email'] = find_teacher['email']
+            session['username'] = find_teacher['username']
+
+            # Metadaten updaten
+            current_logins = find_teacher["metadata"]["logins"]
+            teacher_db.update_teacher_data(find_teacher['uuid'], {"metadata.logins": current_logins + 1})
+            teacher_db.update_teacher_data(find_teacher['uuid'], {"metadata.lastLogin": get_current_datetime()})
 
             return jsonify({"status": "success", "message": "Login erfolgreich."}), 200
         else:

@@ -14,7 +14,7 @@ class DatabaseTeacher(DatabaseStudent):
     def __init__(self, collection_name):
         super().__init__(collection_name)
         
-    def teacher_formular(
+    def teacher_formular(self,
         uuid,
         username,
         email,
@@ -141,10 +141,24 @@ class DatabaseTeacher(DatabaseStudent):
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
 
-        if uuid is None:
-            raise ValueError("UUID darf nicht None sein.")
-
         teacher = self.client[self.database][self.collection].find_one({"uuid": uuid})
+
+        if teacher:
+            print("Lehrer gefunden.")
+            return teacher
+        else:
+            print("Lehrer nicht gefunden.")
+            return False
+
+    def find_teacher_by_email(self, email):
+        # Sucht einen Lehrer in der Datenbank anhand der E-Mail-Adresse
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        if email is None:
+            raise ValueError("E-Mail-Adresse darf nicht None sein.")
+
+        teacher = self.client[self.database][self.collection].find_one({"email": email})
 
         if teacher:
             print("Lehrer gefunden.")

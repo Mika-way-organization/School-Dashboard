@@ -131,9 +131,6 @@ class DatabaseAdmin(DatabaseStudent):
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
 
-        if uuid is None:
-            raise ValueError("UUID darf nicht None sein.")
-
         admin = self.client[self.database][self.collection].find_one({"uuid": uuid})
 
         if admin:
