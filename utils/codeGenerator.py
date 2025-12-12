@@ -11,4 +11,4 @@ import secrets
 class CodeGenerator:
     @staticmethod
     def generate_verification_code():
-        return secrets.token_hex(6)
+        return secrets.token_hex(3) # Generiert einen 6-stelligen hexadezimalen Code

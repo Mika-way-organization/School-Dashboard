@@ -1,7 +1,7 @@
 # Import Flask
 from flask import render_template, redirect, url_for, request, session, jsonify
 from flask_login import current_user
-from . import codeconfirm_blueprint, codeconfirm_data_require_blueprint
+from . import codeconfirm_blueprint, codeconfirm_data_require_blueprint, codeconfirm_newcode_blueprint
 from datetime import timezone
 
 from utils.get_datetime import get_current_datetime_aware_utc, get_current_datetime
@@ -134,3 +134,8 @@ def codeconfirm_require():
     # Wenn es keinen Benutzer gibt
     else:
         return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 400
+
+
+@codeconfirm_newcode_blueprint.route("/newcode", methods=["POST"])
+def codeconfirm_newcode():
+    return jsonify({"status": "error", "message": "Wird noch bearbeitet"})  # Hier würde die Logik zum Anfordern eines neuen Codes implementiert werden
