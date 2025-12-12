@@ -19,7 +19,7 @@ from Websites.page_not_found import page_not_found_blueprint
 from Websites.register_student import register_student_blueprint, register_data_require_blueprint
 from Websites.login import login_blueprint, login_data_require_blueprint
 from Websites.profile import profile_blueprint
-from Websites.codeconfirm import codeconfirm_blueprint, codeconfirm_data_require_blueprint
+from Websites.codeconfirm import codeconfirm_blueprint, codeconfirm_data_require_blueprint, codeconfirm_newcode_blueprint
 from Websites.stundenplan import stundenplan_blueprint
 from Websites.register_admin import register_admin_blueprint, admin_register_data_require_blueprint
 from Websites.register_teacher import register_teacher_blueprint, register_teacher_data_require_blueprint
@@ -104,6 +104,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(admin_register_data_require_blueprint, url_prefix="/admin_register_data")
     app.register_blueprint(register_teacher_data_require_blueprint, url_prefix="/register_teacher_data")
     app.register_blueprint(codeconfirm_data_require_blueprint, url_prefix="/codeconfirm_data")
+    app.register_blueprint(codeconfirm_newcode_blueprint, url_prefix="/codeconfirm_data_new")
     
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)

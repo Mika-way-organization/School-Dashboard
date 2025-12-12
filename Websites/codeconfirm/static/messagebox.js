@@ -25,6 +25,7 @@ document.getElementById("verification-form").addEventListener("submit", function
     .then(async response => {
         const text = await response.text();
         // Versuche, den Text in JSON zu parsen
+        console.log("Rohantworttext:", text);
         let data;
         try {
             data = JSON.parse(text);

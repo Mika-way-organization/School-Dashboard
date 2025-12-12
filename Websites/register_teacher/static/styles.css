@@ -117,7 +117,7 @@ h1 {
     border-top: 1px solid #4B5563;
 }
 
-.secondary-link, .primary-link {
+.secondary-link, .primary-link, .link-light {
     text-decoration: none;
     font-size: 0.95rem;
     transition: color 0.2s;
@@ -129,6 +129,10 @@ h1 {
 
 .secondary-link:hover {
     color: #F3F4F6;
+}
+
+.link-light:hover {
+    color: #c7c7c7 !important;
 }
 
 .primary-link {

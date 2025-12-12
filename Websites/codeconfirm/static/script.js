@@ -28,7 +28,7 @@ document.getElementById("new_code").addEventListener("click", function () {
     messageContainer.classList.remove('success-box');
     messageContainer.classList.add('error-box');
 
-    fetch('/codeconfirm/new_code', {
+    fetch('/codeconfirm_data_new/new_code', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -39,6 +39,7 @@ document.getElementById("new_code").addEventListener("click", function () {
 
         const text = await response.text();
         // Versuche, den Text in JSON zu parsen
+        console.log("Response Text:", text);
         let data;
         try {
             data = JSON.parse(text);
@@ -47,6 +48,16 @@ document.getElementById("new_code").addEventListener("click", function () {
             throw err;
         }
         return { status: response.status, body: data };
+    }).then(result => {
+        const { status, body } = result;
+        if (status === 200 && body.status === "success") {
+            messageContainer.classList.remove('error-box');
+            messageContainer.classList.add('success-box');
+            messageContainer.textContent = body.message;
+        } else {
+            messageContainer.textContent = body.message || 'Ein unbekannter Fehler ist aufgetreten.';
+            messageContainer.style.display = "flex";
+        }
     }).catch(error => {
         messageContainer.textContent = 'Netzwerkfehler. Bitte versuchen Sie es erneut. ' + error;
         console.error('Error:', error);
