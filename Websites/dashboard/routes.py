@@ -20,8 +20,10 @@ def index():
     # Überprüft, ob der Benutzer eingeloggt ist und holt den Benutzernamen
     if current_user.is_authenticated:
         username = current_user.username
+        role = current_user.role
     else:
         username = None # Standardmäßig kein Benutzername
+        role = None
     
     # Holt das aktuelle Datum und die aktuelle Uhrzeit
     date = get_date()
@@ -43,7 +45,8 @@ def index():
     
 
     return render_template('dashboard.html', 
-                           username = username, 
+                           username = username,
+                           role = role,
                            #Time
                            date=date, time=time,
                            #Weather
