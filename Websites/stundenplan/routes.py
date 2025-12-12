@@ -4,8 +4,12 @@ from . import stundenplan_blueprint
 from flask_login import current_user
 
 from data.student_database import DatabaseStudent
+from data.admin_database import DatabaseAdmin
+from data.teacher_database import DatabaseTeacher
 
 db = DatabaseStudent("student")
+admin_db = DatabaseAdmin("admin")
+teacher_db = DatabaseTeacher("teacher")
 
 #Erstellt die Verbindung zur HTML Datei her
 @stundenplan_blueprint.route('/<user_id>')
@@ -18,10 +22,12 @@ def index(user_id):
         if current_user.id != user_id:
             return redirect(url_for('stundenplan.index', user_id=current_user.id))
         
-        user = db.find_student_by_uuid(user_id)
+        student = db.find_student_by_uuid(user_id)
+        admin = admin_db.find_admin_by_uuid(user_id)
+        teacher = teacher_db.find_teacher_by_uuid(user_id)
         
         #Wenn der Benutzer nicht gefunden wird, leite zurück zum Dashboard
-        if not user:
+        if not student and not admin and not teacher:
             return redirect(url_for('dashboard.index'))
         
     else:
