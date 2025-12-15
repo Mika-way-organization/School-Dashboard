@@ -11,6 +11,7 @@
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
   <link rel="stylesheet" href="{{ url_for('dashboard.static', filename='styles.css') }}" />
   <link rel="stylesheet" href="{{ url_for('dashboard.static', filename='handy.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('dashboard.static', filename='detailView.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/preloader.css') }}" />
 
   <!-- Hier wird geprüft ob der User angemeldet ist -->
@@ -30,6 +31,13 @@
     </p>
     <button id="abbruch_button">Abbrechen</button>
     <button id="abmelde_button">Abmelden</button>
+  </div>
+
+  <!-- Detail ansicht -->
+  <div id="underlay_detail"></div>
+  <div id="detailView">
+     <div id="detail_inhalt"></div>
+     <button id="closeButton" type="button" class="btn-close btn-close-white" aria-label="Close"></button>
   </div>
 
   <!-- Navbar -->
@@ -305,6 +313,7 @@
 
   <!-- Scripts -->
   <script src="{{ url_for('dashboard.static', filename='funktionen.js') }}"></script>
+  <script src="{{ url_for('dashboard.static', filename='detailView.js') }}"></script>
   <script src="{{ url_for('dashboard.static', filename='automatic_reload.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
