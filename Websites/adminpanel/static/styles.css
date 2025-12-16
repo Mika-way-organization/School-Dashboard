@@ -1,0 +1,215 @@
+#header {
+    border-bottom: 2px solid rgba(127, 0, 255, 0.4);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.6);
+
+    animation: pulsieren 2s infinite alternate; 
+
+    transition: box-shadow 0.2s ease-in-out; 
+}
+
+@keyframes pulsieren {
+    0% {
+        border-color: rgba(127, 0, 255, 0.4); 
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.4),
+            0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+    
+    100% {
+        border-color: rgba(127, 0, 255, 1.0);
+        box-shadow: 
+            0 2px 8px rgba(127, 0, 255, 0.8),
+            0 8px 20px rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Stil für das Abmelde-Pop up und den Underlay */
+#underlay_popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+
+    /* Anfangs ist der Underlay nicht sichtbar */
+    display: none;
+
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+#abmelde_popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #343a40;
+    color: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+
+    /* Anfangs ist das Pop up nicht sichtbar */
+    display: none;
+
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+#abmelden {
+    cursor: pointer;
+}
+
+#abmelden:hover {
+    text-decoration: underline !important;
+}
+
+#username {
+    font-weight: 600;
+    color: #7d838a;
+}
+
+.neon-akzent {
+    /* Purpur-Akzentfarbe */
+    color: #7F00FF;
+
+    /* Neon-Glow-Effekt */
+    text-shadow:
+        0 0 7px rgba(127, 0, 255, 0.7),
+        0 0 12px rgba(127, 0, 255, 0.4);
+}
+
+#abbruch_button,
+#abmelde_button {
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+
+    background-color: #7F00FF;
+    color: white;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding: 10px;
+
+    font-size: 1.1rem;
+    font-weight: 700;
+
+    width: 200px;
+    box-shadow: 0 5px 15px rgba(127, 0, 255, 0.3);
+    transition: background-color 0.35s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#abbruch_button {
+    margin-bottom: 25px;
+}
+
+#abbruch_button:hover,
+#abmelde_button:hover {
+    background-color: #6300CC;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(127, 0, 255, 0.5);
+}
+
+#abmelde-p-popup {
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+#profil-css {
+    transition: transform 0.3s ease;
+}
+
+#profil-css:hover {
+    box-shadow: none !important;
+    outline: none !important;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+#MiniNav {
+    border-radius: 12px;
+    background: #343a40;
+    border: 1px solid rgba(127, 0, 255, 0.4);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.6);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    overflow: hidden;
+    width: 75px;
+    height: 400px;
+    margin: 20px;
+    top: 51.5%;
+}
+
+#MiniNav:hover {
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.5), 
+        0 12px 24px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(127, 0, 255, 0.5);
+        
+    border: 2px solid #7F00FF; 
+    
+    transform: translateY(-2px) scale(1.02);
+}
+
+#MiniNav-bar{
+    box-shadow: none !important;
+    width: 350px !important;
+    background-color: #343a40 !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+#Dropdown {
+    position: absolute; 
+    bottom: 0;
+    left: 0;  
+    width: 100%;  
+    padding: 15px; 
+    
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.1); 
+    
+    transform: none !important;
+}
+
+#offcanvasbutton:hover,
+#Home-icon:hover,
+#Stundenplan-icon:hover,
+#Einstellungen-icon:hover,
+#Gast-icon:hover,
+#Home:hover,
+#Stundenplan:hover,
+#Einstellungen:hover,
+#Gast:hover {
+    background-color: #7d838a;
+    border-radius: 10px;
+    
+}
+
+#Home-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#offcanvasExample {
+    border-right: 2px solid rgba(127, 0, 255, 0.4);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.6);
+
+    animation: pulsieren 2s infinite alternate; 
+}

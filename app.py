@@ -23,6 +23,8 @@ from Websites.codeconfirm import codeconfirm_blueprint, codeconfirm_data_require
 from Websites.stundenplan import stundenplan_blueprint
 from Websites.register_admin import register_admin_blueprint, admin_register_data_require_blueprint
 from Websites.register_teacher import register_teacher_blueprint, register_teacher_data_require_blueprint
+from Websites.adminpanel import admin_blueprint
+from Websites.teacherpanel import teacher_blueprint
 
 #Import der API Blueprints
 from Websites.apis.routes import dashboard_data_blueprint
@@ -96,6 +98,8 @@ def create_app(debug = debug_mode):
     app.register_blueprint(profile_blueprint, url_prefix="/profile")
     app.register_blueprint(codeconfirm_blueprint, url_prefix="/codeconfirm")
     app.register_blueprint(stundenplan_blueprint, url_prefix="/stundenplan")
+    app.register_blueprint(admin_blueprint, url_prefix="/adminpanel")
+    app.register_blueprint(teacher_blueprint, url_prefix="/teacherpanel")
     
     #Registrierung der Blueprints für API
     app.register_blueprint(dashboard_data_blueprint, url_prefix="/dashboard_data")
