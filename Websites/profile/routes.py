@@ -17,6 +17,7 @@ def index(user_id):
     #Überprüft, ob der Benutzer angemeldet ist
     if current_user.is_authenticated:
         username = current_user.username
+        role = current_user.role
         
         #Stellt sicher, dass der Benutzer nur auf sein eigenes Profil zugreifen kann
         if current_user.id != user_id:
@@ -34,4 +35,5 @@ def index(user_id):
         return redirect(url_for('login.index'))
         
     return render_template('profil.html',
-                           username=username,)
+                           username=username,
+                           role=role)

@@ -288,10 +288,14 @@ body {
 
 #offcanvasbutton:hover,
 #Home-icon:hover,
+#Teacherpanel-icon:hover,
+#Adminpanel-icon:hover,
 #Stundenplan-icon:hover,
 #Einstellungen-icon:hover,
 #Gast-icon:hover,
 #Home:hover,
+#Adminpanel:hover,
+#Teacherpanel:hover,
 #Stundenplan:hover,
 #Einstellungen:hover,
 #Gast:hover {
@@ -300,7 +304,7 @@ body {
     
 }
 
-#Home-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
+#Home-icon, #Adminpanel-icon, #Teacherpanel-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
     display: flex;
     align-items: center;
     justify-content: center;
