@@ -110,7 +110,6 @@
     </div>
   </nav>
 
-
   <!--Div Containers-->
 
   <div id="cssportal-grid">
@@ -155,7 +154,11 @@
 
         <!-- Stundenplan Icon -->
         <li class="nav-item" id="Stundenplan-icon">
+        {% if username != None %}
           <a class="nav-link" href="{{ url_for ('stundenplan.index', user_id=current_user.id) }}">
+        {% else %}
+          <a class="nav-link" href="{{ url_for ('login.index') }}">
+        {% endif %}
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-table"
               viewBox="0 0 16 16">
               <path
@@ -166,7 +169,11 @@
 
         <!-- Profil/Gast Icon -->
         <li class="nav-item" id="Gast-icon">
+          {% if username != None %}
           <a class="nav-link" href="{{ url_for('profile.index', user_id=current_user.id) }}">
+          {% else %}
+          <a class="nav-link" href="{{ url_for ('login.index') }}">
+          {% endif %}
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-person-fill"
               viewBox="0 0 16 16">
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
@@ -176,7 +183,11 @@
 
         <!-- Einstellungen Icon -->
         <li class="nav-item" id="Einstellungen-icon">
+          {% if username != None %}
           <a class="nav-link" href="{{ url_for('profile.index', user_id=current_user.id) }}">
+          {% else %}
+          <a class="nav-link" href="{{ url_for ('login.index') }}">
+          {% endif %}
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28" fill="#FFFFFF" class="bi bi-gear-fill"
               viewBox="0 0 16 16">
               <path
@@ -282,8 +293,11 @@
 
         <!-- Stundenplan Icon -->
         <li class="nav-item" id="Stundenplan">
-          <a class="nav-link active" aria-current="page"
-            href="{{ url_for ('stundenplan.index', user_id=current_user.id) }}">
+          {% if username != None %}
+          <a class="nav-link active" aria-current="page"href="{{ url_for ('stundenplan.index', user_id=current_user.id) }}">
+          {% else %}
+          <a class="nav-link active" aria-current="page" href="{{ url_for ('login.index') }}">
+          {% endif %}
             <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="32" height="16" fill="#FFFFFF"
               class="bi bi-table" viewBox="0 0 16 16">
               <path
@@ -294,7 +308,11 @@
 
         <!-- Profil/Gast Icon -->
         <li class="nav-item" id="Gast">
+          {% if username != None %}
           <a class="nav-link active" aria-current="page" href="{{ url_for('profile.index', user_id=current_user.id) }}">
+          {% else %}
+          <a class="nav-link active" aria-current="page" href="{{ url_for ('login.index') }}">
+          {% endif %}
             <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="32" height="16" fill="#FFFFFF"
               class="bi bi-person-fill" viewBox="0 0 16 16">
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
@@ -304,7 +322,11 @@
 
         <!-- Einstellungen Icon -->
         <li class="nav-item" id="Einstellungen">
+          {% if username != None %}
           <a class="nav-link active" aria-current="page" href="{{ url_for('profile.index', user_id=current_user.id) }}">
+          {% else %}
+          <a class="nav-link active" aria-current="page" href="{{ url_for ('login.index') }}">
+          {% endif %}
             <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="32" height="16" fill="#FFFFFF"
               class="bi bi-gear-fill" viewBox="0 0 16 16">
               <path

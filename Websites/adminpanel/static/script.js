@@ -48,3 +48,11 @@ abmelde_button.addEventListener('click', zeigeAbmeldePopup);
 abmelde_button_dropdown.addEventListener('click', zeigeAbmeldePopup);
 abbruch_button.addEventListener('click', versteckeAbmeldePopup);
 abmelde_button_div.addEventListener('click', abmelden);
+
+underlay.addEventListener('click', versteckeAbmeldePopup);
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        versteckeAbmeldePopup();
+    }
+});

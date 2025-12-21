@@ -14,6 +14,7 @@ class DatabaseSchool(DatabaseStudent):
         super().__init__(collection_name)
     
     def school_formular(
+        self,
         uuid,
         school_name,
         street,
@@ -21,13 +22,13 @@ class DatabaseSchool(DatabaseStudent):
         state,
         zip_code,
         country,
-        phone_numbers,
         emails,
         school_leader,
         #Optionale Felder
         created_at=get_current_datetime(),
         updated_at=get_current_datetime(),
         upgradeBy=None,
+        phone_numbers=[],
         schoolManagers=[],
         schoolAdmins=[],
         schoolTeachers=[],

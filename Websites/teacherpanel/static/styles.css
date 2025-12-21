@@ -1,5 +1,5 @@
 #header {
-    border-bottom: 2px solid rgba(127, 0, 255, 0.4);
+    border-bottom: 2px solid #41cd00;
     box-shadow: 
         0 2px 4px rgba(0, 0, 0, 0.4),
         0 8px 16px rgba(0, 0, 0, 0.6);
@@ -11,16 +11,16 @@
 
 @keyframes pulsieren {
     0% {
-        border-color: rgba(127, 0, 255, 0.4); 
+        border-color: #41cd00; 
         box-shadow: 
             0 2px 4px rgba(0, 0, 0, 0.4),
             0 8px 16px rgba(0, 0, 0, 0.6);
     }
     
     100% {
-        border-color: rgba(127, 0, 255, 1.0);
+        border-color: #41cd00;
         box-shadow: 
-            0 2px 8px rgba(127, 0, 255, 0.8),
+            0 2px 8px rgba(65, 205, 0, 0.8),
             0 8px 20px rgba(0, 0, 0, 0.8);
     }
 }
@@ -76,12 +76,12 @@
 
 .neon-akzent {
     /* Purpur-Akzentfarbe */
-    color: #7F00FF;
+    color: #41cd00;
 
     /* Neon-Glow-Effekt */
     text-shadow:
-        0 0 7px rgba(127, 0, 255, 0.7),
-        0 0 12px rgba(127, 0, 255, 0.4);
+        0 0 7px rgba(65, 205, 0, 0.7),
+        0 0 12px rgba(65, 205, 0, 0.4);
 }
 
 #abbruch_button,
@@ -90,7 +90,7 @@
     border: none;
     text-align: center;
 
-    background-color: #7F00FF;
+    background-color: #41cd00;
     color: white;
 
     display: block;
@@ -103,7 +103,7 @@
     font-weight: 700;
 
     width: 200px;
-    box-shadow: 0 5px 15px rgba(127, 0, 255, 0.3);
+    box-shadow: 0 5px 15px rgba(65, 205, 0, 0.3);
     transition: background-color 0.35s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -113,9 +113,9 @@
 
 #abbruch_button:hover,
 #abmelde_button:hover {
-    background-color: #6300CC;
+    background-color: #34a400;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(127, 0, 255, 0.5);
+    box-shadow: 0 10px 20px rgba(65, 205, 0, 0.5);
 }
 
 #abmelde-p-popup {
@@ -137,7 +137,7 @@
 #MiniNav {
     border-radius: 12px;
     background: #343a40;
-    border: 1px solid rgba(127, 0, 255, 0.4);
+    border: 1px solid #41cd00;
     box-shadow: 
         0 2px 4px rgba(0, 0, 0, 0.4),
         0 8px 16px rgba(0, 0, 0, 0.6);
@@ -158,9 +158,9 @@
     box-shadow: 
         0 4px 8px rgba(0, 0, 0, 0.5), 
         0 12px 24px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(127, 0, 255, 0.5);
+        0 0 35px rgba(65, 205, 0, 0.5);
         
-    border: 2px solid #7F00FF; 
+    border: 2px solid #41cd00; 
     
     transform: translateY(-2px) scale(1.02);
 }
@@ -188,9 +188,11 @@
 #offcanvasbutton:hover,
 #Home-icon:hover,
 #Stundenplan-icon:hover,
+#Teacherpanel-icon:hover,
 #Einstellungen-icon:hover,
 #Gast-icon:hover,
 #Home:hover,
+#Teacherpanel:hover,
 #Stundenplan:hover,
 #Einstellungen:hover,
 #Gast:hover {
@@ -199,7 +201,7 @@
     
 }
 
-#Home-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
+#Home-icon, #Stundenplan-icon, #Teacherpanel-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
     display: flex;
     align-items: center;
     justify-content: center;

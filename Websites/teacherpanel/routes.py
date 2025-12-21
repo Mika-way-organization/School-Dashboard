@@ -32,6 +32,6 @@ def index(user_id):
     else:
         return redirect(url_for('login.index'))
         
-    return render_template('stundenplan.html',
+    return render_template('teacherpanel.html',
                            username=username, 
                            role=role)
