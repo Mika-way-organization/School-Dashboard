@@ -2,6 +2,7 @@
 from flask import render_template
 from flask_login import current_user
 from flask_mail import Message
+import random
 
 #Import des Bluprints
 from . import dashboard_blueprint
@@ -42,6 +43,9 @@ def index():
     
     #Witze API
     joke = jokes.get_joke()
+    joke2 = jokes.get_antoher_Joke()
+    joke_list = [joke, joke2]
+    selected_joke = random.choice(joke_list)
     
 
     return render_template('dashboard.html', 
@@ -57,4 +61,4 @@ def index():
                            humidity=humidity,
                            city=city,
                            #Joke
-                           joke=joke)
+                           joke=selected_joke)

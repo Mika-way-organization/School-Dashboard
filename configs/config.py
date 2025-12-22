@@ -32,6 +32,8 @@ weather_api_key = os.getenv("WEATHER_API_KEY")
 #Enthält das Email Passwort, geladen aus der Umgebungsvariable 'EMAIL_PASSWORD'
 email_password = os.getenv("EMAIL_PASSWORD")
 
+joke_api_key = os.getenv("JOKE_API_KEY")
+
 #Lädt die Debug-Einstellung aus der settings.json Datei
 debug_mode = json.loads(open("configs/settings.json").read())["server"]["debug"]
 
@@ -52,6 +54,8 @@ def isKey_loaded():
         print("WARNUNG: Der WEATHER_API_KEY konnte nicht geladen werden!")
     elif not email_password:
         print("WARNUNG: Das EMAIL_PASSWORD konnte nicht geladen werden!")
+    elif not joke_api_key:
+        print("WARNUNG: Der JOKE_API_KEY konnte nicht geladen werden!")
     else:
         print("Alle kritischen Umgebungsschlüssel wurden erfolgreich geladen.")
 

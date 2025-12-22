@@ -1,5 +1,6 @@
 #Import des Blueprints
 from . import dashboard_data_blueprint
+import random
 
 #Import der Datums und Zeit Funktionen
 from utils.get_datetime import get_date, get_time
@@ -28,6 +29,9 @@ def dashboard_data():
     city = data['name']
     #Witze API
     joke = jokes.get_joke()
+    joke2 = jokes.get_antoher_Joke()
+    joke_list = [joke, joke2]
+    selected_joke = random.choice(joke_list)
     
     data_dict = {
         "date": date,
@@ -38,6 +42,6 @@ def dashboard_data():
         "feels_like": feels_like,
         "humidity": humidity,
         "city": city,
-        "joke": joke
+        "joke": selected_joke
         }
     return data_dict

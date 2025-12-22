@@ -4,12 +4,15 @@ In dieser Datei werden Jokes von einer API geholt und random ausgegeben
 """
 #Import der notwendigen Module
 import requests
-import random
+
+from configs.config import joke_api_key
+
 
 #Definierung der Jokes Klasse
 class Jokes:
     def __init__(self):
         self.url = "https://v2.jokeapi.dev/joke/Any?lang=de&type=single"
+        self.secondUrl = "https://schul-dashboard.ddnss.de/api/joke?api_key="
     
     #Hier werden die Witze abgerufen
     def get_joke(self):
@@ -33,3 +36,26 @@ class Jokes:
         # Fehlerbehandlung bei Netzwerkproblemen
         except requests.exceptions.RequestException as e:
             return f"Ein Netzwerkfehler ist aufgetreten: {e}"
+    
+    def get_antoher_Joke(self):
+        api_key = joke_api_key
+        try:
+            response = requests.get(f"{self.secondUrl}{api_key}", timeout=5)
+            response.raise_for_status()
+            if response.status_code == 200:
+                
+                joke_data = response.json()
+                
+            if joke_data["data"].get("error"):
+                message = joke_data.get("message", "Unbekannter API-Fehler")
+                return f"Fehler von der API: {message}"
+            
+            joke_text = joke_data["data"].get("joke")
+            return joke_text if joke_text else "Fehler: Kein Witz-Text vorhanden."
+
+        except requests.exceptions.HTTPError as http_err:
+            return f"HTTP-Fehler aufgetreten: {http_err}"
+        except requests.exceptions.RequestException as e:
+            return f"Netzwerkfehler: {e}"
+        except KeyError:
+            return "Fehler: Unerwartetes Datenformat der API."
