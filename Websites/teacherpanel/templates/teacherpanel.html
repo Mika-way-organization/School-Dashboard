@@ -40,7 +40,7 @@
 
   <nav class="navbar navbar-expand bg-body-tertiary shadow-sm" id="header">
     <div class="container-fluid">
-      <a class="navbar-brand fs-3 fw-bold" href="{{ url_for('dashboard.index') }}">Teacher-<span
+      <a class="navbar-brand fs-3 fw-bold" href="{{ url_for ('teacherpanel.index', user_id=current_user.id) }}">Teacher-<span
           class="neon-akzent">Dashboard</span></a>
 
       <div class="collapse navbar-collapse" id="navbarText">
@@ -187,12 +187,17 @@
   </nav>
 
   <div class="container mt-5 pt-3">
-  <button id="Schule_erstellen">Schule erstellen</button>
-  <button id="Schule_bearbeiten">Schule beitreten</button>
-  <button id="Klasse_erstellen">Klasse erstellen</button>
-  <button id="Klasse_bearbeiten">Klasse bearbeiten</button>
-  <button id="Stundenplan_erstellen">Stundenplan erstellen</button>
-  <button id="Stundenplan_bearbeiten">Stundenplan bearbeiten</button>
+    <div class="button-grid">
+      <!-- Button Schule -->
+      <button id="Schule_erstellen" class="custom-btn">Schule erstellen</button>
+      <button id="Schule_bearbeiten" class="custom-btn">Schule bearbeiten</button>
+      <!-- Button Klasse -->
+      <button id="Klasse_erstellen" class="custom-btn">Klasse erstellen</button>
+      <button id="Klasse_bearbeiten" class="custom-btn">Klasse bearbeiten</button>
+      <!-- Button Stundenplan -->
+      <button id="Stundenplan_erstellen" class="custom-btn">Stundenplan erstellen</button>
+      <button id="Stundenplan_bearbeiten" class="custom-btn">Stundenplan bearbeiten</button>
+    </div>
   </div>
 
   <!--Offcanvas-->
