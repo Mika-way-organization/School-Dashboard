@@ -1,3 +1,6 @@
+//Funktionenaus andere Dateien importieren
+import { create_school_submit } from './create_school_function.js';
+
 // Detail Ansicht Elemente
 const detailView = document.getElementById('detailView');
 const detailInhalt = document.getElementById('detail_inhalt');
@@ -47,23 +50,62 @@ Weil wenn man sich verclickt und die Detailansicht schließt, dann sind alle Ein
 function setDetailInhalt_CreateSchool() {
     openDetailView();
     detailInhalt.innerHTML = `
-        <h3>Schule erstellen</h3>
+        <h3 id="createSchoolTitle">Schule erstellen</h3>
         <hr>
         <form id="createSchoolForm">
-            <label for="schoolName">Name der Schule:</label><br>
-            <input type="text" id="schoolName" name="schoolName" required><br><br>
-            <label for="schoolAddress">Adresse der Schule:</label><br>
-            <input type="text" id="schoolAddress" name="schoolAddress" required><br><br>
+            <div class="form-group">
+                <label for="schoolName">Name</label>
+                <input type="text" id="schoolName" name="schoolName" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="schoolEmail">E-Mail</label>
+                    <input type="email" id="schoolEmail" name="schoolEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="schoolPhone">Telefonnummer</label>
+                    <input type="tel" id="schoolPhone" name="schoolPhone" required>
+                </div>
+            </div>
+
+            <hr>
+            <h4>Adresse der Schule:</h4>
+
+            <div class="form-row">
+                <div class="form-group zip-code">
+                    <label for="schoolpostalcode">PLZ</label>
+                    <input type="text" id="schoolpostalcode" name="schoolpostalcode" required>
+                </div>
+                <div class="form-group">
+                    <label for="schoolcity">Stadt</label>
+                    <input type="text" id="schoolcity" name="schoolcity" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="schoolstreet">Straße</label>
+                    <input type="text" id="schoolstreet" name="schoolstreet" required>
+                </div>
+                <div class="form-goup">
+                    <label for="schoolhouseNumber">Hausnummer</label>
+                    <input type="text" id="schoolhouseNumber" name="schoolhouseNumber" required>
+                </div>
+                <div class="form-goup">
+                    <label for="schoolstate">Bundesland</label>
+                    <input type="text" id="schoolstate" name="schoolstate">
+                </div>
+                <div class="form-group">
+                    <label for="schoolcountry">Land</label>
+                    <input type="text" id="schoolcountry" name="schoolcountry" required>
+                </div>
+            </div>
+
             <button type="submit" class="custom-btn" id="createSchoolButton">Erstellen</button>
         </form>
-    `
-    document.getElementById('createSchoolForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Hier kannst du die Logik zum Erstellen der Schule hinzufügen
-
-        closeDetailView();
-    });
+    `;
+    create_school_submit();
 }
 
 function setDetailInhalt_ConfigureSchool() {

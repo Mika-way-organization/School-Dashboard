@@ -1,15 +1,17 @@
 #Import Flask
-from flask import render_template, redirect, url_for
-from . import teacher_blueprint
+from flask import render_template, redirect, url_for, request, jsonify
+from . import teacher_blueprint, teacher_create_school_blueprint
 from flask_login import current_user
 
-from data.student_database import DatabaseStudent
-from data.admin_database import DatabaseAdmin
-from data.teacher_database import DatabaseTeacher
+from utils.uuid_generator import generate_uuid
 
-db = DatabaseStudent("student")
-admin_db = DatabaseAdmin("admin")
+from data.teacher_database import DatabaseTeacher
+from data.school_database import DatabaseSchool
+from data.admin_database import DatabaseAdmin
+
 teacher_db = DatabaseTeacher("teacher")
+school_db = DatabaseSchool("school")
+admin_db = DatabaseAdmin("admin")
 
 #Erstellt die Verbindung zur HTML Datei her
 @teacher_blueprint.route('/<user_id>')
@@ -35,3 +37,61 @@ def index(user_id):
     return render_template('teacherpanel.html',
                            username=username, 
                            role=role)
+    
+@teacher_create_school_blueprint.route('/require', methods=['POST'])
+def create_school():
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+    
+    schoolName = data.get('schoolName')
+    email = data.get('email')
+    tel = data.get('phone')
+    plz = data.get('postalcode')
+    city = data.get('city')
+    housnumber = data.get('housenumber')
+    street = data.get('street')
+    state = data.get('state')
+    country = data.get('country')
+    
+    find_school_name = school_db.find_school_by_name(schoolName)
+    find_school = school_db.find_school_by_email(email)
+    
+    find_teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+    find_admin = admin_db.find_admin_by_uuid(current_user.id)
+    
+    if not find_teacher and not find_admin:
+        return jsonify({"status": "error", "message": "Du hast keine Berechtigung, eine Schule zu erstellen."}), 404
+    
+    if find_school:
+        return jsonify({"status": "error", "message": "Eine Schule mit dieser E-Mail existiert bereits."}), 409
+    
+    if find_school_name:
+        return jsonify({"status": "error", "message": "Eine Schule mit diesem Namen existiert bereits."}), 409
+    
+    if not schoolName or not email or not tel or not plz or not city or not street or not state or not country or not housnumber:
+        return jsonify({"status": "error", "message": "Alle Felder müssen ausgefüllt sein."}), 400
+    
+    if not find_school and not find_school_name:
+        school_uuid = generate_uuid()
+        
+        school_fomrmat = school_db.school_formular(
+            uuid=school_uuid,
+            school_name=schoolName,
+            street=street,
+            house_number=housnumber,
+            city=city,
+            state=state,
+            zip_code=plz,
+            country=country,
+            emails=[email],
+            phone_numbers=[tel],
+            school_leader=current_user.id,
+            upgradeBy=current_user.id
+            
+        )
+        school_db.create_school(school_fomrmat)
+        
+        return jsonify({"status": "success", "message": "Schule erfolgreich erstellt."}), 201
+    

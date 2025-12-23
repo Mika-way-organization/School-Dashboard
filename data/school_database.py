@@ -18,6 +18,7 @@ class DatabaseSchool(DatabaseStudent):
         uuid,
         school_name,
         street,
+        house_number,
         city,
         state,
         zip_code,
@@ -39,6 +40,7 @@ class DatabaseSchool(DatabaseStudent):
             "schoolName": school_name,
             "address": {
                 "street": street,
+                "houseNumber": house_number,
                 "city": city,
                 "state": state,
                 "zipCode": zip_code,
@@ -112,6 +114,34 @@ class DatabaseSchool(DatabaseStudent):
             raise ValueError("UUID darf nicht None sein.")
 
         school = self.client[self.database][self.collection].find_one({"uuid": uuid})
+
+        if school:
+            print("Schule gefunden.")
+            return school
+        else:
+            print("Schule nicht gefunden.")
+            return False
+    
+    def find_school_by_email(self, email):
+        # Sucht eine Schule in der Datenbank anhand der E-Mail
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        school = self.client[self.database][self.collection].find_one({"emails": email})
+
+        if school:
+            print("Schule gefunden.")
+            return school
+        else:
+            print("Schule nicht gefunden.")
+            return False
+    
+    def find_school_by_name(self, school_name):
+        # Sucht eine Schule in der Datenbank anhand des Schulnamens
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        school = self.client[self.database][self.collection].find_one({"schoolName": school_name})
 
         if school:
             print("Schule gefunden.")
