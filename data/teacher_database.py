@@ -21,7 +21,7 @@ class DatabaseTeacher(DatabaseStudent):
         password,
         first_name,
         last_name,
-        school_name,
+        school_uuid,
         
         #Optionale Felder
         is_verify=False,
@@ -51,7 +51,7 @@ class DatabaseTeacher(DatabaseStudent):
             "role": "teacher",
             "status": "inactive",
             "is_verify": is_verify,
-            "schoolName": school_name,
+            "school_uuid": school_uuid,
             "profile": {
                 "firstName": first_name,
                 "lastName": last_name,

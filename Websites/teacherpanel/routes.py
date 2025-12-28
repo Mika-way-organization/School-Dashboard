@@ -1,6 +1,6 @@
 #Import Flask
 from flask import render_template, redirect, url_for, request, jsonify
-from . import teacher_blueprint, teacher_create_school_blueprint
+from . import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint
 from flask_login import current_user
 
 from utils.uuid_generator import generate_uuid
@@ -92,6 +92,35 @@ def create_school():
             
         )
         school_db.create_school(school_fomrmat)
+
+        teacher_db.update_teacher_data(current_user.id, {
+            "school_uuid": school_uuid
+            })
         
         return jsonify({"status": "success", "message": "Schule erfolgreich erstellt."}), 201
+    else:
+        return jsonify({"status": "error", "message": "Die Schule ist schon vorhanden."}), 500
+
+# Für Admin wird noch eine weitere Funktion benötigt, um die Schuldaten abzurufen.
+
+#Diese API gibt die Schuldaten die vom Lehrerprofil verlinkt ist zurück
+@give_school_data_blueprint.route('/data', methods=['POST'])
+def give_school_data():
+    if not current_user.is_authenticated:
+        return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
+    
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+    
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 404
+    
+    school_uuid = teacher["school_uuid"]
+
+    if teacher:
+        school = school_db.find_school_by_uuid(school_uuid)
+    
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    return jsonify({"status": "success", "school_data": school}), 200
     

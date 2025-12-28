@@ -114,13 +114,24 @@ function setDetailInhalt_ConfigureSchool() {
         <h3>Schule bearbeiten</h3>
         <hr>
         <form id="configureSchoolForm">
-            <label for="schoolName">Name der Schule:</label><br>
-            <input type="text" id="schoolName" name="schoolName" value="Aktueller Schulname" required><br><br>
-            <label for="schoolAddress">Adresse der Schule:</label><br>
-            <input type="text" id="schoolAddress" name="schoolAddress" value="Aktuelle Schuladresse" required><br><br>
-            <button type="submit" class="custom-btn" id="configureSchoolButton">Speichern</button>
+            <div class="form-group">
+                <label for="schoolName">Name</label>
+                <input type="text" id="schoolName" name="schoolName" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="schoolEmail">E-Mail</label>
+                    <input type="email" id="schoolEmail" name="schoolEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="schoolPhone">Telefonnummer</label>
+                    <input type="tel" id="schoolPhone" name="schoolPhone" required>
+                </div>
+            </div>
+            <hr>
+
         </form>
-    `
+    `;
     document.getElementById('configureSchoolForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
