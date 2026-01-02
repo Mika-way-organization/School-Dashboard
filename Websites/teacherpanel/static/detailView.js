@@ -1,5 +1,6 @@
 //Funktionenaus andere Dateien importieren
 import { create_school_submit } from './create_school_function.js';
+import { update_school_submit } from './update_school_function.js';
 
 // Detail Ansicht Elemente
 const detailView = document.getElementById('detailView');
@@ -110,34 +111,95 @@ function setDetailInhalt_CreateSchool() {
 
 function setDetailInhalt_ConfigureSchool() {
     openDetailView();
-    detailInhalt.innerHTML = `
-        <h3>Schule bearbeiten</h3>
-        <hr>
-        <form id="configureSchoolForm">
-            <div class="form-group">
-                <label for="schoolName">Name</label>
-                <input type="text" id="schoolName" name="schoolName" required>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="schoolEmail">E-Mail</label>
-                    <input type="email" id="schoolEmail" name="schoolEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="schoolPhone">Telefonnummer</label>
-                    <input type="tel" id="schoolPhone" name="schoolPhone" required>
-                </div>
-            </div>
-            <hr>
+    // Die Daten abrufen
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    fetch('/give_school_data/data', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        }
+    }).then(async response => {
+        const text = await response.text();
+        let data;
+        console.log(text);
+        try {
+            data = JSON.parse(text);
+        } catch (err) {
+            console.error("Fehler beim Parsen von JSON:", err);
+            throw err;
+        }
+        return data;
+    })
+      .then(data => {
+          console.log(data);
+          if (data.status === "success") {
+            let schoolData = data.school_data;
 
-        </form>
-    `;
-    document.getElementById('configureSchoolForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+            detailInhalt.innerHTML = `
+                <h3 id="configureSchoolTitle">Schule bearbeiten</h3>
+                <hr>
+                <form id="configureSchoolForm">
+                    <div class="form-group">
+                        <label for="schoolName">Name</label>
+                        <input type="text" id="schoolName" name="schoolName" value="${schoolData.schoolName}" required>
+                    </div>
 
-        // Hier kannst du die Logik zum Bearbeiten der Schule hinzufügen
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schoolEmail">E-Mail</label>
+                            <input type="email" id="schoolEmail" name="schoolEmail" value="${schoolData.emails}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolPhone">Telefonnummer</label>
+                            <input type="tel" id="schoolPhone" name="schoolPhone" value="${schoolData.phoneNumbers}" required>
+                        </div>
+                    </div>
 
-        closeDetailView();
+                    <hr>
+                    <h4>Adresse der Schule:</h4>
+
+                    <div class="form-row">
+                        <div class="form-group zip-code">
+                            <label for="schoolpostalcode">PLZ</label>
+                            <input type="text" id="schoolpostalcode" name="schoolpostalcode" value="${schoolData.address.zipCode}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolcity">Stadt</label>
+                            <input type="text" id="schoolcity" name="schoolcity" value="${schoolData.address.city}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schoolstreet">Straße</label>
+                            <input type="text" id="schoolstreet" name="schoolstreet" value="${schoolData.address.street}" required>
+                        </div>
+                        <div class="form-goup">
+                            <label for="schoolhouseNumber">Hausnummer</label>
+                            <input type="text" id="schoolhouseNumber" name="schoolhouseNumber" value="${schoolData.address.houseNumber}" required>
+                        </div>
+                        <div class="form-goup">
+                            <label for="schoolstate">Bundesland</label>
+                            <input type="text" id="schoolstate" name="schoolstate" value="${schoolData.address.state}">
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolcountry">Land</label>
+                            <input type="text" id="schoolcountry" name="schoolcountry" value="${schoolData.address.country}" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="custom-btn">Erstellen</button>
+                </form>
+            `;
+            update_school_submit();
+          } else {
+              alert(body.message || 'Ein unbekannter Fehler ist aufgetreten beim Laden der Schuldaten.');
+          }
+      })
+      .catch(error => {
+          console.error("Fehler beim Abrufen der Daten:", error);
+          alert('Es gab einen Fehler beim Abrufen der Schuldaten.');
     });
 }
 

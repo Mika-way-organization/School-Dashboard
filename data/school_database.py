@@ -48,7 +48,7 @@ class DatabaseSchool(DatabaseStudent):
             },
             "phoneNumbers": phone_numbers, #soll eine Liste sein
             "emails": emails, #soll eine Liste sein
-            "schooMembers": {
+            "schoolMembers": {
                 "schoolLeader": school_leader,
                 "SchoolManagers": schoolManagers,
                 "schoolAdmins": schoolAdmins,

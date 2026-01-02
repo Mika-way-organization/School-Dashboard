@@ -24,7 +24,7 @@ from Websites.stundenplan import stundenplan_blueprint
 from Websites.register_admin import register_admin_blueprint, admin_register_data_require_blueprint
 from Websites.register_teacher import register_teacher_blueprint, register_teacher_data_require_blueprint
 from Websites.adminpanel import admin_blueprint
-from Websites.teacherpanel import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint
+from Websites.teacherpanel import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint, save_school_data_blueprint
 
 #Import der API Blueprints
 from Websites.apis.routes import dashboard_data_blueprint
@@ -111,6 +111,7 @@ def create_app(debug = debug_mode):
     app.register_blueprint(codeconfirm_newcode_blueprint, url_prefix="/codeconfirm_data_new")
     app.register_blueprint(teacher_create_school_blueprint, url_prefix="/teacher_create_school_data")
     app.register_blueprint(give_school_data_blueprint, url_prefix="/give_school_data")
+    app.register_blueprint(save_school_data_blueprint, url_prefix="/save_school_data")
     
     #Wenn keine Website gefunden wurde, ruft der Server diese Website auf.
     @app.errorhandler(404)

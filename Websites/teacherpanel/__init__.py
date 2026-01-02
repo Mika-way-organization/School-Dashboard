@@ -8,5 +8,7 @@ teacher_create_school_blueprint = Blueprint("teacher_create_school", __name__)
 
 give_school_data_blueprint = Blueprint("give_school_data", __name__)
 
+save_school_data_blueprint = Blueprint("save_school_data", __name__)
+
 #Impotiert alles Wichtige von routes.py
 from . import routes
