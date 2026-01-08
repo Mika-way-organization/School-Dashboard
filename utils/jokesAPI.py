@@ -12,7 +12,7 @@ from configs.config import joke_api_key
 class Jokes:
     def __init__(self):
         self.url = "https://v2.jokeapi.dev/joke/Any?lang=de&type=single"
-        self.secondUrl = "https://schul-dashboard.ddnss.de/api/joke?api_key="
+        self.secondUrl = "https://schul-dashboard.de/api/joke?api_key="
     
     #Hier werden die Witze abgerufen
     def get_joke(self):
@@ -51,17 +51,11 @@ class Jokes:
                 return f"Fehler von der API: {message}"
             
             joke_text = joke_data["data"].get("joke")
-            if joke_text:
-                return joke_text
-            else:
-                return False
+            return joke_text if joke_text else "Fehler: Kein Witz-Text vorhanden."
 
         except requests.exceptions.HTTPError as http_err:
-            print(f"HTTP-Fehler aufgetreten: {http_err}")
-            return False
+            return f"HTTP-Fehler aufgetreten: {http_err}"
         except requests.exceptions.RequestException as e:
-            print(f"Netzwerkfehler aufgetreten: {e}")
-            return False
+            return f"Netzwerkfehler: {e}"
         except KeyError:
-            print("Fehler: Unerwartetes Datenformat der API.")
-            return False
+            return "Fehler: Unerwartetes Datenformat der API."
