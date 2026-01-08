@@ -51,11 +51,17 @@ class Jokes:
                 return f"Fehler von der API: {message}"
             
             joke_text = joke_data["data"].get("joke")
-            return joke_text if joke_text else "Fehler: Kein Witz-Text vorhanden."
+            if joke_text:
+                return joke_text
+            else:
+                return False
 
         except requests.exceptions.HTTPError as http_err:
-            return f"HTTP-Fehler aufgetreten: {http_err}"
+            print(f"HTTP-Fehler aufgetreten: {http_err}")
+            return False
         except requests.exceptions.RequestException as e:
-            return f"Netzwerkfehler: {e}"
+            print(f"Netzwerkfehler aufgetreten: {e}")
+            return False
         except KeyError:
-            return "Fehler: Unerwartetes Datenformat der API."
+            print("Fehler: Unerwartetes Datenformat der API.")
+            return False

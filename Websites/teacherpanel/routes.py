@@ -1,6 +1,6 @@
 #Import Flask
 from flask import render_template, redirect, url_for, request, jsonify
-from . import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint, save_school_data_blueprint
+from . import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint, save_school_data_blueprint, save_class_data_blueprint
 from flask_login import current_user
 
 from utils.uuid_generator import generate_uuid
@@ -185,3 +185,12 @@ def save_school_data():
     school_db.update_school_data(school_uuid, updated_data)
     
     return jsonify({"status": "success", "message": "Schuldaten erfolgreich aktualisiert."}), 200
+
+@save_class_data_blueprint.route('/save', methods=['POST'])
+def get_class_school_data():
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+    
+    

@@ -42,7 +42,7 @@ class DatabaseStudent:
 
         # Fehlerbehandlung für Verbindungsfehler
         except ConnectionFailure:
-            print("Server nicht erreichbar.")
+            print("Der MongoDB Server ist nicht erreichbar.")
             return False
         except Exception as e:
             print(f"Verbindungsfehler: {e}")

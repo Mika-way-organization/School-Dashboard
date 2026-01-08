@@ -10,5 +10,7 @@ give_school_data_blueprint = Blueprint("give_school_data", __name__)
 
 save_school_data_blueprint = Blueprint("save_school_data", __name__)
 
+save_class_data_blueprint = Blueprint("save_class_data", __name__)
+
 #Impotiert alles Wichtige von routes.py
 from . import routes

@@ -2,6 +2,7 @@
 Hier wird die funktion für die 'create_school' erstellt.
 
 */
+
 export function create_school_submit() {
     document.getElementById('createSchoolForm').addEventListener('submit', function(e) {
         e.preventDefault();

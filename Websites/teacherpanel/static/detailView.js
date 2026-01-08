@@ -211,16 +211,16 @@ function setDetailInhalt_CreateClass() {
         <h3>Klasse erstellen</h3>
         <hr>
         <form id="createClassForm">
-            <label for="className">Name der Klasse:</label><br>
-            <input type="text" id="className" name="className" required><br><br>
-            <label for="classGrade">Klassenstufe:</label><br>
-            <input type="number" id="classGrade" name="classGrade" required><br><br>
-            <label for="classTeacher">Klassenlehrer:</label><br>
-            <input type="text" id="classTeacher" name="classTeacher" required><br><br>
-            <label for="classRoom">Klassenzimmer:</label><br>
-            <input type="text" id="classRoom" name="classRoom" required><br><br>
-            <label for="classSchedule">Stundenplan (optional):</label><br>
-            <input type="text" id="classSchedule" name="classSchedule"><br><br>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="className">Name der Klasse:</label><br>
+                    <input type="text" id="className" name="className" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="classGrade">Klassenstufe:</label><br>
+                    <input type="number" id="classGrade" name="classGrade" required><br><br>
+                </div>
+            </div>
             <button type="submit" class="custom-btn" id="createClassButton">Erstellen</button>
         </form>
     `

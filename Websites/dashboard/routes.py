@@ -46,6 +46,9 @@ def index():
     joke2 = jokes.get_antoher_Joke()
     joke_list = [joke, joke2]
     selected_joke = random.choice(joke_list)
+    if selected_joke == False:
+        selected_joke = jokes.get_joke()
+        print("Fehler beim Abrufen des Witzes von Schul-Dahsbaord.dnns.de")
     
 
     return render_template('dashboard.html', 
