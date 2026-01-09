@@ -22,6 +22,7 @@ class DatabaseClasses(DatabaseStudent):
         class_teacher_id,
         timetableID,
         #Optionale Felder
+        classRoom="No Room Assigned",
         created_at=get_current_datetime(),
         updated_at=get_current_datetime(),
         students=[],
@@ -33,6 +34,7 @@ class DatabaseClasses(DatabaseStudent):
             "gradeLevel": grade_level,
             "section": section,
             "schoolId": school_id,
+            "classRoom": classRoom,
             "classTeacherId": class_teacher_id,
             "students": students, #Liste der Schüler UUID's
             "subjects": subjects, #Liste der Fächer

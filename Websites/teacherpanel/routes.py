@@ -132,7 +132,8 @@ def give_school_data():
         }
     
     return jsonify({"status": "success", "school_data": school_data}), 200
-    
+
+#Diese API speichert die aktualisierten Schuldaten in die MongoDB
 @save_school_data_blueprint.route('/save', methods=['POST'])
 def save_school_data():
     if not current_user.is_authenticated:
@@ -192,5 +193,7 @@ def get_class_school_data():
     
     if not data:
         return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+    
+    
     
     

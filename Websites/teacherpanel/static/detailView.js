@@ -220,7 +220,16 @@ function setDetailInhalt_CreateClass() {
                     <label for="classGrade">Klassenstufe:</label><br>
                     <input type="number" id="classGrade" name="classGrade" required><br><br>
                 </div>
+                <div class="form-group">
+                    <label for="classTeacher">Klassengruppe:</label><br>
+                    <input type="text" id="classGroupe" name="classGroupe" required><br><br>
+                </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="classRoom">Klassenzimmer:</label><br>
+                    <input type="text" id="classRoom" name="classRoom" required><br><br>
+                </div>
             <button type="submit" class="custom-btn" id="createClassButton">Erstellen</button>
         </form>
     `

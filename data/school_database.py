@@ -34,6 +34,7 @@ class DatabaseSchool(DatabaseStudent):
         schoolAdmins=[],
         schoolTeachers=[],
         schoolStudents=[],
+        schoolRooms=[],
     ):
         school_data = {
             "uuid": uuid, #UUID der Schule
@@ -55,6 +56,7 @@ class DatabaseSchool(DatabaseStudent):
                 "schoolTeachers": schoolTeachers,
                 "schoolStudents": schoolStudents,
             },
+            "schoolRooms": schoolRooms,
             "metadata": {
                 "createdAt": created_at,
                 "updatedAt": updated_at,
