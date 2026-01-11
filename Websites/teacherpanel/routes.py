@@ -1,6 +1,6 @@
 #Import Flask
 from flask import render_template, redirect, url_for, request, jsonify
-from . import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint, save_school_data_blueprint, save_class_data_blueprint
+from . import teacher_blueprint, teacher_create_school_blueprint, give_school_data_blueprint, save_school_data_blueprint, save_class_data_blueprint, give_class_data_blueprint, save_timetable_data_blueprint, give_timetable_data_blueprint
 from flask_login import current_user
 
 from utils.uuid_generator import generate_uuid
@@ -8,10 +8,12 @@ from utils.uuid_generator import generate_uuid
 from data.teacher_database import DatabaseTeacher
 from data.school_database import DatabaseSchool
 from data.admin_database import DatabaseAdmin
+from data.class_database import DatabaseClasses
 
 teacher_db = DatabaseTeacher("teacher")
 school_db = DatabaseSchool("school")
 admin_db = DatabaseAdmin("admin")
+class_db = DatabaseClasses("class")
 
 #Erstellt die Verbindung zur HTML Datei her
 @teacher_blueprint.route('/<user_id>')
@@ -187,13 +189,146 @@ def save_school_data():
     
     return jsonify({"status": "success", "message": "Schuldaten erfolgreich aktualisiert."}), 200
 
-@save_class_data_blueprint.route('/save', methods=['POST'])
+@save_class_data_blueprint.route('/require', methods=['POST'])
 def get_class_school_data():
     data = request.get_json()
     
     if not data:
         return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+
+    className = data.get('className')
+    classGrade = data.get('classGrade')
+    classGroupe = data.get('classGroupe')
+    classRoom = data.get('classRoom')
+    classTeacher = data.get('classTeacher')
+    classStudent = data.get('classStudent')
+
+    teacher = teacher_db.find_teacher_by_name(classTeacher)
+
+    find_teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+    find_admin = admin_db.find_admin_by_uuid(current_user.id)
+
+    if not find_teacher and not find_admin:
+        return jsonify({"status": "error", "message": "Du hast keine Berechtigung, eine Klasse zu erstellen."}), 404
+
+    if not teacher:
+        return jsonify({"status": "error", "message": "Lehrer nicht gefunden."}), 404
+
+    if not className or not classGrade or not classGroupe or not classRoom or not classTeacher:
+        return jsonify({"status": "error", "message": "Alle Felder müssen ausgefüllt sein."}), 400
+    
+    school_uuid = teacher["school_uuid"]
+
+    school = school_db.find_school_by_uuid(school_uuid)
+
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+
+    teacher_uuid = teacher["uuid"]
+
+    class_uuid = generate_uuid()
+    class_format = class_db.class_formular(
+        uuid=class_uuid,
+        class_name=className,
+        grade_level=classGrade,
+        section=classGroupe,
+        school_id=school_uuid,
+        class_teacher_id=teacher_uuid,
+        classRoom=classRoom,
+        students=classStudent if classStudent else [],
+    )
+
+    school_db.update_school_data(school_uuid, {
+        "classes": school["classes"] + [class_uuid]
+    })
+    
+    class_db.create_class(class_format)
+    return jsonify({"status": "success", "message": "Klasse erfolgreich erstellt."}), 201
+
+@give_class_data_blueprint.route('/data', methods=['GET'])
+def give_class_data():
+    if not current_user.is_authenticated:
+        return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
+    
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benuter nicht gefundne."}), 404
+    
+
+    school_uuid = teacher["school_uuid"]
+
+    school = school_db.find_school_by_uuid(school_uuid)
+
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    class_uuid = school["classes"][-1] if school["classes"] else None
+
+    class_data = class_db.find_class_by_uuid(class_uuid)
+
+    if not class_data:
+        return jsonify({"status": "error", "message": "Klasse nicht gefunden."}), 404
+    
+    teacher_id = class_data["classTeacherId"]
+    teacher = teacher_db.find_teacher_by_uuid(teacher_id)
+    teacher_name = teacher["username"] if teacher else "Unbekannt"
+
+    class_info = {
+        "className": class_data["className"],
+        "classGrade": class_data["gradeLevel"],
+        "classGroupe": class_data["section"],
+        "classRoom": class_data["classRoom"],
+        "classTeacher": teacher_name,
+        "classStudent": class_data["students"],
+    }
+
+    return jsonify({"status": "success", "class_data": class_info}), 200
     
     
     
+@save_class_data_blueprint.route('/save', methods=['POST'])
+def save_class_data():
+    if not current_user.is_authenticated:
+        return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
     
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+    
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 404
+    
+    school_uuid = teacher["school_uuid"]
+    
+    school = school_db.find_school_by_uuid(school_uuid)
+    
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    teacher_name = teacher["username"]
+    find_teacher = teacher_db.find_teacher_by_name(teacher_name)
+    if not find_teacher:
+        return jsonify({"status": "error", "message": "Lehrer nicht gefunden."}), 404
+
+    # Diese Variable sollte noch überarbeitet werden.
+    class_id = school["classes"][-1] if school["classes"] else None
+
+    if not class_id:
+        return jsonify({"status": "error", "message": "Keine Klasse zum Aktualisieren gefunden."}), 404
+
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+    
+    class_update_data = {
+        "className": data.get('className'),
+        "gradeLevel": data.get('classGrade'),
+        "section": data.get('classGroupe'),
+        "classRoom": data.get('classRoom'),
+        "classTeacher": data.get('classTeacher'),
+        "students": data.get('classStudent', []),
+    }
+
+    class_db.update_class_data(class_id, class_update_data)
+    
+    return jsonify({"status": "success", "message": "Klassendaten erfolgreich aktualisiert."}), 200

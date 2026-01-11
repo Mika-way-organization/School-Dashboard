@@ -2,6 +2,9 @@
 import { create_school_submit } from './create_school_function.js';
 import { update_school_submit } from './update_school_function.js';
 
+import { create_class_submit } from './create_class.js';
+import { update_class_submit } from './update_class.js';
+
 // Detail Ansicht Elemente
 const detailView = document.getElementById('detailView');
 const detailInhalt = document.getElementById('detail_inhalt');
@@ -160,7 +163,7 @@ function setDetailInhalt_ConfigureSchool() {
                     <h4>Adresse der Schule:</h4>
 
                     <div class="form-row">
-                        <div class="form-group zip-code">
+                        <div class="form-group">
                             <label for="schoolpostalcode">PLZ</label>
                             <input type="text" id="schoolpostalcode" name="schoolpostalcode" value="${schoolData.address.zipCode}" required>
                         </div>
@@ -208,7 +211,7 @@ function setDetailInhalt_ConfigureSchool() {
 function setDetailInhalt_CreateClass() {
     openDetailView();
     detailInhalt.innerHTML = `
-        <h3>Klasse erstellen</h3>
+        <h3 id="createClassTitle">Klasse erstellen</h3>
         <hr>
         <form id="createClassForm">
             <div class="form-row">
@@ -230,43 +233,93 @@ function setDetailInhalt_CreateClass() {
                     <label for="classRoom">Klassenzimmer:</label><br>
                     <input type="text" id="classRoom" name="classRoom" required><br><br>
                 </div>
+                <div class="form-group">
+                    <label for="classTeacher">Klassenlehrer:</label><br>
+                    <input type="text" id="classTeacher" name="classTeacher" required><br><br>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="classStudent">Schüler (optional):</label><br>
+                    <input type="text" id="classStudent" name="classStudent"><br><br>
+                </div>
+            </div>
             <button type="submit" class="custom-btn" id="createClassButton">Erstellen</button>
         </form>
     `
-    document.getElementById('createClassForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Hier kannst du die Logik zum Erstellen der Klasse hinzufügen
-
-        closeDetailView();
-    });
+    create_class_submit();
 }
 
 function setDetailInhalt_ConfigureClass() {
     openDetailView();
-    detailInhalt.innerHTML = `
-        <h3>Klasse bearbeiten</h3>
-        <hr>
-        <form id="configureClassForm">
-            <label for="className">Name der Klasse:</label><br>
-            <input type="text" id="className" name="className" value="Aktueller Klassenname" required><br><br>
-            <label for="classGrade">Klassenstufe:</label><br>
-            <input type="number" id="classGrade" name="classGrade" value="67" required><br><br>
-            <label for="classTeacher">Klassenlehrer:</label><br>
-            <input type="text" id="classTeacher" name="classTeacher" value="Aktueller Klassenlehrer" required><br><br>
-            <label for="classRoom">Klassenzimmer:</label><br>
-            <input type="text" id="classRoom" name="classRoom" value="Aktuelles Klassenzimmer" required><br><br>
-            <label for="classSchedule">Stundenplan (optional):</label><br>
-            <input type="text" id="classSchedule" name="classSchedule" value="Aktueller Stundenplan"><br><br>
-            <button type="submit" class="custom-btn" id="configureClassButton">Speichern</button>
-        </form>
-    `
-    document.getElementById('configureClassForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');    
+    fetch('/give_class_data/data', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        }
+    }).then(async response => {
+        const text = await response.text();
+        let data;
+        console.log(text);
+        try {
+            data = JSON.parse(text);
+        } catch (err) {
+            console.error("Fehler beim Parsen von JSON:", err);
+            throw err;
+        }
+        return data;
+    }).then(data => {
+        console.log(data);
+        if (data.status === "success") {
+            let classData = data.class_data;
 
-        // Hier kannst du die Logik zum Bearbeiten der Klasse hinzufügen
-
-        closeDetailView();
+            detailInhalt.innerHTML = `
+                <h3 id="configureClassTitle">Klasse bearbeiten</h3>
+                <hr>
+                <form id="configureClassForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="className">Name der Klasse:</label><br>
+                            <input type="text" id="className" name="className" value="${classData.className}" required><br><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="classGrade">Klassenstufe:</label><br>
+                            <input type="number" id="classGrade" name="classGrade" value="${classData.classGrade}" required><br><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="classTeacher">Klassengruppe:</label><br>
+                            <input type="text" id="classGroupe" name="classGroupe" value="${classData.classGroupe}" required><br><br>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classRoom">Klassenzimmer:</label><br>
+                            <input type="text" id="classRoom" name="classRoom" value="${classData.classRoom}" required><br><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="classTeacher">Klassenlehrer:</label><br>
+                            <input type="text" id="classTeacher" name="classTeacher" value="${classData.classTeacher}" required><br><br>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="classStudent">Schüler</label><br>
+                            <input type="text" id="classStudent" name="classStudent" value="${classData.classStudent}"><br><br>
+                        </div>
+                    </div>
+                    <button type="submit" class="custom-btn" id="configureClassButton">Erstellen</button>
+                </form>
+            `;
+            update_class_submit();
+        } else {
+            alert(body.message || 'Ein unbekannter Fehler ist aufgetreten beim Laden der Klassendaten.');
+        }
+    })
+    .catch(error => {
+        console.error("Fehler beim Abrufen der Daten:", error);
+        alert('Es gab einen Fehler beim Abrufen der Klassendaten.', error);
     });
 }
 
@@ -279,14 +332,34 @@ function setDetailInhalt_CreateSchedule() {
         <hr>
         <form id="createScheduleForm">
             <!-- Formularfelder für den Stundenplan -->
-            <label for="scheduleName">Name des Stundenplans:</label><br>
-            <input type="text" id="scheduleName" name="scheduleName" required><br><br>
-            <label for="scheduleDetails">Details des Stundenplans:</label><br>
-            <textarea id="scheduleDetails" name="scheduleDetails" required></textarea><br><br>
-            <label for="scheduleEffectiveDate">Gültigkeitsdatum:</label><br>
-            <input type="date" id="scheduleEffectiveDate" name="scheduleEffectiveDate" required><br><br>
-            <label for="scheduleNotes">Notizen (optional):</label><br>
-            <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scheduleSubject">Fach des Stundenplans:</label><br>
+                    <input type="text" id="scheduleSubject" name="scheduleSubject" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
+                    <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scheduleStartTime">Startzeit:</label><br>
+                    <input type="time" id="scheduleStartTime" name="scheduleStartTime" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleEndTime">Endzeit:</label><br>
+                    <input type="time" id="scheduleEndTime" name="scheduleEndTime" required><br><br>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="scheduleHomework">Hausaufgaben (optional):</label><br>
+                <textarea id="scheduleHomework" name="scheduleHomework"></textarea><br><br>
+            </div>
+            <div class="form-group">
+                <label for="scheduleNotes">Notizen (optional):</label><br>
+                <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
+            </div>
             <button type="submit" class="custom-btn" id="createScheduleButton">Erstellen</button>
         </form>
     `
@@ -302,19 +375,39 @@ function setDetailInhalt_CreateSchedule() {
 function setDetailInhalt_ConfigureSchedule() {
     openDetailView();
     detailInhalt.innerHTML = `
-        <h3>Stundenplan bearbeiten</h3>
+        <h3>Stundenplan erstellen</h3>
         <hr>
-        <form id="configureScheduleForm">
+        <form id="createScheduleForm">
             <!-- Formularfelder für den Stundenplan -->
-            <label for="scheduleName">Name des Stundenplans:</label><br>
-            <input type="text" id="scheduleName" name="scheduleName" value="Aktueller Stundenplanname" required><br><br>
-            <label for="scheduleDetails">Details des Stundenplans:</label><br>
-            <textarea id="scheduleDetails" name="scheduleDetails" required>Aktuelle Details des Stundenplans</textarea><br><br>
-            <label for="scheduleEffectiveDate">Gültigkeitsdatum:</label><br>
-            <input type="date" id="scheduleEffectiveDate" name="scheduleEffectiveDate" value="2024-01-01" required><br><br>
-            <label for="scheduleNotes">Notizen (optional):</label><br>
-            <textarea id="scheduleNotes" name="scheduleNotes">Aktuelle Notizen</textarea><br><br>
-            <button type="submit" class="custom-btn" id="configureScheduleButton">Speichern</button>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scheduleSubject">Fach des Stundenplans:</label><br>
+                    <input type="text" id="scheduleSubject" name="scheduleSubject" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
+                    <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scheduleStartTime">Startzeit:</label><br>
+                    <input type="time" id="scheduleStartTime" name="scheduleStartTime" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleEndTime">Endzeit:</label><br>
+                    <input type="time" id="scheduleEndTime" name="scheduleEndTime" required><br><br>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="scheduleHomework">Hausaufgaben (optional):</label><br>
+                <textarea id="scheduleHomework" name="scheduleHomework"></textarea><br><br>
+            </div>
+            <div class="form-group">
+                <label for="scheduleNotes">Notizen (optional):</label><br>
+                <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
+            </div>
+            <button type="submit" class="custom-btn" id="createScheduleButton">Erstellen</button>
         </form>
     `
     document.getElementById('configureScheduleForm').addEventListener('submit', function(event) {

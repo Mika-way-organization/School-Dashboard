@@ -16,6 +16,7 @@ class DatabaseTimetable(DatabaseStudent):
     
     # Erstellt ein Formular für den Stundenplan
     def timetable_formular(
+        self,
         uuid,
         class_id,
         week_days,
@@ -35,12 +36,13 @@ class DatabaseTimetable(DatabaseStudent):
         return timetable_data
     
     # Erstellt ein Formular für eine einzelne Unterrichtsstunde
-    def timetable_period_formular(subject,
-                                  teacher,
+    def timetable_period_formular(self, 
+                                    subject,
+                                    teacher,
                                     note,
                                     homework,
-                                  start_time,
-                                  end_time,):
+                                    start_time,
+                                    end_time,):
         
         period_data = {
             "subject": subject, #Fach

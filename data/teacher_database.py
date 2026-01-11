@@ -166,3 +166,17 @@ class DatabaseTeacher(DatabaseStudent):
         else:
             print("Lehrer nicht gefunden.")
             return False
+    
+    def find_teacher_by_name(self, username):
+        # Sucht einen Lehrer in der Datenbank anhand des Benutzernamens
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        teacher = self.client[self.database][self.collection].find_one({"username": username})
+
+        if teacher:
+            print("Lehrer gefunden.")
+            return teacher
+        else:
+            print("Lehrer nicht gefunden.")
+            return False
