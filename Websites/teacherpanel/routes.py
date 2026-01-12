@@ -9,11 +9,13 @@ from data.teacher_database import DatabaseTeacher
 from data.school_database import DatabaseSchool
 from data.admin_database import DatabaseAdmin
 from data.class_database import DatabaseClasses
+from data.timetable_database import DatabaseTimetable
 
 teacher_db = DatabaseTeacher("teacher")
 school_db = DatabaseSchool("school")
 admin_db = DatabaseAdmin("admin")
 class_db = DatabaseClasses("class")
+timetable_db = DatabaseTimetable("timetable")
 
 #Erstellt die Verbindung zur HTML Datei her
 @teacher_blueprint.route('/<user_id>')
@@ -332,3 +334,48 @@ def save_class_data():
     class_db.update_class_data(class_id, class_update_data)
     
     return jsonify({"status": "success", "message": "Klassendaten erfolgreich aktualisiert."}), 200
+
+@save_timetable_data_blueprint.route('/require', methods=['POST'])
+def save_timetable_data():
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 404
+    
+
+    scheduleSubject = data.get('scheduleSubject')
+    scheduleTeacher = data.get('scheduleTeacher')
+    scheduleDay = data.get('scheduleDay')
+    scheduleDate = data.get('scheduleDate')
+    scheduleStartTime = data.get('scheduleStartTime')
+    scheduleEndTime = data.get('scheduleEndTime')
+    scheduleRoom = data.get('scheduleRoom')
+    scheduleHomework = data.get('scheduleHomework')
+    scheduleNotes = data.get('scheduleNotes')
+
+    if not scheduleSubject or not scheduleTeacher or not scheduleDay or not scheduleDate or not scheduleStartTime or not scheduleEndTime or not scheduleRoom:
+        return jsonify({"status": "error", "message": "Alle Pflichtfelder müssen ausgefüllt sein."}), 400
+
+    timetable_data = timetable_db.timetable_formular(
+        uuid=generate_uuid(),
+        class_id=teacher["school_uuid"],
+        week_days={
+            scheduleDay: [
+                timetable_db.timetable_period_formular(
+                    subject=scheduleSubject,
+                    teacher=scheduleTeacher,
+                    note=scheduleNotes,
+                    homework=scheduleHomework,
+                    start_time=scheduleStartTime,
+                    end_time=scheduleEndTime,
+                )
+            ]
+        }
+    )
+
+    return jsonify({"status": "success", "message": "Stundenplandaten erfolgreich gespeichert."}), 200

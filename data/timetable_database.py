@@ -35,6 +35,21 @@ class DatabaseTimetable(DatabaseStudent):
         }
         return timetable_data
     
+    def create_timetable(self, timetable_data):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
+        
+        if timetable_data is None:
+            raise ValueError("Ungültige Stundenplandaten.")
+        try:
+            create_timetable = self.client[self.database][self.collection].insert_one(timetable_data)
+            if create_timetable:
+                print("Stundenplan erfolgreich erstellt.")
+            else:
+                print("Fehler beim Erstellen des Stundenplans.")
+        except Exception as e:
+            raise Exception(f"Fehler beim Erstellen des Stundenplans: {e}")
+    
     # Erstellt ein Formular für eine einzelne Unterrichtsstunde
     def timetable_period_formular(self, 
                                     subject,

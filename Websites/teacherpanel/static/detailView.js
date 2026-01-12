@@ -341,6 +341,10 @@ function setDetailInhalt_CreateSchedule() {
                     <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
                     <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
                 </div>
+                <div class="form-group">
+                    <label for="scheduleDay">Datum: </label><br>
+                    <input type="date" id="scheduleDay" name="scheduleDay" required><br><br>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -350,6 +354,10 @@ function setDetailInhalt_CreateSchedule() {
                 <div class="form-group">
                     <label for="scheduleEndTime">Endzeit:</label><br>
                     <input type="time" id="scheduleEndTime" name="scheduleEndTime" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleRoom">Raum:</label><br>
+                    <input type="text" id="scheduleRoom" name="scheduleRoom" required><br><br>
                 </div>
             </div>
             <div class="form-group">
@@ -375,9 +383,9 @@ function setDetailInhalt_CreateSchedule() {
 function setDetailInhalt_ConfigureSchedule() {
     openDetailView();
     detailInhalt.innerHTML = `
-        <h3>Stundenplan erstellen</h3>
+        <h3>Stundenplan bearbeiten</h3>
         <hr>
-        <form id="createScheduleForm">
+        <form id="configureScheduleForm">
             <!-- Formularfelder für den Stundenplan -->
             <div class="form-row">
                 <div class="form-group">
@@ -387,6 +395,10 @@ function setDetailInhalt_ConfigureSchedule() {
                 <div class="form-group">
                     <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
                     <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleDay">Datum: </label><br>
+                    <input type="date" id="scheduleDay" name="scheduleDay" required><br><br>
                 </div>
             </div>
             <div class="form-row">
@@ -407,7 +419,7 @@ function setDetailInhalt_ConfigureSchedule() {
                 <label for="scheduleNotes">Notizen (optional):</label><br>
                 <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
             </div>
-            <button type="submit" class="custom-btn" id="createScheduleButton">Erstellen</button>
+            <button type="submit" class="custom-btn" id="configureScheduleButton">Speichern</button>
         </form>
     `
     document.getElementById('configureScheduleForm').addEventListener('submit', function(event) {
