@@ -361,21 +361,37 @@ def save_timetable_data():
     if not scheduleSubject or not scheduleTeacher or not scheduleDay or not scheduleDate or not scheduleStartTime or not scheduleEndTime or not scheduleRoom:
         return jsonify({"status": "error", "message": "Alle Pflichtfelder müssen ausgefüllt sein."}), 400
 
-    timetable_data = timetable_db.timetable_formular(
+    #Noch in Arbeit
+    timetable_db.create_timetable(
         uuid=generate_uuid(),
-        class_id=teacher["school_uuid"],
-        week_days={
-            scheduleDay: [
-                timetable_db.timetable_period_formular(
-                    subject=scheduleSubject,
-                    teacher=scheduleTeacher,
-                    note=scheduleNotes,
-                    homework=scheduleHomework,
-                    start_time=scheduleStartTime,
-                    end_time=scheduleEndTime,
-                )
-            ]
-        }
     )
 
     return jsonify({"status": "success", "message": "Stundenplandaten erfolgreich gespeichert."}), 200
+
+@give_timetable_data_blueprint.route('/data', methods=['GET'])
+def give_timetable_data():
+    if not current_user.is_authenticated:
+        return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
+    
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benuter nicht gefundne."}), 404
+
+    school_uuid = teacher["school_uuid"]
+
+    school = school_db.find_school_by_uuid(school_uuid)
+
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    class_id = school["classes"][-1] if school["classes"] else False
+
+    if not class_id:
+        return jsonify({"status": "error", "message": "Keine Klasse gefunden."}), 404
+    
+    timetable = timetable_db.find_timetable_by_date(class_id, "2024-06-10")
+    
+    timetable = "Noch in Arbeit"
+
+    return jsonify({"status": "success", "timetable_data": timetable}), 200

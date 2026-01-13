@@ -5,6 +5,8 @@ import { update_school_submit } from './update_school_function.js';
 import { create_class_submit } from './create_class.js';
 import { update_class_submit } from './update_class.js';
 
+import { create_timetable_submit, date_event_listener } from './timetable.js';
+
 // Detail Ansicht Elemente
 const detailView = document.getElementById('detailView');
 const detailInhalt = document.getElementById('detail_inhalt');
@@ -15,8 +17,7 @@ const button_Schule_erstellen = document.getElementById('Schule_erstellen');
 const button_Schule_bearbeiten = document.getElementById('Schule_bearbeiten');
 const button_Klasse_erstellen = document.getElementById('Klasse_erstellen');
 const button_Klasse_bearbeiten = document.getElementById('Klasse_bearbeiten');
-const button_Stundenplan_erstellen = document.getElementById('Stundenplan_erstellen');
-const button_Stundenplan_bearbeiten = document.getElementById('Stundenplan_bearbeiten');
+const button_Stundenplan = document.getElementById('Stundenplan');
 
 function closeDetailView() {
     detailView.style.display = 'none';
@@ -325,13 +326,22 @@ function setDetailInhalt_ConfigureClass() {
 
 /*Stundenplan erstellen Formular */
 
-function setDetailInhalt_CreateSchedule() {
+function setDetailInhalt_Schedule() {
     openDetailView();
     detailInhalt.innerHTML = `
-        <h3>Stundenplan erstellen</h3>
+    <div style="display: flex; align-items: center; justify-content:建设; margin-bottom: 15px;">
+            <div style="flex: 1; display: flex; justify-content: flex-start;">
+                <input type="date" id="selectedDate" name="selectedDate">
+            </div>
+
+            <div style="flex: 2; text-align: center;">
+                <h3 style="margin: 0;">Stundenplan erstellen</h3>
+            </div>
+
+            <div style="flex: 1;"></div>
+        </div>
         <hr>
-        <form id="createScheduleForm">
-            <!-- Formularfelder für den Stundenplan -->
+        <form id="ScheduleForm">
             <div class="form-row">
                 <div class="form-group">
                     <label for="scheduleSubject">Fach des Stundenplans:</label><br>
@@ -341,19 +351,11 @@ function setDetailInhalt_CreateSchedule() {
                     <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
                     <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
                 </div>
-                <div class="form-group">
-                    <label for="scheduleDay">Datum: </label><br>
-                    <input type="date" id="scheduleDay" name="scheduleDay" required><br><br>
-                </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="scheduleStartTime">Startzeit:</label><br>
-                    <input type="time" id="scheduleStartTime" name="scheduleStartTime" required><br><br>
-                </div>
-                <div class="form-group">
-                    <label for="scheduleEndTime">Endzeit:</label><br>
-                    <input type="time" id="scheduleEndTime" name="scheduleEndTime" required><br><br>
+                    <label for="lessonHour">Untterichtsstunde:</label><br>
+                    <input type="number" id="lessonHour" name="lessonHour" required><br><br>
                 </div>
                 <div class="form-group">
                     <label for="scheduleRoom">Raum:</label><br>
@@ -368,68 +370,14 @@ function setDetailInhalt_CreateSchedule() {
                 <label for="scheduleNotes">Notizen (optional):</label><br>
                 <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
             </div>
-            <button type="submit" class="custom-btn" id="createScheduleButton">Erstellen</button>
+            <button type="submit" class="custom-btn" id="ScheduleButton">Erstellen</button>
         </form>
-    `
-    document.getElementById('createScheduleForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+    `;
 
-        // Hier kannst du die Logik zum Erstellen des Stundenplans hinzufügen
-
-        closeDetailView();
-    });
+    date_event_listener();
+    create_timetable_submit();
 }
 
-function setDetailInhalt_ConfigureSchedule() {
-    openDetailView();
-    detailInhalt.innerHTML = `
-        <h3>Stundenplan bearbeiten</h3>
-        <hr>
-        <form id="configureScheduleForm">
-            <!-- Formularfelder für den Stundenplan -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="scheduleSubject">Fach des Stundenplans:</label><br>
-                    <input type="text" id="scheduleSubject" name="scheduleSubject" required><br><br>
-                </div>
-                <div class="form-group">
-                    <label for="scheduleTeacher">Lehrer des Stundenplans:</label><br>
-                    <input type="text" id="scheduleTeacher" name="scheduleTeacher" required><br><br>
-                </div>
-                <div class="form-group">
-                    <label for="scheduleDay">Datum: </label><br>
-                    <input type="date" id="scheduleDay" name="scheduleDay" required><br><br>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="scheduleStartTime">Startzeit:</label><br>
-                    <input type="time" id="scheduleStartTime" name="scheduleStartTime" required><br><br>
-                </div>
-                <div class="form-group">
-                    <label for="scheduleEndTime">Endzeit:</label><br>
-                    <input type="time" id="scheduleEndTime" name="scheduleEndTime" required><br><br>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="scheduleHomework">Hausaufgaben (optional):</label><br>
-                <textarea id="scheduleHomework" name="scheduleHomework"></textarea><br><br>
-            </div>
-            <div class="form-group">
-                <label for="scheduleNotes">Notizen (optional):</label><br>
-                <textarea id="scheduleNotes" name="scheduleNotes"></textarea><br><br>
-            </div>
-            <button type="submit" class="custom-btn" id="configureScheduleButton">Speichern</button>
-        </form>
-    `
-    document.getElementById('configureScheduleForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // Hier kannst du die Logik zum Bearbeiten des Stundenplans hinzufügen
-
-        closeDetailView();
-    });
-}
 
 /*Event Listener für die Buttons um die Detailansicht zu öffnen*/
 
@@ -437,8 +385,7 @@ button_Schule_erstellen.addEventListener('click', setDetailInhalt_CreateSchool);
 button_Schule_bearbeiten.addEventListener('click', setDetailInhalt_ConfigureSchool);
 button_Klasse_erstellen.addEventListener('click', setDetailInhalt_CreateClass);
 button_Klasse_bearbeiten.addEventListener('click', setDetailInhalt_ConfigureClass);
-button_Stundenplan_erstellen.addEventListener('click', setDetailInhalt_CreateSchedule);
-button_Stundenplan_bearbeiten.addEventListener('click', setDetailInhalt_ConfigureSchedule);
+button_Stundenplan.addEventListener('click', setDetailInhalt_Schedule);
 
 /*Detailansicht schließen (Hier wird noch eine Logik hinzugefügt um bevor das schließen eine Frage angezeigt bekommen ob er wirklich schließen will)*/
 closeButton.addEventListener('click', closeDetailView);

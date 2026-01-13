@@ -1,19 +1,19 @@
 
 export function create_timetable_submit() {
-    document.getElementById('createScheduleForm').addEventListener('submit', function(e) {
+    document.getElementById('ScheduleForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const form = e.target;
         const messageContainer = document.getElementById("createScheduleTitle");
         const detailView = document.getElementById("detailView");
+        const dateInput = document.getElementById('selectedDate');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         const formData = {
             scheduleSubject: form.scheduleSubject.value,
             scheduleTeacher: form.scheduleTeacher.value,
-            scheduleDay: form.scheduleDay.value,
-            scheduleStartTime: form.scheduleStartTime.value,
-            scheduleEndTime: form.scheduleEndTime.value,
+            scheduleDay: dateInput.value,
+            lessonHour: form.lessonHour.value,
             scheduleRoom: form.scheduleRoom.value,
             scheduleHomework: form.scheduleHomework.value,
             scheduleNotes: form.scheduleNotes.value
@@ -68,5 +68,13 @@ export function create_timetable_submit() {
                 detailView.style.border = '4px solid rgba(71, 226, 0, 0.5)';
             }, 10000);
         });
+    });
+}
+
+export function date_event_listener() {
+    const dateInput = document.getElementById('selectedDate');
+    dateInput.addEventListener('change', function() {
+        const selectedDate = new Date(this.value);
+        console.log("Ausgewähltes Datum:", selectedDate);
     });
 }

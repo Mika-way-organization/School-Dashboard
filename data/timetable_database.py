@@ -19,7 +19,12 @@ class DatabaseTimetable(DatabaseStudent):
         self,
         uuid,
         class_id,
-        week_days,
+        date,
+        subject,
+        teacher,
+        note,
+        homework,
+        lesson_hour,
         #Optionale Felder
         created_at=get_current_datetime(),
         updated_at=get_current_datetime(),
@@ -27,7 +32,14 @@ class DatabaseTimetable(DatabaseStudent):
         timetable_data = {
             "uuid": uuid, #UUID des Stundenplans
             "classId": class_id, #UUID der Klasse
-            "weekDays": week_days, #Liste der Wochentage mit den jeweiligen Stundenplänen
+            "date": date, #Datum des Stundenplans
+            "schedule": {
+                "subject": subject, #Fach
+                "teacher": teacher, #Lehrer ID
+                "note": note, #Notizen
+                "homework": homework, #Hausaufgaben
+                "lesson_hour": lesson_hour, #Untterrichtsstunde
+            },
             "metadata": {
                 "createdAt": created_at,
                 "updatedAt": updated_at,
@@ -50,32 +62,46 @@ class DatabaseTimetable(DatabaseStudent):
         except Exception as e:
             raise Exception(f"Fehler beim Erstellen des Stundenplans: {e}")
     
-    # Erstellt ein Formular für eine einzelne Unterrichtsstunde
-    def timetable_period_formular(self, 
-                                    subject,
-                                    teacher,
-                                    note,
-                                    homework,
-                                    start_time,
-                                    end_time,):
+    def find_timetable_by_date(self, class_id, date):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
         
-        period_data = {
-            "subject": subject, #Fach
-            "teacher": teacher, #Lehrer ID
-            "note": note, #Notizen
-            "homework": homework, #Hausaufgaben
-            "startTime": start_time, #Startzeit
-            "endTime": end_time, #Endzeit
-        }
-        return period_data
+        try:
+            timetable = self.client[self.database][self.collection].find_one({
+                "classId": class_id,
+                "date": date
+            })
+            if timetable:
+                print("Stundenplan gefunden.")
+                return timetable
+            else:
+                print("Kein Stundenplan für das angegebene Datum gefunden.")
+                return None
+        except Exception as e:
+            raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")
     
-    # Erstellt ein Formular für einen Wochentag im Stundenplan
-    def timetable_week_formular(day,periods):
+    def update_timetable(self, class_id, date, updated_data):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
         
-        week_day_data = {
-            "day": day, #Wochentag
-            "periods": periods, #Dict mit den Stunden des Tages
-        }
-        return week_day_data
+        if updated_data is None:
+            raise ValueError("Ungültige aktualisierte Daten.")
+        
+        try:
+            update_result = self.client[self.database][self.collection].update_one(
+                {
+                    "classId": class_id,
+                    "date": date
+                },
+                {
+                    "$set": updated_data
+                }
+            )
+            if update_result.modified_count > 0:
+                print("Stundenplan erfolgreich aktualisiert.")
+            else:
+                print("Kein Stundenplan aktualisiert. Möglicherweise wurden keine Änderungen vorgenommen.")
+        except Exception as e:
+            raise Exception(f"Fehler beim Aktualisieren des Stundenplans: {e}")
     
     
