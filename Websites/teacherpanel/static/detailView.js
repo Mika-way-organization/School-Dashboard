@@ -5,7 +5,7 @@ import { update_school_submit } from './update_school_function.js';
 import { create_class_submit } from './create_class.js';
 import { update_class_submit } from './update_class.js';
 
-import { create_timetable_submit, date_event_listener } from './timetable.js';
+import { create_timetable_submit, date_event_listener, selectedHour_event_listener } from './timetable.js';
 
 // Detail Ansicht Elemente
 const detailView = document.getElementById('detailView');
@@ -222,7 +222,7 @@ function setDetailInhalt_CreateClass() {
                 </div>
                 <div class="form-group">
                     <label for="classGrade">Klassenstufe:</label><br>
-                    <input type="number" id="classGrade" name="classGrade" required><br><br>
+                    <input type="number" id="classGrade" name="classGrade" min="0" max="99" required><br><br>
                 </div>
                 <div class="form-group">
                     <label for="classTeacher">Klassengruppe:</label><br>
@@ -331,6 +331,7 @@ function setDetailInhalt_Schedule() {
     detailInhalt.innerHTML = `
     <div style="display: flex; align-items: center; justify-content:建设; margin-bottom: 15px;">
             <div style="flex: 1; display: flex; justify-content: flex-start;">
+                <input type="number" id="selectedHour" name="selectedHour" value="1" style="width: 60px; margin-right: 10px;" min="1" max="12">
                 <input type="date" id="selectedDate" name="selectedDate">
             </div>
 
@@ -354,10 +355,6 @@ function setDetailInhalt_Schedule() {
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="lessonHour">Untterichtsstunde:</label><br>
-                    <input type="number" id="lessonHour" name="lessonHour" required><br><br>
-                </div>
-                <div class="form-group">
                     <label for="scheduleRoom">Raum:</label><br>
                     <input type="text" id="scheduleRoom" name="scheduleRoom" required><br><br>
                 </div>
@@ -374,11 +371,14 @@ function setDetailInhalt_Schedule() {
         </form>
     `;
 
-    const dateInput = document.getElementById('selectedDate');
-    dateInput.value = new Date().toISOString().split('T')[0];
-    
+    const formSchedule = document.getElementById('ScheduleForm');
+    const titleSchedule = document.getElementById('scheduleTitle');
+    formSchedule.style.display = 'none';
+    titleSchedule.textContent = "Datum auswählen";
+
     date_event_listener();
     create_timetable_submit();
+    selectedHour_event_listener();
 }
 
 
