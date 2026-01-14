@@ -335,7 +335,7 @@ function setDetailInhalt_Schedule() {
             </div>
 
             <div style="flex: 2; text-align: center;">
-                <h3 style="margin: 0;">Stundenplan erstellen</h3>
+                <h3 style="margin: 0;" id="scheduleTitle">Stundenplan</h3>
             </div>
 
             <div style="flex: 1;"></div>
@@ -374,6 +374,9 @@ function setDetailInhalt_Schedule() {
         </form>
     `;
 
+    const dateInput = document.getElementById('selectedDate');
+    dateInput.value = new Date().toISOString().split('T')[0];
+    
     date_event_listener();
     create_timetable_submit();
 }

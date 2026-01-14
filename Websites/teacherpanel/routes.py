@@ -345,30 +345,55 @@ def save_timetable_data():
     teacher = teacher_db.find_teacher_by_uuid(current_user.id)
 
     if not teacher:
-        return jsonify({"status": "error", "message": "Benutzer nicht gefunden."}), 404
-    
+        return jsonify({"status": "error", "message": "Benuter nicht gefundne."}), 404
 
+    school_uuid = teacher["school_uuid"]
+
+    school = school_db.find_school_by_uuid(school_uuid)
+
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    class_id = school["classes"][-1] if school["classes"] else False
+
+    if not class_id:
+        return jsonify({"status": "error", "message": "Keine Klasse gefunden."}), 404
+    
+    Class = class_db.find_class_by_uuid(class_id)
+
+    if not Class:
+        return jsonify({"status": "error", "message": "Klasse nicht gefunden."}), 404
+    
     scheduleSubject = data.get('scheduleSubject')
     scheduleTeacher = data.get('scheduleTeacher')
     scheduleDay = data.get('scheduleDay')
-    scheduleDate = data.get('scheduleDate')
-    scheduleStartTime = data.get('scheduleStartTime')
-    scheduleEndTime = data.get('scheduleEndTime')
+    scheduleDate = data.get('scheduleDay')
+    schedulelesson_hour = data.get('lessonHour')
     scheduleRoom = data.get('scheduleRoom')
     scheduleHomework = data.get('scheduleHomework')
     scheduleNotes = data.get('scheduleNotes')
 
-    if not scheduleSubject or not scheduleTeacher or not scheduleDay or not scheduleDate or not scheduleStartTime or not scheduleEndTime or not scheduleRoom:
+    if not scheduleSubject or not scheduleTeacher or not scheduleDay or not scheduleDate or not schedulelesson_hour or not scheduleRoom:
         return jsonify({"status": "error", "message": "Alle Pflichtfelder müssen ausgefüllt sein."}), 400
 
     #Noch in Arbeit
-    timetable_db.create_timetable(
+    timetable_data = timetable_db.timetable_formular(
         uuid=generate_uuid(),
+        class_id=Class["uuid"],
+        date=scheduleDate,
+        subject=scheduleSubject,
+        teacher=scheduleTeacher,
+        room=scheduleRoom,
+        note=scheduleNotes,
+        homework=scheduleHomework,
+        lesson_hour=schedulelesson_hour
     )
 
-    return jsonify({"status": "success", "message": "Stundenplandaten erfolgreich gespeichert."}), 200
+    timetable_db.create_timetable(timetable_data)
 
-@give_timetable_data_blueprint.route('/data', methods=['GET'])
+    return jsonify({"status": "success", "message": "Stundenplandaten erfolgreich gespeichert."}), 201
+
+@give_timetable_data_blueprint.route('/data', methods=['GET', 'POST'])
 def give_timetable_data():
     if not current_user.is_authenticated:
         return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
@@ -390,8 +415,33 @@ def give_timetable_data():
     if not class_id:
         return jsonify({"status": "error", "message": "Keine Klasse gefunden."}), 404
     
-    timetable = timetable_db.find_timetable_by_date(class_id, "2024-06-10")
-    
-    timetable = "Noch in Arbeit"
+    data = request.get_json()
 
-    return jsonify({"status": "success", "timetable_data": timetable}), 200
+    if not data:
+        return jsonify({"status": "error", "message": "Ungültige Anfrage."}), 400
+
+    timetable = timetable_db.find_timetable_by_date(class_id, data.get("date"))
+    
+    if timetable is None:
+        return jsonify({"status": "miss", "message": "Stundenplandaten nicht gefunden."}), 404
+    else:
+
+        scheduleSubject = timetable["schedule"]["subject"]
+        scheduleTeacher = timetable["schedule"]["teacher"]
+        scheduleDate = timetable["date"]
+        schedulelessenHour = timetable["schedule"]["lesson_hour"]
+        scheduleRoom = timetable["schedule"]["room"]
+        scheduleHomework = timetable["schedule"]["homework"]
+        scheduleNotes = timetable["schedule"]["note"]
+
+        timetable_data = {
+            "scheduleSubject": scheduleSubject,
+            "scheduleTeacher": scheduleTeacher,
+            "scheduleDay": scheduleDate,
+            "schedulelessenHour": schedulelessenHour,
+            "scheduleRoom": scheduleRoom,
+            "scheduleHomework": scheduleHomework,
+            "scheduleNotes": scheduleNotes,
+        }
+
+        return jsonify({"status": "success", "data": timetable_data}), 200

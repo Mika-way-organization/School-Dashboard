@@ -22,6 +22,7 @@ class DatabaseTimetable(DatabaseStudent):
         date,
         subject,
         teacher,
+        room,
         note,
         homework,
         lesson_hour,
@@ -36,6 +37,7 @@ class DatabaseTimetable(DatabaseStudent):
             "schedule": {
                 "subject": subject, #Fach
                 "teacher": teacher, #Lehrer ID
+                "room": room,
                 "note": note, #Notizen
                 "homework": homework, #Hausaufgaben
                 "lesson_hour": lesson_hour, #Untterrichtsstunde
