@@ -18,7 +18,7 @@ export function create_class_submit() {
             classGroupe: form.classGroupe.value,
             classRoom: form.classRoom.value,
             classTeacher: form.classTeacher.value,
-            classStudent: form.classStudent.value
+            classStudents: Array.from(form.classStudents.selectedOptions).map(option => option.value)
         }
 
         fetch('/save_class_data/require', {

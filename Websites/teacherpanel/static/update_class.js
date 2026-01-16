@@ -14,7 +14,7 @@ export function update_class_submit() {
             classGroupe: form.classGroupe.value,
             classRoom: form.classRoom.value,
             classTeacher: form.classTeacher.value,
-            classStudent: form.classStudent.value
+            classStudents: Array.from(form.classStudents.selectedOptions).map(option => option.value)
         }
 
         fetch('/save_class_data/save', {
@@ -57,5 +57,48 @@ export function update_class_submit() {
                 }, 10000);
             }
         })
+    });
+}
+
+export function give_students() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/give_class_data/students', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": csrfToken
+        },
+    }).then(async response => {
+        const text = await response.text();
+        let data;
+        console.log(text);
+        
+        try {
+            data = JSON.parse(text);
+        } catch (err) {
+            console.error("Fehler beim Parsen von JSON:", err);
+            throw err;
+        }
+        return { status: response.status, body: data };
+    }).then(result => {
+        const { status, body } = result;
+        if (status === 200 && body.status === "success") {
+            const studentSelect = document.getElementById("classStudents");
+            if (body.students && Array.isArray(body.students)) {
+                body.students.forEach(student => {
+                    const option = document.createElement("option");
+                    
+                    option.value = student.username; 
+                    option.textContent = student.username;
+                    
+                    studentSelect.appendChild(option);
+                });
+            } else {
+                console.error("Datenformat ungültig: body.students ist kein Array");
+            }
+        } else {
+            console.error("Fehler beim Laden der Schülerdaten:", body.message);
+        }
     });
 }

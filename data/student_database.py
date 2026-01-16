@@ -83,6 +83,20 @@ class DatabaseStudent:
         # Schließt die Datenbankverbindung
         self.client.close()
         print("Datenbankverbindung geschlossen.")
+    
+    def find_student_by_name(self, username):
+        # Sucht einen Studenten in der Datenbank anhand des Benutzernamens
+        if self.collection is None:
+            raise ValueError("Datenbankverbindung nicht hergestellt.")
+
+        student = self.client[self.database][self.collection].find_one({"username": username})
+
+        if student:
+            print("Student gefunden.")
+            return student
+        else:
+            print("Student nicht gefunden.")
+            return False
 
     # Erstellt ein Formular für die Schülerdaten
     def student_formular(
@@ -93,8 +107,9 @@ class DatabaseStudent:
         password,
         first_name,
         last_name,
-        school_name,
         # Optionale Felder
+        school_id=None,
+        class_id=None,
         is_verify=False,
         avatar=None,
         grade_level=None,
@@ -115,13 +130,14 @@ class DatabaseStudent:
             "password": password,
             "role": "student",
             "status": "inactive",
-            "schoolName": school_name,
+            "schoolID": school_id,
             "profile": {
                 "firstName": first_name,
                 "lastName": last_name,
                 "avatar": avatar,
             },
             "classData": {
+                "classID": class_id,
                 "gradeLevel": grade_level,
                 "section": section,
                 "classTeacherId": class_teacher_id,
@@ -195,113 +211,17 @@ class DatabaseStudent:
         except Exception as e:
             print(f"Fehler beim Aktualisieren der Studentendaten: {e}")
             return
-
-class DatabaseSchool(DatabaseStudent):
-    def __init__(self, collection_name):
-        super().__init__(collection_name)
     
-    def school_formular(
-        uuid,
-        school_name,
-        street,
-        city,
-        state,
-        zip_code,
-        country,
-        phone_numbers,
-        emails,
-        school_leader,
-        #Optionale Felder
-        created_at=get_current_datetime(),
-        updated_at=get_current_datetime(),
-        upgradeBy=None,
-        schoolManagers=[],
-        schoolAdmins=[],
-        schoolTeachers=[],
-        schoolStudents=[],
-    ):
-        school_data = {
-            "uuid": uuid, #UUID der Schule
-            "schoolName": school_name,
-            "address": {
-                "street": street,
-                "city": city,
-                "state": state,
-                "zipCode": zip_code,
-                "country": country,
-            },
-            "phoneNumbers": phone_numbers, #soll eine Liste sein
-            "emails": emails, #soll eine Liste sein
-            "schooMembers": {
-                "schoolLeader": school_leader,
-                "SchoolManagers": schoolManagers,
-                "schoolAdmins": schoolAdmins,
-                "schoolTeachers": schoolTeachers,
-                "schoolStudents": schoolStudents,
-            },
-            "metadata": {
-                "createdAt": created_at,
-                "updatedAt": updated_at,
-                "upgradeBy": upgradeBy
-            },
-            "classes": [] #Hier kommen dann die Klassen ID's rein
-            
-        }
-        return school_data
-    
-    def create_school(self, school_data):
-        # Fügt eine neue Schule zur Datenbank hinzu
+    def give_all_students_username(self):
+        # Gibt alle Schüler in der Datenbank zurück (nur Usernames)
         if self.collection is None:
             raise ValueError("Datenbankverbindung nicht hergestellt.")
-        if school_data is None:
-            raise ValueError("Schuldaten dürfen nicht None sein.")
-        try:
-            create_school = self.client[self.database][self.collection].insert_one(school_data)
-            if create_school:
-                print("Neue Schule erfolgreich erstellt.")
-            else:
-                print("Fehler beim Erstellen der neuen Schule.")
-            return
-        except Exception as e:
-            print(f"Fehler beim Erstellen der neuen Schule: {e}")
-            return
-    
-    def update_school_data(self, uuid, update_data):
-        # Aktualisiert die Daten einer Schule in der Datenbank
-        if self.collection is None:
-            raise ValueError("Datenbankverbindung nicht hergestellt.")
-        if uuid is None:
-            raise ValueError("UUID darf nicht None sein.")
-        if update_data is None:
-            raise ValueError("Aktualisierungsdaten dürfen nicht None sein.")
         
         try:
-            update_result = self.client[self.database][self.collection].update_one(
-                {"uuid": uuid},
-                {"$set": update_data}
-            )
-            if update_result.modified_count > 0:
-                print("Schuldaten erfolgreich aktualisiert.")
-            else:
-                print("Keine Änderungen an den Schuldaten vorgenommen.")
-            return
+            # _id: 0 schließt die Object-ID explizit aus
+            students = list(self.client[self.database][self.collection].find({}, {"username": 1, "_id": 0}))
+            print(f"{len(students)} Schüler gefunden.")
+            return students
         except Exception as e:
-            print(f"Fehler beim Aktualisieren der Schuldaten: {e}")
-            return
-    
-    def find_school_by_uuid(self, uuid):
-        # Sucht eine Schule in der Datenbank anhand der UUID
-        if self.collection is None:
-            raise ValueError("Datenbankverbindung nicht hergestellt.")
-
-        if uuid is None:
-            raise ValueError("UUID darf nicht None sein.")
-
-        school = self.client[self.database][self.collection].find_one({"uuid": uuid})
-
-        if school:
-            print("Schule gefunden.")
-            return school
-        else:
-            print("Schule nicht gefunden.")
-            return False
+            print(f"Fehler beim Abrufen der Schüler: {e}")
+            return []

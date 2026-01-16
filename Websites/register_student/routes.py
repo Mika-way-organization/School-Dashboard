@@ -42,7 +42,8 @@ def register_require():
     first_name = data.get('first_name')
     last_name = data.get('last_name')
     password = data.get('password')
-    school_name = data.get('school_name')
+    # Wird noch bearbeitet
+    #school_name = data.get('school_name')
     
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     
@@ -60,7 +61,7 @@ def register_require():
         first_name=first_name,
         last_name=last_name,
         password=hashed_password,
-        school_name=school_name,
+        school_id=None,
         code=verify_code,
         expiresAt=get_current_datetime_aware_utc() + timedelta(minutes=10)
     )

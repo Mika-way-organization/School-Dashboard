@@ -3,7 +3,7 @@ import { create_school_submit } from './create_school_function.js';
 import { update_school_submit } from './update_school_function.js';
 
 import { create_class_submit } from './create_class.js';
-import { update_class_submit } from './update_class.js';
+import { update_class_submit, give_students } from './update_class.js';
 
 import { create_timetable_submit, date_event_listener, selectedHour_event_listener } from './timetable.js';
 
@@ -238,17 +238,17 @@ function setDetailInhalt_CreateClass() {
                     <label for="classTeacher">Klassenlehrer:</label><br>
                     <input type="text" id="classTeacher" name="classTeacher" required><br><br>
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
                     <label for="classStudent">Schüler (optional):</label><br>
-                    <input type="text" id="classStudent" name="classStudent"><br><br>
+                    <select id="classStudents" name="classStudents[]" multiple">
+                    </select>
                 </div>
             </div>
             <button type="submit" class="custom-btn" id="createClassButton">Erstellen</button>
         </form>
     `
     create_class_submit();
+    give_students();
 }
 
 function setDetailInhalt_ConfigureClass() {

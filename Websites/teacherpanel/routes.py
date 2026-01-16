@@ -5,12 +5,14 @@ from flask_login import current_user
 
 from utils.uuid_generator import generate_uuid
 
+from data.student_database import DatabaseStudent
 from data.teacher_database import DatabaseTeacher
 from data.school_database import DatabaseSchool
 from data.admin_database import DatabaseAdmin
 from data.class_database import DatabaseClasses
 from data.timetable_database import DatabaseTimetable
 
+studentd_db = DatabaseStudent("student")
 teacher_db = DatabaseTeacher("teacher")
 school_db = DatabaseSchool("school")
 admin_db = DatabaseAdmin("admin")
@@ -207,7 +209,22 @@ def get_class_school_data():
     classGroupe = data.get('classGroupe')
     classRoom = data.get('classRoom')
     classTeacher = data.get('classTeacher')
-    classStudent = data.get('classStudent')
+    classStudents = data.get('classStudents')
+
+    classStudents_id = []
+    
+    for student in classStudents:
+        # 2. Daten abrufen
+        student_data = studentd_db.find_student_by_name(student)
+        
+        # 3. Sicherheitscheck: Wurde der Schüler gefunden?
+        if student_data and "uuid" in student_data:
+            student_id = student_data["uuid"]
+            # 4. Mit append() zur Liste hinzufügen
+            classStudents_id.append(student_id)
+        else:
+            # Optional: Logging, falls ein Name im JSON falsch war
+            print(f"Warnung: Schüler '{student}' nicht in der Datenbank gefunden.")
 
     teacher = teacher_db.find_teacher_by_name(classTeacher)
 
@@ -241,8 +258,22 @@ def get_class_school_data():
         school_id=school_uuid,
         class_teacher_id=teacher_uuid,
         classRoom=classRoom,
-        students=classStudent if classStudent else [],
+        students=classStudents_id if classStudents_id else [],
     )
+
+    for student in classStudents:
+        student_data = studentd_db.find_student_by_name(student)
+        if student_data:
+            studentd_db.update_student_data(student_data["uuid"], {
+                "classData": {
+                    "classID": class_uuid,
+                    "gradeLevel": classGrade,
+                    "section": classGroupe,
+                    "classTeacherId": teacher_uuid,
+                }
+            })
+        else:
+            return jsonify({"status": "error", "message": f"Schüler {student} nicht gefunden."}), 404
 
     school_db.update_school_data(school_uuid, {
         "classes": school["classes"] + [class_uuid]
@@ -280,17 +311,57 @@ def give_class_data():
     teacher = teacher_db.find_teacher_by_uuid(teacher_id)
     teacher_name = teacher["username"] if teacher else "Unbekannt"
 
+    student_name_list = []
+    for student_id in class_data["students"]:
+        student = studentd_db.find_student_by_uuid(student_id)
+        if student:
+            student_name_list.append(student["username"])
+        else:
+            student_name_list.append("Unbekannt")
+
     class_info = {
         "className": class_data["className"],
         "classGrade": class_data["gradeLevel"],
         "classGroupe": class_data["section"],
         "classRoom": class_data["classRoom"],
         "classTeacher": teacher_name,
-        "classStudent": class_data["students"],
+        "classStudent": student_name_list,
     }
 
     return jsonify({"status": "success", "class_data": class_info}), 200
+
+@give_class_data_blueprint.route('/students', methods=['GET'])
+def give_class_students():
+    if not current_user.is_authenticated:
+        return jsonify({"status": "error", "message": "Nicht authentifiziert."}), 401
     
+    teacher = teacher_db.find_teacher_by_uuid(current_user.id)
+
+    if not teacher:
+        return jsonify({"status": "error", "message": "Benuter nicht gefundne."}), 404
+
+    school_uuid = teacher["school_uuid"]
+
+    school = school_db.find_school_by_uuid(school_uuid)
+
+    if not school:
+        return jsonify({"status": "error", "message": "Schule nicht gefunden."}), 404
+    
+    class_uuid = school["classes"][-1] if school["classes"] else None
+
+    class_data = class_db.find_class_by_uuid(class_uuid)
+
+    if not class_data:
+        print("Klasse nicht gefunden.")
+    
+    students = studentd_db.give_all_students_username()
+
+    print(students)
+    
+    if not students:
+        return jsonify({"status": "error", "message": "Keine Schüler in der Klasse gefunden."}), 404
+
+    return jsonify({"status": "success", "students": students}), 200
     
     
 @save_class_data_blueprint.route('/save', methods=['POST'])
