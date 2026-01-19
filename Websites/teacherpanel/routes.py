@@ -457,13 +457,27 @@ def save_timetable_data():
         class_id=Class["uuid"],
         date=scheduleDate
     )
+
+
+
     if not find_timetable:
+        timetable_id = generate_uuid()
         timetable_data = timetable_db.timetable_formular(
-            uuid=generate_uuid(),
+            uuid=timetable_id,
             class_id=Class["uuid"],
             date=scheduleDate
         )
         timetable_db.create_timetable(timetable_data)
+        
+        class_data = class_db.find_class_by_uuid(class_id)
+
+        timeable_list = class_data.get("timetableID", [])
+        timeable_list.append(timetable_id)
+        
+        #Update der Klassendaten mit der Stundenplan ID
+        class_db.update_class_data(class_id, {
+        "timetableID": timeable_list
+        })
     
     timetable_db.add_schedule_entry(
         class_id=Class["uuid"],

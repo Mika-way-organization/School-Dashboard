@@ -22,7 +22,7 @@ class DatabaseClasses(DatabaseStudent):
         school_id,
         class_teacher_id,
         #Optionale Felder
-        timetableID="No Timetable Assigned",
+        timetableID=[],
         classRoom="No Room Assigned",
         created_at=get_current_datetime(),
         updated_at=get_current_datetime(),

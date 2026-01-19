@@ -4,6 +4,13 @@ from flask_login import current_user
 from flask_mail import Message
 import random
 
+from data.student_database import DatabaseStudent
+from data.admin_database import DatabaseAdmin
+from data.teacher_database import DatabaseTeacher
+from data.timetable_database import DatabaseTimetable
+from data.school_database import DatabaseSchool
+from data.class_database import DatabaseClasses
+
 #Import des Bluprints
 from . import dashboard_blueprint
 
@@ -22,6 +29,38 @@ def index():
     if current_user.is_authenticated:
         username = current_user.username
         role = current_user.role
+
+        user_id = current_user.id
+
+        global class_data
+
+        if role == "student":
+            db = DatabaseStudent("student")
+            student_data = db.find_student_by_uuid(user_id)
+            if student_data:
+                student_class = student_data['classData']['classID']
+
+                class_db = DatabaseClasses("classes")
+                class_data = class_db.find_class_by_uuid(student_class)
+                if class_data:
+                    print("Klasse des Schülers gefunden:", class_data['className'])
+
+        elif role == "teacher":
+            db = DatabaseTeacher("teacher")
+            teacher_data = db.find_teacher_by_uuid(user_id)
+            if teacher_data:
+                teacher_class = teacher_data['classData']['classID']
+
+                class_db = DatabaseClasses("classes")
+                class_data = class_db.find_class_by_uuid(teacher_class)
+                if class_data:
+                    print("Klasse des Lehrers gefunden:", class_data['className'])
+
+
+        elif role == "admin":
+            pass
+
+
     else:
         username = None # Standardmäßig kein Benutzername
         role = None
@@ -48,7 +87,10 @@ def index():
     selected_joke = random.choice(joke_list)
     if selected_joke == False:
         selected_joke = jokes.get_joke()
-        print("Fehler beim Abrufen des Witzes von Schul-Dahsbaord.dnns.de")
+        print("Fehler beim Abrufen des Witzes von www.schul-dashboard.de")
+
+    #Klassen Daten für Stundenplan abrufen
+    
     
 
     return render_template('dashboard.html', 
