@@ -160,3 +160,62 @@ class DatabaseTimetable(DatabaseStudent):
             
         except Exception as e:
             raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")
+    
+    def find_timetable_by_uuid(self, uuid):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
+
+        try:
+            timetable = self.client[self.database][self.collection].find_one(
+                {"uuid": uuid}
+            )
+            
+            if timetable:
+                print("Stundenplan erfolgreich abgerufen.")
+                return timetable
+            else:
+                print("Kein Stundenplan gefunden.")
+                return None
+            
+        except Exception as e:
+            raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")
+    
+    def find_timetable_by_uuid_and_date(self, uuid, date):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
+
+        try:
+            timetable = self.client[self.database][self.collection].find_one(
+                {"uuid": uuid, "date": date}
+            )
+            
+            if timetable:
+                print("Stundenplan erfolgreich abgerufen.")
+                return timetable
+            else:
+                print("Kein Stundenplan gefunden.")
+                return None
+            
+        except Exception as e:
+            raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")
+    
+    def find_timetable_by_uuid_and_date_and_hour(self, uuid, date, lesson_hour):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
+
+        try:
+            timetable = self.client[self.database][self.collection].find_one(
+                {"uuid": uuid, "date": date, "schedule.lesson_hour": lesson_hour}
+            )
+            
+            if timetable:
+                for entry in timetable.get("schedule", []):
+                    if entry.get("lesson_hour") == lesson_hour:
+                        print("Stundenplan-Eintrag erfolgreich abgerufen.")
+                        return entry
+            else:
+                print("Kein Stundenplan-Eintrag gefunden.")
+                return None
+            
+        except Exception as e:
+            raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")

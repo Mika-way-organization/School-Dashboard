@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 def get_current_datetime():
     #Gibt das aktuelle Datum und die Uhrzeit im Format 'YYYY-MM-DD HH:MM:SS' zurück.
@@ -15,3 +15,11 @@ def get_date():
 def get_time():
     #Gibt die aktuelle Uhrzeit im Format 'HH:MM' zurück.
     return datetime.now().strftime('%H:%M')
+
+def get_datetime_formatted():
+    #Gibt das aktuelle Datum im ISO 8601 Format 'YYYY-MM-DD' zurück.
+    return date.today().isoformat()
+
+def get_current_time_format():
+    #Gibt die aktuelle Uhrzeit im Format 'HH:MM' zurück.
+    return datetime.now().strftime("%H:%M")

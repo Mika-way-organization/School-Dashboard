@@ -76,6 +76,19 @@ class DatabaseClasses(DatabaseStudent):
         else:
             print("Klasse nicht gefunden.")
             return False
+        
+    def find_class_by_teacher_id(self, teacher_id):
+        if self.collection is None:
+            raise Exception("Datenbankverbindung nicht hergestellt.")
+        
+        class_data = self.client[self.database][self.collection].find_one({"classTeacherId": teacher_id})
+
+        if class_data:
+            print("Klasse gefunden.")
+            return class_data
+        else:
+            print("Klasse nicht gefunden.")
+            return False
     
     def update_class_data(self, class_uuid, update_data):
         if self.collection is None:
