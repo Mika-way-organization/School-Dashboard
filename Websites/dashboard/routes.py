@@ -39,78 +39,17 @@ def index():
 
         global class_data
         global timetable_data
+        is_lesson_now = False
         
         today = get_datetime_formatted()
         now_time = get_current_time_format()
         current_lesson_hour = get_lesson_hour(now_time)
-        
-        if current_lesson_hour is not None:
-            if role == "student":
-                student_data = student_db.find_student_by_uuid(user_id)
-                if student_data:
-                    student_class = student_data['classData']['classID']
-                    class_data = class_db.find_class_by_uuid(student_class)
-                    if class_data:
-                        print("Klasse des Schülers gefunden:", class_data['className'])
-                        
-                        for timetable_id in class_data['timetableID']:
-                            timetable_data = timetable_db.find_timetable_by_uuid(timetable_id)
-                            if timetable_data:
-                                print("Stundenplandaten gefunden für ID:", timetable_id)
-                                
-                                timetable_today = timetable_db.find_timetable_by_uuid_and_date(timetable_id, today)
-                                if timetable_today:
-                                    timetable_now = timetable_db.find_timetable_by_uuid_and_date_and_hour(timetable_id, today, current_lesson_hour)
-                                    
-                                    if timetable_now:
-                                        timetable_data = timetable_now
-                                        print("Aktuelle Stunde gefunden für ID:", timetable_id)
-                                    else:
-                                        print("Keine aktuelle Stunde, aber heutiger Stundenplan gefunden für ID:", timetable_id)
-                                    
-                                    print("Heutiger Stundenplan gefunden für ID:", timetable_id)
-                            else:
-                                print("Kein Stundenplan gefunden für ID:", timetable_id)
-                        else:
-                            print("Keine Stundenplan für den Schüler gefunden.")
+        print("Aktuelle Uhrzeit:", now_time)
+        print("Aktuelle Unterrichtsstunde:", current_lesson_hour)
 
-
-            elif role == "teacher":
-                teacher_data = teacher_db.find_teacher_by_uuid(user_id)
-                if teacher_data:
-                    class_data = class_db.find_class_by_teacher_id(user_id)
-                    if class_data:
-                        print("Klasse des Lehrers gefunden:", class_data['className'])
-                        
-                        for timetable_id in class_data['timetableID']:
-                            timetable_data = timetable_db.find_timetable_by_uuid(timetable_id)
-                            if timetable_data:
-                                print("Stundenplandaten gefunden für ID:", timetable_id)
-                                
-                                timetable_today = timetable_db.find_timetable_by_uuid_and_date(timetable_id, today)
-                                if timetable_today:
-                                    
-                                    timetable_now = timetable_db.find_timetable_by_uuid_and_date_and_hour(timetable_id, today, current_lesson_hour)
-                                    
-                                    if timetable_now:
-                                        timetable_data = timetable_now
-                                        print("Aktuelle Stunde gefunden für ID:", timetable_id)
-                                    else:
-                                        print("Keine aktuelle Stunde für ID:", timetable_id)
-                                        
-                                    print("Heutiger Stundenplan gefunden für ID:", timetable_id)
-                            else:
-                                print("Kein Stundenplan gefunden für ID:", timetable_id)
-                        else:
-                            print("Keine Stundenplan für den Lehrer gefunden.")
-
-
-            elif role == "admin":
-                pass
-            
-        else:
-            timetable_data = None
-            print("Derzeit keine laufende Unterrichtsstunde.")
+        timetable_data = get_current_lesson(user_id, role, current_lesson_hour, today)
+        if timetable_data is not None:
+            is_lesson_now = True
         
 
 
@@ -143,7 +82,7 @@ def index():
         print("Fehler beim Abrufen des Witzes von www.schul-dashboard.de")
 
     #Klassen Daten für Stundenplan abrufen
-    if timetable_data is not None:
+    if timetable_data is not None and is_lesson_now:
         subject = timetable_data["subject"]
         teacher_id = timetable_data["teacher"]
         room = timetable_data["room"]
@@ -159,6 +98,7 @@ def index():
 
     return render_template('dashboard.html', 
                            username = username,
+                           user_id = user_id,
                            role = role,
                            #Time
                            date=date, time=time,
@@ -172,11 +112,13 @@ def index():
                            #Joke
                            joke=selected_joke,
                            #Stundenplan
+                           today=today,
                            subject=subject,   
                            teacher_id=teacher_id,
                            room=room,
                            note=note,
-                           homework=homework)
+                           homework=homework,
+                           timetable_data_funktion=get_current_lesson)
 
 def get_lesson_hour(current_time):
     
@@ -202,3 +144,36 @@ def get_lesson_hour(current_time):
         return 10
     else:
         return None
+
+def get_current_lesson(user_id, role, current_lesson_hour, today):
+    # 1. Basis-Validierung
+    if current_lesson_hour is None:
+        return None
+
+    # 2. Klassen-ID anhand der Rolle ermitteln
+    class_data = None
+    if role == "student":
+        student_data = student_db.find_student_by_uuid(user_id)
+        if student_data:
+            class_data = class_db.find_class_by_uuid(student_data['classData']['classID'])
+    elif role == "teacher":
+        class_data = class_db.find_class_by_teacher_id(user_id)
+
+    if not class_data:
+        print(f"Keine Klasse für {role} {user_id} gefunden.")
+        return None
+
+    print(f"Klasse gefunden: {class_data['className']}")
+
+    # 3. Stundenplan-Logik
+    for timetable_id in class_data.get('timetableID', []):
+        timetable_now = timetable_db.find_timetable_by_uuid_and_date_and_hour(
+            timetable_id, today, current_lesson_hour
+        )
+
+        if timetable_now:
+            print(f"Aktuelle Stunde gefunden: {timetable_now}")
+            return timetable_now
+
+    print("Keine aktuelle Stunde für die IDs gefunden.")
+    return None

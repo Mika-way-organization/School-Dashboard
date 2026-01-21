@@ -286,6 +286,104 @@ body {
     transform: none !important;
 }
 
+/*-------------------------------------------*/
+
+#div2_list {
+    display: flex;
+    width: 100%;       
+    height: 100%;      
+    margin: 0;
+    padding: 0;
+   
+}
+
+#div2_list .list-group-item {
+    background-color: #343a40;
+    flex: 1;           
+    display: flex;
+    align-items: center;    
+    justify-content: center; 
+    text-align: center;
+}
+
+#div3_list {
+    flex-direction: column;
+    width: 100%;       
+    height: 100%;      
+    margin: 0;
+    padding: 0;
+   
+}
+
+#div3_list .list-group-item {
+    background-color: #343a40;
+    flex-direction: column;
+    flex: 1;           
+    display: flex;
+    align-items: center;    
+    justify-content: center; 
+    text-align: center;
+}
+
+.homework{
+   font-size: calc(0.6vw + 0.6vh);
+}
+
+
+#div7 {
+    height: 100%; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.grid_timetable {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+ 
+.grid_timetable .row {
+    flex: 1; 
+    display: flex;
+    flex-wrap: wrap; 
+    margin: 0;       
+    align-content: stretch; 
+    border: none;
+}
+
+.grid_timetable .col {
+    display: flex;
+    align-items: center;    
+    justify-content: center; 
+    border: 0.5px solid rgba(0,0,0,0.1); 
+    height: auto; 
+}
+
+.grid_timetable .row > [class*="col-"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #6d6d6d7b;
+    border-right: 1px solid #6d6d6d7b;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    padding: 8px;
+}
+
+.grid_timetable .col-1 {
+    background-color: rgba(0,0,0,0.05);
+    font-weight: bold;
+}
+
+.grid_timetable .row > [class*="col-"]:nth-child(3n) {
+    border-right: none;
+}
+
+.grid_timetable .row > [class*="col-"]:nth-last-child(-n+3) {
+    border-bottom: none;
+}
+
+
 #offcanvasbutton:hover,
 #Home-icon:hover,
 #Teacherpanel-icon:hover,

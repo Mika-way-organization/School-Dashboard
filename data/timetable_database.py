@@ -204,18 +204,24 @@ class DatabaseTimetable(DatabaseStudent):
             raise Exception("Datenbankverbindung nicht hergestellt.")
 
         try:
+            # Suche das Dokument
             timetable = self.client[self.database][self.collection].find_one(
-                {"uuid": uuid, "date": date, "schedule.lesson_hour": lesson_hour}
+                {"uuid": uuid, "date": date, "schedule.lesson_hour": str(lesson_hour)}
             )
             
-            if timetable:
-                for entry in timetable.get("schedule", []):
-                    if entry.get("lesson_hour") == lesson_hour:
-                        print("Stundenplan-Eintrag erfolgreich abgerufen.")
-                        return entry
-            else:
-                print("Kein Stundenplan-Eintrag gefunden.")
+            if not timetable:
+                print(f"Kein Dokument gefunden für UUID {uuid} am {date}")
                 return None
+
+            # Suche den passenden Eintrag im Array
+            for entry in timetable.get("schedule", []):
+                if str(entry.get("lesson_hour")) == str(lesson_hour):
+                    print(f"Stundenplan-Eintrag für Stunde {lesson_hour} gefunden.")
+                    return entry
+
+            # Erst wenn die Schleife KOMPLETT durch ist:
+            print(f"Stunde {lesson_hour} im schedule-Array nicht vorhanden.")
+            return None
             
         except Exception as e:
             raise Exception(f"Fehler beim Abrufen des Stundenplans: {e}")

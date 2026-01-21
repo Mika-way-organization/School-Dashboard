@@ -211,8 +211,29 @@
     </nav>
 
     <!-- Div Containers Inhalt -->
-    <div id="div2">Akutelles Fach inkl. Aufgaben und Lehrer</div>
-    <div id="div3">Hausufgaben/Proben/Ex's/ sonstige Termine</div>
+    <div id="div2">
+      <ul id="div2_list" class="list-group list-group-horizontal">
+        <li class="list-group-item" id="div2_fach">Fach: {{ subject }} </li>
+        <li class="list-group-item" id="div2_teacher">Lehrer: {{ teacher_id }} </li>
+        <li class="list-group-item" id="div2_room">Raum: {{ room }} </li>
+      </ul>
+    </div>
+    <div id="div3">
+      <ul id="div3_list" class="list-group list-group">  
+          <li class="list-group-item">
+            <div class="fw-bold">Hausaufgaben</div>
+             <div class="homework" id="div3_homework">{{ homework }}</div>
+          </li>
+          <li class="list-group-item">
+            <div class="fw-bold">Schulaufgaben</div>
+             <div class="homework" id="div3_schoolwork">akutell keine Schulaufgaben</div>
+          </li>
+          <li class="list-group-item">
+             <div class="fw-bold">Sonstiges</div>
+             <div class="homework" id="div3_sonstiges"> {{ note }} </div>
+          </li>
+      </ul>
+    </div>
     <!-- Witz des Tages -->
     <div id="div4">
       <h2 id="joke_h2">Aktueller Witz</h2>
@@ -237,7 +258,39 @@
     </div>
 
     <!-- Stundenplan / Tag -->
-    <div id="div7">Stundenplan / Tag</div>
+    <div id="div7">
+
+       <div class="grid_timetable">
+        <div class="row g-0">
+          <div class="col-1">1</div>
+          <div class="col-7" id="one_subject">{{ timetable_data_funktion(user_id, role, 1, today)['subject'] }}</div>
+          <div class="col-4" id="one_room">{{ timetable_data_funktion(user_id, role, 1, today)['room'] }}</div>
+          <div class="col-1">2</div>
+          <div class="col-7" id="two_subject">{{ timetable_data_funktion(user_id, role, 2, today)['subject'] }}</div>
+          <div class="col-4" id="two_room">{{ timetable_data_funktion(user_id, role, 2, today)['room'] }}</div>
+          <div class="col-1">3</div>
+          <div class="col-7" id="three_subject">{{ timetable_data_funktion(user_id, role, 3, today)['subject'] }}</div>
+          <div class="col-4" id="three_room">{{ timetable_data_funktion(user_id, role, 3, today)['room'] }}</div>
+          <div class="col-1">4</div>
+          <div class="col-7" id="four_subject">{{ timetable_data_funktion(user_id, role, 4, today)['subject'] }}</div>
+          <div class="col-4" id="four_room">{{ timetable_data_funktion(user_id, role, 4, today)['room'] }}</div>
+          <div class="col-1">5</div>
+          <div class="col-7" id="five_subject">{{ timetable_data_funktion(user_id, role, 5, today)['subject'] }}</div>
+          <div class="col-4" id="five_room">{{ timetable_data_funktion(user_id, role, 5, today)['room'] }}</div>
+          <div class="col-1">6</div>
+          <div class="col-7" id="six_subject">{{ timetable_data_funktion(user_id, role, 6, today)['subject'] }}</div>
+          <div class="col-4" id="six_room">{{ timetable_data_funktion(user_id, role, 6, today)['room'] }}</div>
+          <div class="col-1">7</div>
+          <div class="col-7" id="seven_subject">{{ timetable_data_funktion(user_id, role, 7, today)['subject'] }}</div>
+          <div class="col-4" id="seven_room">{{ timetable_data_funktion(user_id, role, 7, today)['room'] }}</div>
+          <div class="col-1">8</div>
+          <div class="col-7" id="eight_subject">{{ timetable_data_funktion(user_id, role, 8, today)['subject'] }}</div>
+          <div class="col-4" id="eight_room">{{ timetable_data_funktion(user_id, role, 8, today)['room'] }}</div>
+        </div>
+       </div>
+       </div>
+
+    </div>
   </div>
 
   <!--Offcanvas-->
