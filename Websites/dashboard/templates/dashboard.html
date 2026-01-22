@@ -221,15 +221,15 @@
     <div id="div3">
       <ul id="div3_list" class="list-group list-group">  
           <li class="list-group-item">
-            <div class="fw-bold">Hausaufgaben</div>
+            <div class="fw-bold" id="div3_homework_title">Hausaufgaben</div>
              <div class="homework" id="div3_homework">{{ homework }}</div>
           </li>
           <li class="list-group-item">
-            <div class="fw-bold">Schulaufgaben</div>
+            <div class="fw-bold" id="div3_schoolwork_title">Schulaufgaben</div>
              <div class="homework" id="div3_schoolwork">akutell keine Schulaufgaben</div>
           </li>
           <li class="list-group-item">
-             <div class="fw-bold">Sonstiges</div>
+             <div class="fw-bold" id="div3_sonstiges_title">Sonstiges</div>
              <div class="homework" id="div3_sonstiges"> {{ note }} </div>
           </li>
       </ul>
@@ -260,7 +260,7 @@
     <!-- Stundenplan / Tag -->
     <div id="div7">
 
-       <div class="grid_timetable">
+      <div class="grid_timetable">
         <div class="row g-0">
           <div class="col-1">1</div>
           <div class="col-7" id="one_subject">{{ timetable_data_funktion(user_id, role, 1, today)['subject'] }}</div>
@@ -287,7 +287,6 @@
           <div class="col-7" id="eight_subject">{{ timetable_data_funktion(user_id, role, 8, today)['subject'] }}</div>
           <div class="col-4" id="eight_room">{{ timetable_data_funktion(user_id, role, 8, today)['room'] }}</div>
         </div>
-       </div>
        </div>
 
     </div>

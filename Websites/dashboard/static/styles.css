@@ -336,51 +336,53 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 .grid_timetable {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden; 
+    border: 1px solid #6d6d6d7b;
+    border-radius: 4px;
 }
- 
+
 .grid_timetable .row {
     flex: 1; 
     display: flex;
-    flex-wrap: wrap; 
     margin: 0;       
-    align-content: stretch; 
-    border: none;
-}
-
-.grid_timetable .col {
-    display: flex;
-    align-items: center;    
-    justify-content: center; 
-    border: 0.5px solid rgba(0,0,0,0.1); 
-    height: auto; 
+    padding: 0;
+    --bs-gutter-x: 0;
 }
 
 .grid_timetable .row > [class*="col-"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #6d6d6d7b;
-    border-right: 1px solid #6d6d6d7b;
-    margin-bottom: -1px;
-    margin-right: -1px;
     padding: 8px;
+    border-right: 1px solid #6d6d6d7b;
+    border-bottom: 1px solid #6d6d6d7b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.grid_timetable .col-1 {
-    background-color: rgba(0,0,0,0.05);
-    font-weight: bold;
-}
-
-.grid_timetable .row > [class*="col-"]:nth-child(3n) {
+.grid_timetable .row > [class*="col-"]:last-child {
     border-right: none;
 }
 
-.grid_timetable .row > [class*="col-"]:nth-last-child(-n+3) {
+.grid_timetable .row:last-child > [class*="col-"] {
     border-bottom: none;
+}
+
+.grid_timetable .col-1 {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    flex: 0 0 8.333333%; 
+    max-width: 8.333333%;
+}
+
+.grid_timetable .row:hover {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
 
@@ -415,4 +417,18 @@ body {
         0 8px 16px rgba(0, 0, 0, 0.6);
 
     animation: pulsieren 2s infinite alternate; 
+}
+
+#div2_fach , #div2_teacher, #div2_room {
+    font-size: calc(1.7vw + 0.7vh);
+    font-weight: 600;
+}
+
+#div3_homework_title, #div3_schoolwork_title, #div3_sonstiges_title {
+    font-size: calc(1.5vw + 0.6vh);
+    margin-bottom: 8px;
+}
+
+#div3_homework, #div3_schoolwork, #div3_sonstiges {
+    font-size: calc(1.0vw + 0.5vh);
 }

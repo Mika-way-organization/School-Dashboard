@@ -80,12 +80,32 @@ def dashboard_data():
         room = timetable_data["room"]
         note = timetable_data["note"]
         homework = timetable_data["homework"]
+        first_lesson = get_current_lesson(user_id, role, 1, today)
+        second_lesson = get_current_lesson(user_id, role, 2, today)
+        third_lesson = get_current_lesson(user_id, role, 3, today)
+        fourth_lesson = get_current_lesson(user_id, role, 4, today)
+        fifth_lesson = get_current_lesson(user_id, role, 5, today)
+        sixth_lesson = get_current_lesson(user_id, role, 6, today)
+        seventh_lesson = get_current_lesson(user_id, role, 7, today)
+        eighth_lesson = get_current_lesson(user_id, role, 8, today)
+        ninth_lesson = get_current_lesson(user_id, role, 9, today)
+        tenth_lesson = get_current_lesson(user_id, role, 10, today)
     else:
         subject = None
         teacher_id = None
         room = None
         note = None
         homework = None
+        first_lesson = None
+        second_lesson = None
+        third_lesson = None
+        fourth_lesson = None
+        fifth_lesson = None
+        sixth_lesson = None
+        seventh_lesson = None
+        eighth_lesson = None
+        ninth_lesson = None
+        tenth_lesson = None
     
     data_dict = {
         "date": date,
@@ -101,7 +121,17 @@ def dashboard_data():
         "teacher_id": teacher_id,
         "room": room,
         "note": note,
-        "homework": homework
+        "homework": homework,
+        "first_lesson": first_lesson,
+        "second_lesson": second_lesson,
+        "third_lesson": third_lesson,
+        "fourth_lesson": fourth_lesson,
+        "fifth_lesson": fifth_lesson,
+        "sixth_lesson": sixth_lesson,
+        "seventh_lesson": seventh_lesson,
+        "eighth_lesson": eighth_lesson,
+        "ninth_lesson": ninth_lesson,
+        "tenth_lesson": tenth_lesson
         }
     return data_dict
 
