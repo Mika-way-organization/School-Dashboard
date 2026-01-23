@@ -16,7 +16,6 @@ const popup = document.getElementById('abmelde_popup');
 
 
 const abmelde_button = document.getElementById('abmelden');
-const abmelde_button_dropdown = document.getElementById('abmelden_dropmenu');
 const abbruch_button = document.getElementById('abbruch_button');
 const abmelde_button_div = document.getElementById('abmelde_button');
 
@@ -45,14 +44,5 @@ function abmelden(){
 }
 
 abmelde_button.addEventListener('click', zeigeAbmeldePopup);
-abmelde_button_dropdown.addEventListener('click', zeigeAbmeldePopup);
 abbruch_button.addEventListener('click', versteckeAbmeldePopup);
 abmelde_button_div.addEventListener('click', abmelden);
-
-underlay.addEventListener('click', versteckeAbmeldePopup);
-
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
-        versteckeAbmeldePopup();
-    }
-});

@@ -52,7 +52,7 @@
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    z-index: 10000;
+    z-index: 1000;
 
     /* Anfangs ist das Pop up nicht sichtbar */
     display: none;
@@ -139,38 +139,42 @@
     justify-content: center;
     width: 100%;
     max-width: 800px;
-    border: none;
+    border: 1px solid #7F00FF;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10px;
+    margin-top: 30px;
     padding: 16px;
     border-radius: 128px;
 }
 .flex-container1 {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     width: 100%;
     max-width: 800px;
-    border: none;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
     border-radius: 20px;
     padding: 16px;
+    border: 1px solid #7F00FF;
+}
+.flex {
+    padding: 25px;
 }
 .flex-container2 {
-    position: fixed;
-    top: 90%;
+    position: sticky !important;
+    top: 100%;
     text-align: center;
     width: 100%;
     max-width: 800px;
-    border: none;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     border-radius: 20px;
     padding: 16px;
+    border: 1px solid #7F00FF;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 .please-help {
     display: flex;
@@ -180,7 +184,6 @@
 
 #MiniNav {
     border-radius: 12px;
-    background: #343a40;
     border: 1px solid rgba(127, 0, 255, 0.4);
     box-shadow: 
         0 2px 4px rgba(0, 0, 0, 0.4),
@@ -211,8 +214,8 @@
 
 #MiniNav-bar{
     box-shadow: none !important;
+    scale: 2 !important;
     width: 350px !important;
-    background-color: #343a40 !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -231,14 +234,10 @@
 
 #offcanvasbutton:hover,
 #Home-icon:hover,
-#Teacherpanel-icon:hover,
-#Adminpanel-icon:hover,
 #Stundenplan-icon:hover,
 #Einstellungen-icon:hover,
 #Gast-icon:hover,
 #Home:hover,
-#Adminpanel:hover,
-#Teacherpanel:hover,
 #Stundenplan:hover,
 #Einstellungen:hover,
 #Gast:hover {
@@ -247,17 +246,51 @@
     
 }
 
-#Home-icon, #Adminpanel-icon, #Teacherpanel-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
+#Home-icon, #Stundenplan-icon, #Einstellungen-icon, #Gast-icon, #offcanvasbutton {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-#offcanvasExample {
-    border-right: 2px solid rgba(127, 0, 255, 0.4);
-    box-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.4),
-        0 8px 16px rgba(0, 0, 0, 0.6);
-
-    animation: pulsieren 2s infinite alternate; 
+.social-distancing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #7F00FF;
+    border-radius: 128px;
+    margin: 20px;
+    padding: 10px;
 }
+p {
+    font-size: 10px;
+}
+#bottom-icon {
+    display: flex;
+    justify-content: space-evenly !important;
+}
+.rotating-thing {
+    animation: spin 2s linear infinite;
+}
+
+.settings-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    font-family: sans-serif;
+  }
+  .settings-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    color: currentColor;
+  }
+  .rotating-thing:hover svg {
+    animation: rotate 2s linear infinite;
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
