@@ -27,6 +27,9 @@ from utils.jokesAPI import Jokes
 wetter = WetterAPI()
 jokes = Jokes()
 
+global class_data
+global timetable_data
+
 #Erstellt die Verbindung zur HTML Datei her
 @dashboard_blueprint.route('/')
 def index():
@@ -36,9 +39,6 @@ def index():
         role = current_user.role
 
         user_id = current_user.id
-
-        global class_data
-        global timetable_data
         is_lesson_now = False
         
         today = get_datetime_formatted()
@@ -56,6 +56,9 @@ def index():
     else:
         username = None # Standardmäßig kein Benutzername
         role = None
+        timetable_data = None
+        user_id = None
+        today = get_datetime_formatted()
     
     # Holt das aktuelle Datum und die aktuelle Uhrzeit
     date = get_date()
