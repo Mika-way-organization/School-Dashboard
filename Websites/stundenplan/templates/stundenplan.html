@@ -310,7 +310,12 @@
   </div>
 
   <div id="cssportal-grid">
-    <div id="div1">div1</div>
+    <div id="div1">
+      <div class="Teacher">
+        <h5>Lehrer</h5>
+      </div>
+        <div class="TeacherProfile">{{ get_current_lesson(user_id, role, current_lesson_hour, today)["teacher"] }}</div>
+    </div>
     
     <div id="Stundenplan">
         <table class="Table">
@@ -469,6 +474,7 @@
   
   
     </div>
+    
     <div id="div3"></div>
   
     <div id="Kalender">
@@ -482,7 +488,12 @@
       </div>  
     </div>
     
-    <div id="div5">div5</div>
+    <div id="div5">
+      <div class="hw-widget">
+        <h5>Hausaufgaben</h5>
+      </div>
+        <textarea id="Hausaufgaben" disabled placeholder="Keine Hausaufgaben...">{{ get_current_lesson(user_id, role, current_lesson_hour, today)["homework"] }}</textarea>
+    </div>
     
     <div class="Notizen">
       <div class="notes-widget">
@@ -490,9 +501,7 @@
           <span> Notiz</span>
           <input type="date" id="noteDate">
         </div>
-      
-        <textarea id="noteText" placeholder="Deine Notiz...">{{ get_current_lesson(user_id, role, current_lesson_hour, today)["note"] }}</textarea>
-      
+        <textarea id="noteText" placeholder="Keine Notizen" disabled>{{ get_current_lesson(user_id, role, current_lesson_hour, today)["note"] }}</textarea>
         <div class="notes-actions">
           <button class="save" onclick="saveNote()">Speichern</button>
           <button class="delete" onclick="deleteNote()">Löschen</button>
